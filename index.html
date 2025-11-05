@@ -3,165 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AWORJIWA Coffee | Arabica Tengger Coffee </title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>TraderPro | Platform Trading Profesional</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== VARIABLES ===== */
         :root {
-            --primary: #3A2D28;
-            --secondary: #E6D5C3;
-            --accent: #C8A97E;
-            --text: #2D2424;
-            --light: #F8F4F0;
-            --overlay: rgba(58, 45, 40, 0.85);
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --primary: #1a73e8;
+            --secondary: #00c853;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --danger: #e53935;
+            --warning: #ffb300;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
 
-        /* ===== BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            font-family: 'Poppins', sans-serif;
-            color: var(--text);
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
             background-color: var(--light);
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
             line-height: 1.2;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
+            margin-bottom: 1rem;
         }
 
         .container {
-            width: 90%;
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        section {
-            padding: 100px 0;
-            position: relative;
+            padding: 0 20px;
         }
 
         .btn {
             display: inline-block;
-            background-color: var(--accent);
-            color: white;
             padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
+            background-color: var(--primary);
+            color: white;
             border: none;
+            border-radius: 5px;
+            font-weight: 500;
             cursor: pointer;
-            text-transform: uppercase;
-            font-size: 14px;
-            letter-spacing: 1px;
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 16px;
         }
 
         .btn:hover {
-            background-color: var(--primary);
+            background-color: #0d62d9;
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
         }
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
+        .btn-secondary {
+            background-color: var(--secondary);
         }
 
-        .btn-outline:hover {
-            background: var(--accent);
-            color: white;
+        .btn-secondary:hover {
+            background-color: #00b34a;
         }
 
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background-color: var(--accent);
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-center .section-title::after {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        /* ===== HEADER ===== */
+        /* Header */
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 20px 0;
-            transition: var(--transition);
-        }
-
-        header.scrolled {
-            background-color: var(--primary);
-            padding: 15px 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        header.scrolled .logo,
-        header.scrolled .nav-links a {
+            background-color: var(--dark);
             color: white;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
         }
 
-        header.scrolled .burger span {
-            background-color: white;
-        }
-
-        .header-container {
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 24px;
             font-weight: 700;
-            color: var(--primary);
+            color: white;
             text-decoration: none;
-            font-family: 'Playfair Display', serif;
+            display: flex;
+            align-items: center;
         }
 
-        .logo span {
-            color: var(--accent);
+        .logo i {
+            color: var(--secondary);
+            margin-right: 10px;
         }
 
         .nav-links {
@@ -170,549 +113,349 @@
         }
 
         .nav-links li {
-            margin-left: 40px;
+            margin-left: 30px;
         }
 
         .nav-links a {
-            color: var(--primary);
+            color: white;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            position: relative;
+            font-weight: 500;
             transition: var(--transition);
+            position: relative;
         }
 
-        .nav-links a::after {
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a:after {
             content: '';
             position: absolute;
-            bottom: -5px;
-            left: 0;
             width: 0;
             height: 2px;
-            background-color: var(--accent);
+            background: var(--secondary);
+            left: 0;
+            bottom: -5px;
             transition: var(--transition);
         }
 
-        .nav-links a:hover::after {
+        .nav-links a:hover:after {
             width: 100%;
         }
 
-        .burger {
+        .mobile-menu {
             display: none;
+            font-size: 24px;
             cursor: pointer;
-            z-index: 1001;
         }
 
-        .burger span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background-color: var(--primary);
-            margin: 5px 0;
-            transition: var(--transition);
-        }
-
-        /* ===== HERO SECTION ===== */
+        /* Hero Section */
         .hero {
-            height: 100vh;
-            min-height: 800px;
-            display: flex;
-            align-items: center;
+            background: linear-gradient(135deg, var(--dark) 0%, #0f172a 100%);
+            color: white;
+            padding: 150px 0 100px;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        .hero::before {
+        .hero:before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--overlay);
-            z-index: 1;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwMCAxMDAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiNmZmZmZmYwMyI+PGNpcmNsZSBjeD0iMjAwIiBjeT0iMTAwIiByPSI1Ii8+PGNpcmNsZSBjeD0iODAwIiBjeT0iMjAwIiByPSI4Ii8+PGNpcmNsZSBjeD0iNzAwIiBjeT0iNjAwIiByPSI2Ii8+PGNpcmNsZSBjeD0iMzAwIiBjeT0iNzAwIiByPSI0Ii8+PGNpcmNsZSBjeD0iOTAwIiBjeT0iOTAwIiByPSI3Ii8+PGNpcmNsZSBjeD0iNTAwIiBjeT0iMzAwIiByPSI2Ii8+PC9nPjwvc3ZnPg==');
+            opacity: 0.1;
         }
 
         .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
             position: relative;
-            z-index: 2;
-            max-width: 600px;
-            color: white;
+            z-index: 1;
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: 48px;
             margin-bottom: 20px;
-            line-height: 1.1;
+            line-height: 1.2;
         }
 
         .hero p {
+            font-size: 20px;
             margin-bottom: 30px;
-            font-size: 1.1rem;
-            opacity: 0.9;
+            color: var(--gray);
         }
 
         .hero-btns {
             display: flex;
-            gap: 15px;
-        }
-
-        /* ===== ABOUT SECTION ===== */
-        .about {
-            background-color: white;
-        }
-
-        .about-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 50px;
-            align-items: center;
-        }
-
-        .about-img {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .about-img::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 100%;
-            height: 100%;
-            border: 3px solid var(--accent);
-            border-radius: 10px;
-            z-index: -1;
-        }
-
-        .about-img img {
-            display: block;
-            transition: var(--transition);
-        }
-
-        .about-img:hover img {
-            transform: scale(1.05);
-        }
-
-        .about-content h2 {
-            margin-bottom: 20px;
-        }
-
-        .about-content p {
-            margin-bottom: 30px;
-        }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            justify-content: center;
             gap: 20px;
             margin-top: 40px;
+        }
+
+        .trading-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 80px;
+            flex-wrap: wrap;
         }
 
         .stat-item {
             text-align: center;
         }
 
-        .stat-number {
-            font-size: 2.5rem;
+        .stat-value {
+            font-size: 36px;
             font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 5px;
-            font-family: 'Playfair Display', serif;
+            color: var(--secondary);
+            margin-bottom: 10px;
         }
 
-        .stat-text {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .stat-label {
+            font-size: 16px;
+            color: var(--gray);
         }
 
-        /* ===== MENU SECTION ===== */
-        .menu {
-            background-color: var(--light);
-            position: relative;
-        }
-
-        .menu::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
+        /* About Section */
+        .about {
+            padding: 100px 0;
             background-color: white;
-            clip-path: polygon(0 0, 100% 0, 100% 50%, 0 100%);
         }
 
-        .menu-header {
+        .section-title {
             text-align: center;
             margin-bottom: 60px;
         }
 
-        .menu-header p {
-            max-width: 600px;
-            margin: 0 auto;
+        .section-title h2 {
+            font-size: 36px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
         }
 
-        .menu-tabs {
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .about-content {
             display: flex;
-            justify-content: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 10px;
+            align-items: center;
+            gap: 50px;
         }
 
-        .tab-btn {
-            padding: 10px 25px;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
+        .about-text {
+            flex: 1;
         }
 
-        .tab-btn.active,
-        .tab-btn:hover {
-            background: var(--accent);
-            color: white;
+        .about-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
         }
 
-        .menu-grid {
+        .about-text p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 100px 0;
+            background-color: #f1f5f9;
+        }
+
+        .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
 
-        .menu-item {
+        .service-card {
             background: white;
             border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            box-shadow: var(--shadow);
             transition: var(--transition);
-            display: none;
+            text-align: center;
         }
 
-        .menu-item.show {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .menu-item:hover {
+        .service-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .menu-img {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .menu-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .menu-item:hover .menu-img img {
-            transform: scale(1.1);
-        }
-
-        .menu-content {
-            padding: 25px;
-        }
-
-        .menu-title {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .menu-title h3 {
-            font-size: 1.3rem;
-        }
-
-        .menu-price {
-            color: var(--accent);
-            font-weight: 700;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .menu-desc {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .menu-rating {
-            color: var(--accent);
-            margin-bottom: 15px;
-        }
-
-        /* ===== GALLERY SECTION ===== */
-        .gallery {
-            padding-bottom: 150px;
-        }
-
-        .gallery-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 50px;
-        }
-
-        .gallery-item {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            height: 250px;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .gallery-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(58, 45, 40, 0.7);
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 28px;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #555;
+        }
+
+        /* Trading Tools */
+        .tools {
+            padding: 100px 0;
+            background-color: white;
+        }
+
+        .tools-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .tool-item {
+            flex: 1;
+            min-width: 250px;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
             transition: var(--transition);
         }
 
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
+        .tool-item:hover {
+            transform: translateY(-5px);
         }
 
-        .gallery-icon {
-            color: white;
-            font-size: 2rem;
+        .tool-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
         }
 
-        /* ===== TESTIMONIALS ===== */
+        /* Testimonials */
         .testimonials {
-            background-color: var(--primary);
-            color: white;
-            padding: 150px 0;
-            position: relative;
-        }
-
-        .testimonials::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background-color: var(--light);
-            clip-path: polygon(0 0, 100% 50%, 100% 100%, 0 100%);
-        }
-
-        .testimonials .section-title {
-            color: white;
-        }
-
-        .testimonials .section-title::after {
-            background-color: white;
+            padding: 100px 0;
+            background-color: #f1f5f9;
         }
 
         .testimonial-slider {
             max-width: 800px;
-            margin: 50px auto 0;
-        }
-
-        .testimonial-item {
-            text-align: center;
-            padding: 0 20px;
-            display: none;
-        }
-
-        .testimonial-item.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .testimonial-text {
-            font-size: 1.2rem;
-            font-style: italic;
-            margin-bottom: 30px;
+            margin: 0 auto;
             position: relative;
         }
 
-        .testimonial-text::before,
-        .testimonial-text::after {
-            content: '"';
-            font-size: 3rem;
-            color: var(--accent);
-            opacity: 0.3;
-            position: absolute;
+        .testimonial-item {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
         }
 
-        .testimonial-text::before {
-            top: -30px;
-            left: -20px;
-        }
-
-        .testimonial-text::after {
-            bottom: -50px;
-            right: -20px;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .author-img {
-            width: 60px;
-            height: 60px;
+        .client-img {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
+            margin: 0 auto 20px;
             overflow: hidden;
-            margin-right: 15px;
+            border: 3px solid var(--primary);
         }
 
-        .author-img img {
+        .client-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .author-info h4 {
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .client-name {
+            font-weight: 600;
             margin-bottom: 5px;
-            font-size: 1.1rem;
         }
 
-        .author-info p {
+        .client-title {
+            color: var(--gray);
             font-size: 14px;
-            opacity: 0.8;
         }
 
-        .testimonial-dots {
-            display: flex;
-            justify-content: center;
-            margin-top: 40px;
-            gap: 10px;
-        }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: rgba(255,255,255,0.3);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .dot.active {
-            background-color: white;
-            transform: scale(1.2);
-        }
-
-        /* ===== CONTACT SECTION ===== */
+        /* Contact */
         .contact {
-            background-color: var(--light);
-            position: relative;
-        }
-
-        .contact::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background-color: var(--primary);
-            clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
+            padding: 100px 0;
+            background-color: white;
         }
 
         .contact-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            display: flex;
             gap: 50px;
-            background: white;
-            border-radius: 10px;
-            padding: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        .contact-info h3 {
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+        .contact-info {
+            flex: 1;
         }
 
-        .contact-details {
-            margin-bottom: 30px;
+        .contact-form {
+            flex: 1;
         }
 
         .contact-item {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .contact-icon {
-            font-size: 1.2rem;
-            color: var(--accent);
-            margin-right: 15px;
-            margin-top: 5px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-right: 20px;
+            flex-shrink: 0;
         }
 
-        .contact-text h4 {
+        .contact-details h3 {
+            font-size: 18px;
             margin-bottom: 5px;
-        }
-
-        .contact-text p, 
-        .contact-text a {
-            color: #666;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .contact-text a:hover {
-            color: var(--accent);
-        }
-
-        .contact-hours p {
-            margin-bottom: 5px;
-        }
-
-        .contact-form h3 {
-            margin-bottom: 20px;
-            font-size: 1.5rem;
         }
 
         .form-group {
@@ -724,14 +467,14 @@
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
             transition: var(--transition);
         }
 
         .form-control:focus {
+            border-color: var(--primary);
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(200, 169, 126, 0.2);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
         }
 
         textarea.form-control {
@@ -739,477 +482,404 @@
             resize: vertical;
         }
 
-        /* ===== FOOTER ===== */
+        /* Footer */
         footer {
-            background-color: var(--primary);
+            background-color: var(--dark);
             color: white;
-            padding: 80px 0 30px;
-            position: relative;
+            padding: 70px 0 20px;
         }
 
-        .footer-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
             gap: 40px;
             margin-bottom: 50px;
         }
 
-        .footer-col h4 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 25px;
             position: relative;
             padding-bottom: 10px;
         }
 
-        .footer-col h4::after {
+        .footer-column h3:after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
             width: 40px;
             height: 2px;
-            background-color: var(--accent);
+            background: var(--secondary);
+            bottom: 0;
+            left: 0;
         }
 
-        .footer-links li {
-            margin-bottom: 10px;
+        .footer-links {
             list-style: none;
         }
 
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
         .footer-links a {
-            color: rgba(255,255,255,0.7);
+            color: var(--gray);
             text-decoration: none;
             transition: var(--transition);
         }
 
         .footer-links a:hover {
-            color: var(--accent);
+            color: var(--secondary);
             padding-left: 5px;
         }
 
-        .footer-social {
+        .social-links {
             display: flex;
             gap: 15px;
             margin-top: 20px;
         }
 
-        .footer-social a {
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 50%;
             color: white;
             transition: var(--transition);
         }
 
-        .footer-social a:hover {
-            background-color: var(--accent);
-            transform: translateY(-5px);
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
         }
 
-        .footer-bottom {
+        .copyright {
             text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .footer-bottom p {
-            opacity: 0.7;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
             font-size: 14px;
         }
 
-        /* ===== BACK TO TOP ===== */
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--accent);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            z-index: 999;
-        }
-
-        .back-to-top.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            background-color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        /* ===== RESPONSIVE STYLES ===== */
+        /* Responsive */
         @media (max-width: 992px) {
-            section {
-                padding: 80px 0;
+            .about-content {
+                flex-direction: column;
             }
-
-            .hero h1 {
-                font-size: 3rem;
-            }
-
-            .about-container {
-                grid-template-columns: 1fr;
-            }
-
-            .about-img {
-                max-width: 500px;
-                margin: 0 auto;
+            
+            .contact-container {
+                flex-direction: column;
             }
         }
 
         @media (max-width: 768px) {
             .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 250px;
-                height: 100vh;
-                background-color: var(--primary);
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--dark);
                 flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                transition: var(--transition);
-                z-index: 1000;
+                padding: 20px;
+                box-shadow: var(--shadow);
             }
-
+            
             .nav-links.active {
-                right: 0;
+                display: flex;
             }
-
+            
             .nav-links li {
-                margin: 15px 0;
+                margin: 10px 0;
             }
-
-            .nav-links a {
-                color: white;
-                font-size: 1.1rem;
-            }
-
-            .burger {
+            
+            .mobile-menu {
                 display: block;
             }
-
-            .burger.active span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
-            }
-
-            .burger.active span:nth-child(2) {
-                opacity: 0;
-            }
-
-            .burger.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(7px, -6px);
-            }
-
-            .hero {
-                min-height: 700px;
-            }
-
+            
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 36px;
             }
-
+            
             .hero-btns {
                 flex-direction: column;
+                align-items: center;
             }
-
-            .menu::before,
-            .testimonials::before,
-            .contact::before {
-                height: 50px;
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                margin-bottom: 10px;
             }
-
-            .contact-container {
-                padding: 30px;
+            
+            .trading-stats {
+                margin-top: 50px;
             }
-        }
-
-        @media (max-width: 576px) {
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .about-stats {
-                grid-template-columns: 1fr;
-            }
-
-            .menu-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .testimonial-text {
-                font-size: 1rem;
+            
+            .stat-item {
+                width: 50%;
+                margin-bottom: 30px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- ===== HEADER ===== -->
-    <header id="header">
-        <div class="container header-container">
-            <a href="#" class="logo">AWORJIWA<span>Coffee</span></a>
-            
-            <ul class="nav-links">
-                <li><a href="#home">Beranda</a></li>
-                <li><a href="#about">Tentang</a></li>
-                <li><a href="#menu">Menu</a></li>
-                <li><a href="#gallery">Galeri</a></li>
-                <li><a href="#testimonials">Testimoni</a></li>
-                <li><a href="#contact">Kontak</a></li>
-            </ul>
-            
-            <div class="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo"><i class="fas fa-chart-line"></i> TraderPro</a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">Tentang</a></li>
+                    <li><a href="#services">Layanan</a></li>
+                    <li><a href="#tools">Tools</a></li>
+                    <li><a href="#testimonials">Testimoni</a></li>
+                    <li><a href="#contact">Kontak</a></li>
+                </ul>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
         </div>
     </header>
 
-    <!-- ===== HERO SECTION ===== -->
+    <!-- Hero Section -->
     <section class="hero" id="home">
-        <img src="https://images.unsplash.com/photo-1498804103079-a6351b050096?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="KopiKita" class="hero-bg">
-        
         <div class="container">
             <div class="hero-content">
-                <h1>Experience The Art of Premium Coffee</h1>
-                <p>Kopi spesialti pilihan langsung dari petani lokal Indonesia dengan proses roasting modern untuk rasa yang sempurna.</p>
+                <h1>Maximalkan Profit Trading Anda dengan Strategi Terbukti</h1>
+                <p>Platform trading profesional dengan analisis pasar real-time, sinyal trading akurat, dan edukasi lengkap untuk semua level trader.</p>
                 <div class="hero-btns">
-                    <a href="#menu" class="btn">Lihat Menu</a>
-                    <a href="#contact" class="btn btn-outline">Reservasi</a>
+                    <a href="#contact" class="btn">Mulai Sekarang</a>
+                    <a href="#about" class="btn btn-secondary">Pelajari Lebih Lanjut</a>
+                </div>
+                <div class="trading-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">+85%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5,000+</div>
+                        <div class="stat-label">Trader Aktif</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">Support</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">15+</div>
+                        <div class="stat-label">Market</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== ABOUT SECTION ===== -->
+    <!-- About Section -->
     <section class="about" id="about">
-        <div class="container about-container">
-            <div class="about-img">
-                <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tentang KopiKita">
-            </div>
-            
-            <div class="about-content">
-                <h2 class="section-title">Cerita Kami</h2>
-                <p>Arabica Tengger lahir dari kecintaan terhadap kopi Indonesia. Sejak 2018, kami berkomitmen untuk menghadirkan pengalaman ngopi premium dengan mengolah biji kopi terbaik dari berbagai daerah di Indonesia.</p>
-                <p>Dibuat oleh barista berpengalaman dan disajikan dengan teknik penyeduhan terkini, setiap cangkir kopi di AWORJIWA Coffee adalah sebuah karya seni.</p>
-                <a href="#" class="btn">Selengkapnya</a>
-                
-                <div class="about-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">5+</div>
-                        <div class="stat-text">Tahun Pengalaman</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">50+</div>
-                        <div class="stat-text">Jenis Kopi</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">1000+</div>
-                        <div class="stat-text">Pelanggan</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== MENU SECTION ===== -->
-    <section class="menu" id="menu">
         <div class="container">
-            <div class="menu-header text-center">
-                <h2 class="section-title">Menu Spesial Kami</h2>
-                <p>Temukan varian kopi premium dengan cita rasa khas Indonesia</p>
+            <div class="section-title">
+                <h2>Tentang Saya</h2>
             </div>
-            
-            <div class="menu-tabs">
-                <button class="tab-btn active" data-category="all">Semua</button>
-                <button class="tab-btn" data-category="hot">Hot Coffee</button>
-                <button class="tab-btn" data-category="iced">Iced Coffee</button>
-                <button class="tab-btn" data-category="signature">Signature</button>
-            </div>
-            
-            <div class="menu-grid" id="menu-container">
-                <!-- Menu items will be loaded by JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== GALLERY SECTION ===== -->
-    <section class="gallery" id="gallery">
-        <div class="container text-center">
-            <h2 class="section-title">Galeri Kami</h2>
-            <p>Rasakan suasana nyaman dan premium di kedai AWORJIWA COFFE</p>
-            
-            <div class="gallery-container">
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="KopiKita Interior">
-                    <div class="gallery-overlay">
-                        <a href="#" class="gallery-icon">
-                            <i class="fas fa-search-plus"></i>
-                        </a>
-                    </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Professional Trader & Market Analyst</h3>
+                    <p>Halo, saya Alex Tan, seorang trader profesional dengan pengalaman lebih dari 8 tahun di pasar finansial global. Saya memiliki spesialisasi dalam trading Forex, Cryptocurrency, dan Indeks Saham.</p>
+                    <p>Dengan pendekatan analisis teknikal dan fundamental yang komprehensif, saya telah membantu ribuan trader meningkatkan performa trading mereka dan mencapai financial freedom.</p>
+                    <p>Filosofi trading saya berfokus pada manajemen risiko yang ketat, disiplin eksekusi, dan konsistensi dalam menerapkan strategi yang terbukti profitable.</p>
+                    <a href="#contact" class="btn">Konsultasi Gratis</a>
                 </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Latte Art">
-                    <div class="gallery-overlay">
-                        <a href="#" class="gallery-icon">
-                            <i class="fas fa-search-plus"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1459755486867-b55449bb39ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Coffee Beans">
-                    <div class="gallery-overlay">
-                        <a href="#" class="gallery-icon">
-                            <i class="fas fa-search-plus"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="KopiKita Outdoor">
-                    <div class="gallery-overlay">
-                        <a href="#" class="gallery-icon">
-                            <i class="fas fa-search-plus"></i>
-                        </a>
+                <div class="about-image">
+                    <!-- Placeholder untuk gambar -->
+                    <div style="width:100%;height:400px;background:linear-gradient(135deg, #1e293b 0%, #334155 100%);display:flex;align-items:center;justify-content:center;color:white;font-size:24px;">
+                        <i class="fas fa-user-tie" style="font-size:80px;"></i>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== TESTIMONIALS SECTION ===== -->
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Layanan Trading</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <h3>Sinyal Trading</h3>
+                    <p>Sinyal trading real-time dengan akurasi tinggi untuk Forex, Crypto, dan Indeks. Dilengkapi dengan entry point, stop loss, dan target profit.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Edukasi Trading</h3>
+                    <p>Program edukasi lengkap dari dasar hingga advanced, termasuk webinar, private mentoring, dan materi trading eksklusif.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Analisis Pasar</h3>
+                    <p>Analisis harian dan mingguan untuk berbagai instrumen trading dengan prediksi pergerakan harga berdasarkan data fundamental dan teknikal.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Auto Trading</h3>
+                    <p>Sistem trading otomatis yang dapat mengeksekusi trade berdasarkan strategi yang telah teruji tanpa perlu monitoring terus-menerus.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>Manajemen Portfolio</h3>
+                    <p>Konsultasi dan bantuan dalam mengelola portfolio trading untuk memaksimalkan return dan meminimalkan risiko.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Komunitas Eksklusif</h3>
+                    <p>Akses ke komunitas trader profesional untuk berbagi strategi, pengalaman, dan mendapatkan dukungan dari sesama trader.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading Tools -->
+    <section class="tools" id="tools">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tools Trading</h2>
+            </div>
+            <div class="tools-container">
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Risk Calculator</h3>
+                    <p>Hitung posisi trading ideal berdasarkan modal dan toleransi risiko Anda.</p>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Market Scanner</h3>
+                    <p>Identifikasi peluang trading terbaik dengan scanner otomatis kami.</p>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Economic Calendar</h3>
+                    <p>Pantau event ekonomi penting yang dapat mempengaruhi pasar.</p>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>Currency Converter</h3>
+                    <p>Konversi nilai mata uang dengan kurs real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
     <section class="testimonials" id="testimonials">
-        <div class="container text-center">
-            <h2 class="section-title">Apa Kata Mereka</h2>
-            <p>Testimoni dari pelanggan setia AWORJIWA</p>
-            
-            <div class="testimonial-slider">
-                <div class="testimonial-item active">
-                    <p class="testimonial-text">Kopi di AWORJIWA Coffee benar-benar berbeda! Rasa yang kaya dan aroma yang menggugah selera. Tempatnya juga sangat nyaman untuk bekerja atau sekadar bersantai.</p>
-                    <div class="testimonial-author">
-                        <div class="author-img">
-                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah">
-                        </div>
-                        <div class="author-info">
-                            <h4>Sarah Wijaya</h4>
-                            <p>Freelance Designer</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-item">
-                    <p class="testimonial-text">Saya pecinta kopi dan sudah mencoba berbagai kedai, tapi AWORJIWA Coffee benar-benar spesial. Barista mereka sangat profesional dan tahu cara menyeduh kopi yang sempurna.</p>
-                    <div class="testimonial-author">
-                        <div class="author-img">
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Budi">
-                        </div>
-                        <div class="author-info">
-                            <h4>Budi Santoso</h4>
-                            <p>Digital Marketer</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-item">
-                    <p class="testimonial-text">Tempat favorit saya untuk meeting klien. Suasananya elegan tapi tetap santai, dan kopinya selalu konsisten enak. Signature Latte-nya wajib dicoba!</p>
-                    <div class="testimonial-author">
-                        <div class="author-img">
-                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Dewi">
-                        </div>
-                        <div class="author-info">
-                            <h4>Dewi Kartika</h4>
-                            <p>Business Owner</p>
-                        </div>
-                    </div>
-                </div>
+        <div class="container">
+            <div class="section-title">
+                <h2>Apa Kata Klien Kami</h2>
             </div>
-            
-            <div class="testimonial-dots">
-                <div class="dot active" data-slide="0"></div>
-                <div class="dot" data-slide="1"></div>
-                <div class="dot" data-slide="2"></div>
+            <div class="testimonial-slider">
+                <div class="testimonial-item">
+                    <div class="client-img">
+                        <!-- Placeholder untuk gambar klien -->
+                        <div style="width:100%;height:100%;background:linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);display:flex;align-items:center;justify-content:center;color:white;">
+                            <i class="fas fa-user" style="font-size:30px;"></i>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Sejak bergabung dengan program mentoring Alex, profit trading saya meningkat signifikan. Pendekatannya yang detail dan disiplin sangat membantu saya menjadi trader yang konsisten."</p>
+                    <h4 class="client-name">Budi Santoso</h4>
+                    <p class="client-title">Forex Trader</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== CONTACT SECTION ===== -->
+    <!-- Contact -->
     <section class="contact" id="contact">
         <div class="container">
+            <div class="section-title">
+                <h2>Hubungi Saya</h2>
+            </div>
             <div class="contact-container">
                 <div class="contact-info">
-                    <h3>Hubungi Kami</h3>
-                    
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="contact-text">
-                                <h4>Alamat</h4>
-                                <p>Jl. Raya Bromo, Dusun 1, Sapikerep, Kec. Sukapura, Kabupaten Probolinggo, Jawa Timur 67254</p>
-                            </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
                         </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div class="contact-text">
-                                <h4>Telepon</h4>
-                                <a href="tel:+62 851-5641-6690">+0851-5641-6690</a>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-text">
-                                <h4>Email</h4>
-                                <a href="mailto:halo@aworjiwacoffee.id">halo@aworjiwacoffee.id</a>
-                            </div>
+                        <div class="contact-details">
+                            <h3>Lokasi</h3>
+                            <p>Jakarta, Indonesia</p>
                         </div>
                     </div>
-                    
-                    <div class="contact-hours">
-                        <h4>Jam Operasional</h4>
-                        <p>Senin - Jumat: 08:00 - 20:00</p>
-                        <p>Sabtu - Minggu: 09:00 - 22:00</p>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Telepon</h3>
+                            <p>+62 812-3456-7890</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <p>alex@traderpro.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Jam Kerja</h3>
+                            <p>Senin - Jumat: 9:00 - 18:00</p>
+                            <p>Sabtu: 9:00 - 14:00</p>
+                        </div>
                     </div>
                 </div>
-                
                 <div class="contact-form">
-                    <h3>Kirim Pesan</h3>
-                    <form id="contactForm">
+                    <form>
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Nama Anda" required>
+                            <input type="text" class="form-control" placeholder="Nama Lengkap" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email Anda" required>
+                            <input type="email" class="form-control" placeholder="Email" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Subjek">
+                            <input type="text" class="form-control" placeholder="Subjek" required>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" placeholder="Pesan Anda" required></textarea>
+                            <textarea class="form-control" placeholder="Pesan" required></textarea>
                         </div>
                         <button type="submit" class="btn">Kirim Pesan</button>
                     </form>
@@ -1218,261 +888,116 @@
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="footer-container">
-                <div class="footer-col">
-                    <h4>AWORJIWA Coffee</h4>
-                    <p>Kafe premium dengan cita rasa kopi Indonesia terbaik. Menyajikan pengalaman ngopi yang tak terlupakan.</p>
-                    <div class="footer-social">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>TraderPro</h3>
+                    <p>Platform trading profesional dengan fokus pada edukasi, analisis, dan eksekusi trading yang tepat untuk mencapai kesuksesan finansial.</p>
+                    <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                
-                <div class="footer-col">
-                    <h4>Menu</h4>
+                <div class="footer-column">
+                    <h3>Link Cepat</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Hot Coffee</a></li>
-                        <li><a href="#">Iced Coffee</a></li>
-                        <li><a href="#">Signature Drinks</a></li>
-                        <li><a href="#">Snacks</a></li>
-                        <li><a href="#">Special Menu</a></li>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">Tentang</a></li>
+                        <li><a href="#services">Layanan</a></li>
+                        <li><a href="#tools">Tools</a></li>
+                        <li><a href="#testimonials">Testimoni</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-col">
-                    <h4>Links</h4>
+                <div class="footer-column">
+                    <h3>Layanan</h3>
                     <ul class="footer-links">
-                        <li><a href="#home">Beranda</a></li>
-                        <li><a href="#about">Tentang Kami</a></li>
-                        <li><a href="#menu">Menu</a></li>
-                        <li><a href="#gallery">Galeri</a></li>
-                        <li><a href="#contact">Kontak</a></li>
+                        <li><a href="#">Sinyal Trading</a></li>
+                        <li><a href="#">Edukasi Trading</a></li>
+                        <li><a href="#">Analisis Pasar</a></li>
+                        <li><a href="#">Auto Trading</a></li>
+                        <li><a href="#">Private Mentoring</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-col">
-                    <h4>Newsletter</h4>
-                    <p>Berlangganan newsletter untuk mendapatkan promo dan info terbaru</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Email Anda" required>
-                        <button type="submit" class="btn">Subscribe</button>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Dapatkan update terbaru tentang pasar dan tips trading eksklusif.</p>
+                    <form>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Email Anda" required>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Berlangganan</button>
                     </form>
                 </div>
             </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2020 AWORJIWA COFFE. All Rights Reserved.</p>
+            <div class="copyright">
+                <p>&copy; 2023 TraderPro. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- ===== BACK TO TOP BUTTON ===== -->
-    <a href="#" class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-
-    <!-- ===== JAVASCRIPT ===== -->
     <script>
-        // Mobile Navigation
-        const burger = document.querySelector('.burger');
-        const navLinks = document.querySelector('.nav-links');
-        const navItems = document.querySelectorAll('.nav-links a');
-
-        burger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            burger.classList.toggle('active');
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
         });
 
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                burger.classList.remove('active');
-            });
-        });
-
-        // Header Scroll Effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        // Menu Data
-        const menuItems = [
-            {
-                id: 1,
-                title: "Espresso",
-                price: "Rp 30.000",
-                desc: "Single origin dari Aceh Gayo dengan crema tebal",
-                category: "hot",
-                rating: "★★★★★",
-                img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            {
-                id: 2,
-                title: "Latte Art",
-                price: "Rp 35.000",
-                desc: "Espresso dengan susu steamed dan seni latte",
-                category: "hot",
-                rating: "★★★★☆",
-                img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            {
-                id: 3,
-                title: "Cold Brew",
-                price: "Rp 40.000",
-                desc: "Dibuat dengan proses 24 jam, rasa lebih halus",
-                category: "iced",
-                rating: "★★★★★",
-                img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            {
-                id: 4,
-                title: "Iced Caramel Macchiato",
-                price: "Rp 45.000",
-                desc: "Espresso dengan susu, vanilla, dan caramel",
-                category: "iced",
-                rating: "★★★★☆",
-                img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            {
-                id: 5,
-                title: "Kopi Tubruk Spesial",
-                price: "Rp 25.000",
-                desc: "Kopi tubruk tradisional dengan gula aren",
-                category: "hot",
-                rating: "★★★★★",
-                img: "https://images.unsplash.com/photo-1512568400610-62da28bc8a13?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            {
-                id: 6,
-                title: "Signature Java Latte",
-                price: "Rp 50.000",
-                desc: "Blend eksklusif kopi Jawa dengan rempah",
-                category: "signature",
-                rating: "★★★★★",
-                img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            }
-        ];
-
-        // Load Menu Items
-        const menuContainer = document.getElementById('menu-container');
-        const tabBtns = document.querySelectorAll('.tab-btn');
-
-        function loadMenu(category = 'all') {
-            menuContainer.innerHTML = '';
-            
-            const filteredItems = category === 'all' 
-                ? menuItems 
-                : menuItems.filter(item => item.category === category);
-            
-            filteredItems.forEach(item => {
-                const menuItem = document.createElement('div');
-                menuItem.className = 'menu-item show';
-                menuItem.dataset.category = item.category;
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
                 
-                menuItem.innerHTML = `
-                    <div class="menu-img">
-                        <img src="${item.img}" alt="${item.title}">
-                    </div>
-                    <div class="menu-content">
-                        <div class="menu-title">
-                            <h3>${item.title}</h3>
-                            <div class="menu-price">${item.price}</div>
-                        </div>
-                        <div class="menu-rating">${item.rating}</div>
-                        <p class="menu-desc">${item.desc}</p>
-                        <button class="btn order-btn" data-item="${item.title}">Pesan Sekarang</button>
-                    </div>
-                `;
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
                 
-                menuContainer.appendChild(menuItem);
-            });
-        }
-
-        // Tab Filter
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                tabBtns.forEach(btn => btn.classList.remove('active'));
-                btn.classList.add('active');
-                
-                const category = btn.dataset.category;
-                loadMenu(category);
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu after clicking a link
+                    document.querySelector('.nav-links').classList.remove('active');
+                }
             });
         });
 
-        // Order Button
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('order-btn')) {
-                const itemName = e.target.dataset.item;
-                const whatsappMsg = `Halo, saya ingin memesan ${itemName} dari AWORJIWA Coffee.`;
-                window.open(`https://wa.me/62 85156416690?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
-            }
-        });
+        // Simple counter animation for stats
+        const statValues = document.querySelectorAll('.stat-value');
+        const observerOptions = {
+            threshold: 0.5
+        };
 
-        // Testimonial Slider
-        const testimonialItems = document.querySelectorAll('.testimonial-item');
-        const dots = document.querySelectorAll('.dot');
-        let currentSlide = 0;
-
-        function showSlide(index) {
-            testimonialItems.forEach(item => item.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            testimonialItems[index].classList.add('active');
-            dots[index].classList.add('active');
-            currentSlide = index;
-        }
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                showSlide(index);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statValue = entry.target;
+                    const targetValue = parseInt(statValue.textContent);
+                    let currentValue = 0;
+                    const increment = targetValue / 50;
+                    
+                    const timer = setInterval(() => {
+                        currentValue += increment;
+                        if (currentValue >= targetValue) {
+                            statValue.textContent = targetValue + (statValue.textContent.includes('%') ? '%' : '+');
+                            clearInterval(timer);
+                        } else {
+                            statValue.textContent = Math.floor(currentValue) + (statValue.textContent.includes('%') ? '%' : '+');
+                        }
+                    }, 30);
+                    
+                    observer.unobserve(statValue);
+                }
             });
-        });
+        }, observerOptions);
 
-        // Auto Slide
-        setInterval(() => {
-            currentSlide = (currentSlide + 1) % testimonialItems.length;
-            showSlide(currentSlide);
-        }, 5000);
-
-        // Back to Top Button
-        const backToTop = document.getElementById('backToTop');
-
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTop.classList.add('active');
-            } else {
-                backToTop.classList.remove('active');
-            }
-        });
-
-        // Form Submission
-        const contactForm = document.getElementById('contactForm');
-        
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Terima kasih! Pesan Anda telah terkirim. Kami akan segera menghubungi Anda.');
-            this.reset();
-        });
-
-        // Newsletter Form
-        const newsletterForm = document.querySelector('.newsletter-form');
-        
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const emailInput = this.querySelector('input[type="email"]');
-            alert(`Terima kasih telah berlangganan newsletter kami! Konfirmasi telah dikirim ke ${emailInput.value}`);
-            emailInput.value = '';
-        });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadMenu();
+        statValues.forEach(statValue => {
+            observer.observe(statValue);
         });
     </script>
 </body>
