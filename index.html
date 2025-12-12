@@ -1,458 +1,132 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trader X • Mini Exchange + Real-time Chart</title>
+  <title>Trader X • Exchange (Full)</title>
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg:#0a0f17; --panel:#111725; --border:#1b2333; --muted:#93a1b3;
-      --text:#e7edf5; --accent:#00e0a4; --accent2:#6ea8fe; --danger:#ff5c7a; --good:#22d197;
+      --bg:#0a0f17; --panel:#111725; --border:#1b2333; --muted:#93a1b3; --text:#e7edf5;
+      --accent:#00e0a4; --yellow:#f0b90b; --buy:#00c389; --sell:#ff5c7a;
     }
-    * { box-sizing:border-box }
-    body { background:var(--bg); color:var(--text); font-family:Inter,system-ui,Arial; margin:0; }
-    header { padding:16px 20px; display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--border); }
-    header h1 { font-size:18px; letter-spacing:.3px; margin:0; }
-    .pair { color:var(--muted); font-weight:600; }
-    .tag { color:#b9c3cf; background:#0d1422; border:1px dashed #2a3246; padding:6px 8px; border-radius:8px; }
-    .container { padding:20px; display:grid; grid-template-columns: 1fr 1fr; grid-template-rows:auto 1fr; gap:20px; }
-    .panel { background:var(--panel); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
-    .panel h2 { margin:0; padding:12px 14px; font-size:14px; border-bottom:1px solid var(--border); color:var(--muted); }
-    .content { padding:14px; }
-    .metrics { display:flex; gap:18px; flex-wrap:wrap; }
-    .metric { background:#0e1422; border:1px solid #283042; border-radius:10px; padding:10px 12px; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,system-ui,Arial; }
+    header { padding:12px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); }
+    header .brand { font-weight:900; color:var(--yellow); }
+    header .pair { color:var(--muted); font-weight:700; }
+    .tabs { margin-left:auto; display:flex; gap:8px; }
+    .tab { padding:6px 10px; border:1px solid var(--border); background:#0d1422; color:var(--muted); border-radius:8px; cursor:pointer; }
+    .tab.active { background:var(--yellow); color:#0b0f17; font-weight:800; border-color:#d19c0a; }
+    main.layout { display:grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto auto; gap:12px; padding:12px; }
+    .panel { background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .panel h2 { margin:0; padding:10px 12px; font-size:13px; border-bottom:1px solid var(--border); color:var(--muted); }
+    .content { padding:12px; }
+    .metrics { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+    .metric { background:#0e1422; border:1px solid #283042; border-radius:10px; padding:8px 10px; }
     .metric .label { font-size:11px; color:var(--muted); }
-    .metric .value { font-size:18px; font-weight:800; margin-top:2px; color:var(--accent); }
-    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
-    .row { display:flex; gap:14px; }
-    .col { flex:1; }
+    .metric .value { font-size:16px; font-weight:800; margin-top:2px; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
     input, select { width:100%; padding:10px; border-radius:10px; border:1px solid #283042; background:#0f1421; color:var(--text); }
+    .actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
     .btn { padding:10px 12px; border:none; border-radius:10px; font-weight:700; cursor:pointer; }
-    .btn.buy { background:var(--good); color:#06140f; }
-    .btn.sell { background:var(--danger); color:#2b0a11; }
+    .btn.buy { background:var(--buy); color:#06140f; }
+    .btn.sell { background:var(--sell); color:#2b0a11; }
     .btn.secondary { background:#1c2333; color:var(--text); border:1px solid #283042; }
     .btn.ghost { background:transparent; color:var(--muted); border:1px dashed #2b3448; }
+    .quick { display:flex; gap:6px; margin-top:8px; }
+    .quick button { flex:1; padding:8px; background:#0f1422; color:#b9c3cf; border:1px solid #2a3246; border-radius:8px; cursor:pointer; }
+    .quick button:hover { background:var(--accent); color:#0b0f17; }
     table { width:100%; border-collapse:collapse; }
-    th, td { font-size:12px; padding:8px; border-bottom:1px solid var(--border); }
-    th { color:var(--muted); text-align:left; }
-    .asks tr td { color:#ffa1b3; }
-    .bids tr td { color:#8fffd3; }
-    .footer { padding:0 20px 24px; }
-    .flex { display:flex; gap:10px; align-items:center; }
-    .justify { display:flex; justify-content:space-between; align-items:center; }
-    @media (max-width:900px){
-      .container { grid-template-columns:1fr; }
+    th, td { font-size:12px; padding:6px 4px; border-bottom:1px solid var(--border); }
+    th { color:var(--muted); text-align:right; }
+    td { text-align:right; }
+    .buyText { color:#8fffd3; }
+    .sellText { color:#ffa1b3; }
+    .depthWrap { height:220px; }
+    canvas { max-height: 340px; }
+    #tvChart { height: 420px; }
+    @media (max-width:1000px){
+      main.layout { grid-template-columns:1fr; grid-template-rows:auto auto auto auto auto; }
     }
-    canvas { max-height: 280px; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Trader X • Mini Exchange</h1>
-    <div class="pair">BTC/IDR</div>
-    <div class="tag">Simulasi lokal (no backend) + chart real-time</div>
+    <div class="brand">Trader X</div>
+    <div class="pair" id="currentPair">BTC/IDR</div>
+    <div class="tabs">
+      <div class="tab active" data-pair="BTC/IDR">BTC/IDR</div>
+      <div class="tab" data-pair="ETH/IDR">ETH/IDR</div>
+      <div class="tab" data-pair="DOGE/IDR">DOGE/IDR</div>
+    </div>
   </header>
 
-  <div class="container">
-    <!-- Chart -->
-    <div class="panel" style="grid-column: 1 / -1;">
-      <h2>Price chart (BTC/IDR)</h2>
+  <main class="layout">
+    <!-- TradingView Chart -->
+    <section class="panel">
+      <h2>TradingView chart</h2>
       <div class="content">
-        <canvas id="priceChart"></canvas>
+        <div id="tvChart"></div>
       </div>
-    </div>
+    </section>
 
-    <!-- Trading panel -->
-    <div class="panel">
-      <h2>Trading panel</h2>
+    <!-- Depth chart -->
+    <section class="panel">
+      <h2>Depth chart (bid/ask)</h2>
+      <div class="content depthWrap">
+        <canvas id="depthChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Order entry -->
+    <section class="panel">
+      <h2>Order entry</h2>
       <div class="content">
-        <div class="metrics">
-          <div class="metric"><div class="label">Last price</div><div class="value" id="lastPrice">—</div></div>
-          <div class="metric"><div class="label">Best bid</div><div class="value" id="bestBid">—</div></div>
-          <div class="metric"><div class="label">Best ask</div><div class="value" id="bestAsk">—</div></div>
-          <div class="metric"><div class="label">Spread</div><div class="value" id="spread">—</div></div>
+        <div class="grid2">
+          <div>
+            <label>Order type</label>
+            <select id="orderType">
+              <option value="market">Market</option>
+              <option value="limit">Limit</option>
+            </select>
+          </div>
+          <div>
+            <label>Side</label>
+            <select id="orderSide">
+              <option value="buy">Buy</option>
+              <option value="sell">Sell</option>
+            </select>
+          </div>
         </div>
-
-        <div class="grid" style="margin-top:12px;">
-          <div>
-            <div class="justify">
-              <div class="muted">Order type</div>
-              <div class="muted">Side</div>
-            </div>
-            <div class="flex">
-              <select id="orderType">
-                <option value="market">Market</option>
-                <option value="limit">Limit</option>
-              </select>
-              <select id="orderSide">
-                <option value="buy">Buy</option>
-                <option value="sell">Sell</option>
-              </select>
-            </div>
-            <div class="row" style="margin-top:10px;">
-              <div class="col">
-                <label>Harga (IDR) — limit only</label>
-                <input type="number" id="price" placeholder="contoh: 950000000" />
-              </div>
-              <div class="col">
-                <label>Qty (BTC)</label>
-                <input type="number" id="qty" placeholder="contoh: 0.01" />
-              </div>
-            </div>
-            <div class="flex" style="margin-top:12px;">
-              <button class="btn buy" id="placeBuy">Place BUY</button>
-              <button class="btn sell" id="placeSell">Place SELL</button>
-              <button class="btn secondary" id="reset">Reset</button>
-            </div>
-            <div class="flex" style="margin-top:8px;">
-              <button class="btn ghost" id="cancelBids">Cancel all bids</button>
-              <button class="btn ghost" id="cancelAsks">Cancel all asks</button>
-              <button class="btn ghost" id="clearTrades">Clear trades</button>
-            </div>
-          </div>
-
-          <div>
-            <div class="metrics">
-              <div class="metric"><div class="label">Saldo IDR</div><div class="value" id="balIDR">—</div></div>
-              <div class="metric"><div class="label">Saldo BTC</div><div class="value" id="balBTC">—</div></div>
-            </div>
-            <div class="muted" style="margin-top:8px;">Fee taker 0.1%, maker 0.0% (simulasi)</div>
-          </div>
+        <div class="grid2" style="margin-top:10px;">
+          <div><label>Harga (IDR)</label><input type="number" id="price"/></div>
+          <div><label>Qty (base)</label><input type="number" id="qty"/></div>
+        </div>
+        <div class="quick">
+          <button data-q="25">25%</button><button data-q="50">50%</button>
+          <button data-q="75">75%</button><button data-q="100">100%</button>
+        </div>
+        <div class="actions">
+          <button class="btn buy" id="placeBuy">Place BUY</button>
+          <button class="btn sell" id="placeSell">Place SELL</button>
+          <button class="btn secondary" id="reset">Reset</button>
+          <button class="btn ghost" id="cancelBids">Cancel bids</button>
+          <button class="btn ghost" id="cancelAsks">Cancel asks</button>
+          <button class="btn ghost" id="clearTrades">Clear trades</button>
+        </div>
+        <div class="metrics" style="margin-top:10px;">
+          <div class="metric"><div class="label">Saldo IDR</div><div class="value" id="balIDR">—</div></div>
+          <div class="metric"><div class="label">Saldo Base</div><div class="value" id="balBase">—</div></div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Order book & trades -->
-    <div class="panel">
-      <h2>Order book & trades</h2>
-      <div class="content">
-        <div class="grid">
-          <div>
-            <div class="muted">Asks (sell orders)</div>
-            <table class="asks">
-              <thead><tr><th>Harga</th><th>Qty</th></tr></thead>
-              <tbody id="asksBody"></tbody>
-            </table>
-          </div>
-          <div>
-            <div class="muted">Bids (buy orders)</div>
-            <table class="bids">
-              <thead><tr><th>Harga</th><th>Qty</th></tr></thead>
-              <tbody id="bidsBody"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div style="margin-top:12px;">
-          <div class="muted">Trade history</div>
-          <table>
-            <thead><tr><th>Waktu</th><th>Side</th><th>Harga</th><th>Qty</th><th>Nilai (IDR)</th></tr></thead>
-            <tbody id="tradesBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    <div class="tag">Tips: isi order book dulu pakai limit order, lalu eksekusi market buat ngerasain matching engine.</div>
-  </div>
-
-  <script>
-    // ===== State & utils =====
-    const state = {
-      balance: { IDR: 100_000_000, BTC: 0.05 },
-      bids: [], asks: [], trades: [],
-      lastPrice: 950_000_000,
-      fees: { taker: 0.001, maker: 0.0 },
-      chartData: [],
-      maxChartPoints: 300
-    };
-
-    const fmtIDR = v => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(v);
-    const fmtBTC = v => Number(v).toFixed(8);
-    const now = () => new Date().toLocaleTimeString('id-ID', { hour12:false });
-
-    const el = {
-      lastPrice: document.getElementById('lastPrice'),
-      bestBid: document.getElementById('bestBid'),
-      bestAsk: document.getElementById('bestAsk'),
-      spread: document.getElementById('spread'),
-      balIDR: document.getElementById('balIDR'),
-      balBTC: document.getElementById('balBTC'),
-      bidsBody: document.getElementById('bidsBody'),
-      asksBody: document.getElementById('asksBody'),
-      tradesBody: document.getElementById('tradesBody'),
-      orderType: document.getElementById('orderType'),
-      orderSide: document.getElementById('orderSide'),
-      price: document.getElementById('price'),
-      qty: document.getElementById('qty'),
-      placeBuy: document.getElementById('placeBuy'),
-      placeSell: document.getElementById('placeSell'),
-      reset: document.getElementById('reset'),
-      cancelBids: document.getElementById('cancelBids'),
-      cancelAsks: document.getElementById('cancelAsks'),
-      clearTrades: document.getElementById('clearTrades'),
-      priceChart: document.getElementById('priceChart')
-    };
-
-    // ===== Chart =====
-    const gradient = el.priceChart.getContext('2d').createLinearGradient(0,0,0,280);
-    gradient.addColorStop(0,'rgba(0,224,164,0.35)');
-    gradient.addColorStop(1,'rgba(0,224,164,0.00)');
-
-    const chart = new Chart(el.priceChart, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [{
-          label: 'BTC/IDR',
-          data: [],
-          borderColor: '#00e0a4',
-          backgroundColor: gradient,
-          fill: true,
-          tension: 0.25,
-          pointRadius: 0
-        }]
-      },
-      options: {
-        responsive: true,
-        animation: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: { mode: 'index', intersect: false }
-        },
-        scales: {
-          x: { ticks: { color: '#93a1b3', maxRotation: 0 }, grid: { display:false } },
-          y: { ticks: { color: '#93a1b3' }, grid: { color: '#1b2333' } }
-        }
-      }
-    });
-
-    function pushChart(price){
-      const label = new Date().toLocaleTimeString('id-ID', { hour12:false });
-      chart.data.labels.push(label);
-      chart.data.datasets[0].data.push(price);
-      if(chart.data.labels.length > state.maxChartPoints){
-        chart.data.labels.shift();
-        chart.data.datasets[0].data.shift();
-      }
-      chart.update();
-    }
-
-    // ===== Engine =====
-    function render() {
-      // Balances
-      el.balIDR.textContent = fmtIDR(state.balance.IDR);
-      el.balBTC.textContent = fmtBTC(state.balance.BTC) + ' BTC';
-
-      // Sort orderbook
-      state.bids.sort((a,b)=> b.price - a.price || a.ts - b.ts);
-      state.asks.sort((a,b)=> a.price - b.price || a.ts - b.ts);
-
-      // Fill tables
-      el.bidsBody.innerHTML = state.bids.map(o =>
-        `<tr><td>${fmtIDR(o.price)}</td><td>${fmtBTC(o.qty)}</td></tr>`
-      ).join('');
-      el.asksBody.innerHTML = state.asks.map(o =>
-        `<tr><td>${fmtIDR(o.price)}</td><td>${fmtBTC(o.qty)}</td></tr>`
-      ).join('');
-
-      // Best prices & spread
-      const bestBid = state.bids[0]?.price ?? null;
-      const bestAsk = state.asks[0]?.price ?? null;
-      el.bestBid.textContent = bestBid ? fmtIDR(bestBid) : '—';
-      el.bestAsk.textContent = bestAsk ? fmtIDR(bestAsk) : '—';
-      el.lastPrice.textContent = fmtIDR(state.lastPrice);
-      el.spread.textContent = (bestBid && bestAsk) ? fmtIDR(bestAsk - bestBid) : '—';
-
-      // Trades
-      el.tradesBody.innerHTML = state.trades.slice().reverse().map(t =>
-        `<tr>
-          <td>${t.time}</td>
-          <td>${t.side.toUpperCase()}</td>
-          <td>${fmtIDR(t.price)}</td>
-          <td>${fmtBTC(t.qty)}</td>
-          <td>${fmtIDR(t.price * t.qty)}</td>
-        </tr>`
-      ).join('');
-    }
-
-    function recordTrade(t) {
-      state.lastPrice = t.price;
-      state.trades.push({ time: now(), ...t });
-      pushChart(state.lastPrice);
-    }
-
-    function addOrder({ side, price, qty }) {
-      if(qty <= 0 || price <= 0) return;
-
-      // Maker balance checks (basic)
-      if(side === 'buy'){
-        // reserve not implemented; balance checked on match
-      } else {
-        if(state.balance.BTC < qty) return; // can't place sell if you don't have BTC in this demo
-      }
-
-      const order = { side, price, qty, ts: performance.now() };
-
-      // Try match immediately
-      if(side === 'buy') {
-        while(order.qty > 0 && state.asks.length) {
-          const best = state.asks[0];
-          if(best.price > order.price) break;
-
-          const tradable = Math.min(order.qty, best.qty);
-          const fee = state.fees.maker * best.price * tradable; // 0
-          const cost = best.price * tradable + fee;
-
-          if(state.balance.IDR < cost) break;
-
-          state.balance.IDR -= cost;
-          state.balance.BTC += tradable;
-
-          best.qty -= tradable;
-          order.qty -= tradable;
-          recordTrade({ side:'buy', price: best.price, qty: tradable });
-          if(best.qty <= 0) state.asks.shift();
-        }
-        if(order.qty > 0) state.bids.push({ price: order.price, qty: order.qty, ts: order.ts });
-      } else {
-        while(order.qty > 0 && state.bids.length) {
-          const best = state.bids[0];
-          if(best.price < order.price) break;
-
-          const tradable = Math.min(order.qty, best.qty);
-          const fee = state.fees.maker * best.price * tradable; // 0
-
-          if(state.balance.BTC < tradable) break;
-
-          state.balance.BTC -= tradable;
-          state.balance.IDR += best.price * tradable - fee;
-
-          best.qty -= tradable;
-          order.qty -= tradable;
-          recordTrade({ side:'sell', price: best.price, qty: tradable });
-          if(best.qty <= 0) state.bids.shift();
-        }
-        if(order.qty > 0) state.asks.push({ price: order.price, qty: order.qty, ts: order.ts });
-      }
-      render();
-    }
-
-    function executeMarket({ side, qty }) {
-      if(qty <= 0) return;
-      if(side === 'buy') {
-        while(qty > 0 && state.asks.length) {
-          const ask = state.asks[0];
-          const take = Math.min(qty, ask.qty);
-          const fee = state.fees.taker * ask.price * take;
-          const cost = ask.price * take + fee;
-          if(state.balance.IDR < cost) break;
-
-          state.balance.IDR -= cost;
-          state.balance.BTC += take;
-          ask.qty -= take;
-          qty -= take;
-          recordTrade({ side:'buy', price: ask.price, qty: take });
-          if(ask.qty <= 0) state.asks.shift();
-        }
-      } else {
-        while(qty > 0 && state.bids.length) {
-          const bid = state.bids[0];
-          const take = Math.min(qty, bid.qty);
-          const fee = state.fees.taker * bid.price * take;
-          if(state.balance.BTC < take) break;
-
-          state.balance.BTC -= take;
-          state.balance.IDR += bid.price * take - fee;
-          bid.qty -= take;
-          qty -= take;
-          recordTrade({ side:'sell', price: bid.price, qty: take });
-          if(bid.qty <= 0) state.bids.shift();
-        }
-      }
-      render();
-    }
-
-    // ===== Simulation helpers =====
-    function seedBook() {
-      state.bids = [
-        { price: 940_000_000, qty: 0.015, ts: performance.now() },
-        { price: 935_000_000, qty: 0.020, ts: performance.now()+1 },
-        { price: 930_000_000, qty: 0.030, ts: performance.now()+2 },
-      ];
-      state.asks = [
-        { price: 960_000_000, qty: 0.010, ts: performance.now() },
-        { price: 965_000_000, qty: 0.020, ts: performance.now()+1 },
-        { price: 970_000_000, qty: 0.025, ts: performance.now()+2 },
-      ];
-      state.lastPrice = 950_000_000;
-      // prime chart with 40 points
-      for(let i=0;i<40;i++){
-        const drift = (Math.random()-0.5) * 1_000_000;
-        pushChart(state.lastPrice + drift);
-      }
-    }
-
-    function heartbeatTick(){
-      // Small random walk on lastPrice
-      const drift = (Math.random()-0.5) * 800_000; // ~±800k IDR
-      state.lastPrice = Math.max(100_000_000, state.lastPrice + drift|0);
-
-      // Nudge best bid/ask around lastPrice to keep book realistic
-      const mid = state.lastPrice;
-      const spread = 500_000 + Math.random()*500_000;
-      const bid = Math.floor(mid - spread/2);
-      const ask = Math.floor(mid + spread/2);
-
-      if(state.bids.length) state.bids[0].price = bid;
-      if(state.asks.length) state.asks[0].price = ask;
-
-      pushChart(state.lastPrice);
-      render();
-    }
-
-    function resetAll() {
-      state.balance = { IDR: 100_000_000, BTC: 0.05 };
-      state.trades = [];
-      seedBook();
-      render();
-    }
-
-    // ===== Events =====
-    el.placeBuy.addEventListener('click', () => {
-      const type = el.orderType.value;
-      const qty = parseFloat(el.qty.value || '0');
-      if(type === 'market') {
-        executeMarket({ side:'buy', qty });
-      } else {
-        const price = parseFloat(el.price.value || '0');
-        addOrder({ side:'buy', price, qty });
-      }
-    });
-
-    el.placeSell.addEventListener('click', () => {
-      const type = el.orderType.value;
-      const qty = parseFloat(el.qty.value || '0');
-      if(type === 'market') {
-        executeMarket({ side:'sell', qty });
-      } else {
-        const price = parseFloat(el.price.value || '0');
-        addOrder({ side:'sell', price, qty });
-      }
-    });
-
-    el.reset.addEventListener('click', resetAll);
-    el.cancelBids.addEventListener('click', () => { state.bids = []; render(); });
-    el.cancelAsks.addEventListener('click', () => { state.asks = []; render(); });
-    el.clearTrades.addEventListener('click', () => { state.trades = []; render(); });
-
-    // ===== Init =====
-    resetAll();
-    setInterval(heartbeatTick, 1000);
-  </script>
-</body>
-</html>
+    <!-- Recent trades -->
+    <section class="panel">
+      <h2>Recent trades</h2>
+      <div class="content" style="max-height:200px; overflow:auto;">
+        <table>
+          <thead><tr><th style="text-align:left">Waktu</th><th>Harga</th><th>Qty</th><th>Nilai</th><th>Side</th></tr></thead>
+          <tbody id="trades
