@@ -1,1402 +1,388 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TraderX | Platform Trading Elite</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #ff0000;
-            --primary-dark: #cc0000;
-            --primary-light: #ff3333;
-            --secondary: #000000;
-            --secondary-light: #1a1a1a;
-            --accent: #ff9900;
-            --text: #ffffff;
-            --text-secondary: #cccccc;
-            --danger: #ff3333;
-            --success: #00cc66;
-            --shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Exo 2', sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background-color: var(--secondary);
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(255, 0, 0, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(255, 0, 0, 0.05) 0%, transparent 20%);
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: 0.5s;
-        }
-
-        .btn:hover:before {
-            left: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            box-shadow: none;
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Header */
-        header {
-            background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 15px 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 0, 0, 0.2);
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 900;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .logo i {
-            color: var(--primary);
-            margin-right: 10px;
-            text-shadow: 0 0 10px var(--primary);
-        }
-
-        .logo span {
-            color: var(--primary);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 30px;
-            position: relative;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-            text-transform: uppercase;
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-
-        .nav-links a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            left: 0;
-            bottom: -5px;
-            transition: var(--transition);
-            box-shadow: 0 0 5px var(--primary);
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-            text-shadow: 0 0 5px var(--primary);
-        }
-
-        .nav-links a:hover:after {
-            width: 100%;
-        }
-
-        .mobile-menu {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--primary);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--secondary) 0%, #0a0a0a 100%);
-            color: white;
-            padding: 180px 0 100px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-
-        .hero:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(255, 0, 0, 0.1) 0%, transparent 50%);
-            animation: pulse 10s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .hero-content {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 52px;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-
-        .hero h1 span {
-            color: var(--primary);
-            text-shadow: 0 0 15px var(--primary);
-        }
-
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 30px;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-btns {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .trading-stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 80px;
-            flex-wrap: wrap;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 0, 0, 0.2);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
-        }
-
-        .stat-item {
-            text-align: center;
-            position: relative;
-            padding: 0 20px;
-        }
-
-        .stat-item:not(:last-child):after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1px;
-            height: 50px;
-            background: rgba(255, 0, 0, 0.3);
-        }
-
-        .stat-value {
-            font-size: 42px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-
-        .stat-label {
-            font-size: 16px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* About Section */
-        .about {
-            padding: 120px 0;
-            background-color: var(--secondary-light);
-            position: relative;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 36px;
-            position: relative;
-            display: inline-block;
-            padding-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .section-title h2:after {
-            content: '';
-            position: absolute;
-            width: 80px;
-            height: 3px;
-            background: var(--primary);
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 10px var(--primary);
-        }
-
-        .about-content {
-            display: flex;
-            align-items: center;
-            gap: 50px;
-        }
-
-        .about-text {
-            flex: 1;
-        }
-
-        .about-text h3 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-
-        .about-text p {
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-        }
-
-        .about-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .feature-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 0, 0, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: var(--primary);
-            font-size: 18px;
-            border: 1px solid rgba(255, 0, 0, 0.3);
-        }
-
-        .about-image {
-            flex: 1;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(255, 0, 0, 0.2);
-            position: relative;
-        }
-
-        .about-image:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(255,0,0,0.1) 0%, transparent 50%);
-            z-index: 1;
-        }
-
-        .about-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Services Section */
-        .services {
-            padding: 120px 0;
-            background-color: var(--secondary);
-            position: relative;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .service-card {
-            background: var(--secondary-light);
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: var(--transition);
-            text-align: center;
-            border: 1px solid rgba(255, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: var(--transition);
-        }
-
-        .service-card:hover:before {
-            transform: scaleX(1);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.2);
-            border-color: rgba(255, 0, 0, 0.3);
-        }
-
-        .service-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 0, 0, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            color: var(--primary);
-            font-size: 32px;
-            border: 2px solid rgba(255, 0, 0, 0.3);
-            transition: var(--transition);
-        }
-
-        .service-card:hover .service-icon {
-            background: var(--primary);
-            color: white;
-            transform: rotateY(180deg);
-        }
-
-        .service-card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-
-        .service-card p {
-            color: var(--text-secondary);
-        }
-
-        /* Trading Tools */
-        .tools {
-            padding: 120px 0;
-            background-color: var(--secondary-light);
-        }
-
-        .tools-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-        }
-
-        .tool-item {
-            flex: 1;
-            min-width: 250px;
-            background: var(--secondary);
-            border-radius: 10px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: var(--transition);
-            border: 1px solid rgba(255, 0, 0, 0.1);
-        }
-
-        .tool-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);
-            border-color: rgba(255, 0, 0, 0.3);
-        }
-
-        .tool-icon {
-            font-size: 40px;
-            color: var(--primary);
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-        }
-
-        /* Trading Platform Preview */
-        .platform-preview {
-            padding: 100px 0;
-            background-color: var(--secondary);
-            text-align: center;
-        }
-
-        .platform-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: var(--secondary-light);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 0, 0, 0.2);
-        }
-
-        .platform-header {
-            background: var(--secondary);
-            padding: 15px;
-            border-bottom: 1px solid rgba(255, 0, 0, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .platform-window-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .control {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .control.close {
-            background: #ff5f57;
-        }
-
-        .control.minimize {
-            background: #ffbd2e;
-        }
-
-        .control.maximize {
-            background: #28ca42;
-        }
-
-        .platform-content {
-            padding: 0;
-            height: 400px;
-            background: #0a0a0a;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chart-container {
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(90deg, #0a0a0a 21px, transparent 1%) center,
-                linear-gradient(#0a0a0a 21px, transparent 1%) center,
-                #1a1a1a;
-            background-size: 22px 22px;
-            position: relative;
-        }
-
-        .chart-line {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 70%;
-            background: linear-gradient(to top, rgba(255, 0, 0, 0.3) 0%, transparent 70%);
-            clip-path: polygon(0% 100%, 5% 80%, 10% 85%, 15% 70%, 20% 75%, 25% 60%, 30% 65%, 35% 50%, 40% 55%, 45% 40%, 50% 45%, 55% 30%, 60% 35%, 65% 20%, 70% 25%, 75% 10%, 80% 15%, 85% 5%, 90% 10%, 95% 0%, 100% 5%);
-        }
-
-        .price-indicator {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px 15px;
-            border-radius: 5px;
-            border-left: 3px solid var(--primary);
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .price-up {
-            color: var(--success);
-        }
-
-        /* Testimonials */
-        .testimonials {
-            padding: 120px 0;
-            background-color: var(--secondary-light);
-        }
-
-        .testimonial-slider {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .testimonial-item {
-            background: var(--secondary);
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            border: 1px solid rgba(255, 0, 0, 0.1);
-        }
-
-        .client-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            overflow: hidden;
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 10px var(--primary);
-        }
-
-        .client-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-            position: relative;
-        }
-
-        .testimonial-text:before, .testimonial-text:after {
-            content: '"';
-            font-size: 40px;
-            color: var(--primary);
-            position: absolute;
-            opacity: 0.3;
-        }
-
-        .testimonial-text:before {
-            top: -20px;
-            left: -10px;
-        }
-
-        .testimonial-text:after {
-            bottom: -40px;
-            right: -10px;
-        }
-
-        .client-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--primary);
-        }
-
-        .client-title {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* Contact */
-        .contact {
-            padding: 120px 0;
-            background-color: var(--secondary);
-        }
-
-        .contact-container {
-            display: flex;
-            gap: 50px;
-        }
-
-        .contact-info {
-            flex: 1;
-        }
-
-        .contact-form {
-            flex: 1;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 30px;
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 0, 0, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 20px;
-            margin-right: 20px;
-            flex-shrink: 0;
-            border: 1px solid rgba(255, 0, 0, 0.3);
-        }
-
-        .contact-details h3 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .contact-details p {
-            color: var(--text-secondary);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background: var(--secondary-light);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            font-size: 16px;
-            transition: var(--transition);
-            color: white;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
-        }
-
-        textarea.form-control {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #000000;
-            color: white;
-            padding: 70px 0 20px;
-            border-top: 1px solid rgba(255, 0, 0, 0.2);
-        }
-
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-
-        .footer-column {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .footer-column h3 {
-            font-size: 18px;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .footer-column h3:after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 2px;
-            background: var(--primary);
-            bottom: 0;
-            left: 0;
-            box-shadow: 0 0 5px var(--primary);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .footer-links a:hover {
-            color: var(--primary);
-            padding-left: 5px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: var(--transition);
-        }
-
-        .social-links a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(255, 0, 0, 0.3);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .about-content {
-                flex-direction: column;
-            }
-            
-            .contact-container {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background: rgba(0, 0, 0, 0.95);
-                flex-direction: column;
-                padding: 20px;
-                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
-                border-top: 1px solid rgba(255, 0, 0, 0.2);
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
-            .nav-links li {
-                margin: 10px 0;
-            }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .hero-btns {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 250px;
-                margin-bottom: 10px;
-            }
-            
-            .trading-stats {
-                margin-top: 50px;
-            }
-            
-            .stat-item {
-                width: 50%;
-                margin-bottom: 30px;
-            }
-            
-            .stat-item:after {
-                display: none;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trader X Mini Exchange – BTC/IDR</title>
+  <style>
+    :root {
+      --bg:#0b0f14; --panel:#121824; --accent:#00e0a4; --accent2:#6ea8fe;
+      --text:#e6edf3; --muted:#9aa7b2; --danger:#ff5c7a; --good:#23d18b;
+    }
+    body { background:var(--bg); color:var(--text); font-family:Inter,system-ui,Arial; margin:0; }
+    header { padding:16px 20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #1c2330; }
+    header h1 { font-size:18px; margin:0; letter-spacing:0.3px; }
+    header .pair { color:var(--muted); font-weight:600; }
+    .container { padding:20px; display:grid; grid-template-columns: 1.1fr 0.9fr; gap:20px; }
+    .panel { background:var(--panel); border:1px solid #1c2330; border-radius:12px; }
+    .panel h2 { margin:0; padding:12px 14px; font-size:14px; border-bottom:1px solid #1c2330; color:var(--muted); }
+    .content { padding:14px; }
+    .row { display:flex; gap:14px; }
+    .col { flex:1; }
+    label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+    input, select { width:100%; padding:10px; border-radius:8px; border:1px solid #283042; background:#0f1420; color:var(--text); }
+    .btn { padding:10px 12px; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
+    .btn.buy { background:var(--good); color:#07150f; }
+    .btn.sell { background:var(--danger); color:#2b0a11; }
+    .btn.secondary { background:#1c2330; color:var(--text); border:1px solid #283042; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .metrics { display:flex; gap:18px; flex-wrap:wrap; }
+    .metric { background:#0f1420; border:1px solid #283042; border-radius:10px; padding:10px 12px; }
+    .metric .label { font-size:11px; color:var(--muted); }
+    .metric .value { font-size:16px; font-weight:700; margin-top:4px; }
+    table { width:100%; border-collapse: collapse; }
+    th, td { font-size:12px; padding:8px; border-bottom:1px solid #1c2330; }
+    th { color:var(--muted); text-align:left; }
+    .asks tr td { color:#ff8fa1; }
+    .bids tr td { color:#7dffbf; }
+    .flex { display:flex; gap:10px; align-items:center; }
+    .justify { display:flex; justify-content:space-between; align-items:center; }
+    .price { font-size:20px; font-weight:800; color:var(--accent); }
+    .muted { color:var(--muted); }
+    .footer { padding:0 20px 20px; }
+    .tag { font-size:11px; color:#b9c3cf; background:#0f1420; border:1px dashed #2a3244; padding:6px 8px; border-radius:8px; display:inline-block; }
+    @media (max-width:900px){ .container{ grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav class="navbar">
-                <a href="#" class="logo"><i class="fas fa-chart-line"></i>Trader<span>X</span></a>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">Tentang</a></li>
-                    <li><a href="#services">Layanan</a></li>
-                    <li><a href="#tools">Tools</a></li>
-                    <li><a href="#platform">Platform</a></li>
-                    <li><a href="#testimonials">Testimoni</a></li>
-                    <li><a href="#contact">Kontak</a></li>
-                </ul>
-                <div class="mobile-menu">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </nav>
+  <header>
+    <h1>Trader X • Mini Exchange</h1>
+    <div class="pair">Pair: BTC/IDR</div>
+    <div class="tag">Simulasi lokal (no backend)</div>
+  </header>
+
+  <div class="container">
+    <!-- Left: Trading -->
+    <div class="panel">
+      <h2>Trading panel</h2>
+      <div class="content">
+        <div class="metrics">
+          <div class="metric"><div class="label">Last price (IDR)</div><div class="value" id="lastPrice">—</div></div>
+          <div class="metric"><div class="label">Best bid</div><div class="value" id="bestBid">—</div></div>
+          <div class="metric"><div class="label">Best ask</div><div class="value" id="bestAsk">—</div></div>
         </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Dominate The Markets With <span>TraderX</span></h1>
-                <p>Platform trading elite dengan analisis AI, eksekusi ultra-cepat, dan tools canggih untuk trader profesional yang menginginkan keunggulan kompetitif.</p>
-                <div class="hero-btns">
-                    <a href="#contact" class="btn">Bergabung Sekarang</a>
-                    <a href="#platform" class="btn btn-secondary">Demo Platform</a>
-                </div>
-                <div class="trading-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">+92.7%</div>
-                        <div class="stat-label">Win Rate</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">0.003s</div>
-                        <div class="stat-label">Eksekusi</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">15,000+</div>
-                        <div class="stat-label">Trader Elite</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">24/7</div>
-                        <div class="stat-label">AI Monitoring</div>
-                    </div>
-                </div>
+        <div class="grid" style="margin-top:12px;">
+          <div>
+            <div class="justify">
+              <div class="muted">Order type</div>
+              <div class="muted">Side</div>
             </div>
+            <div class="flex">
+              <select id="orderType">
+                <option value="market">Market</option>
+                <option value="limit">Limit</option>
+              </select>
+              <select id="orderSide">
+                <option value="buy">Buy</option>
+                <option value="sell">Sell</option>
+              </select>
+            </div>
+            <div class="row" style="margin-top:10px;">
+              <div class="col">
+                <label>Harga (IDR) — limit only</label>
+                <input type="number" id="price" placeholder="contoh: 950000000" />
+              </div>
+              <div class="col">
+                <label>Qty (BTC)</label>
+                <input type="number" id="qty" placeholder="contoh: 0.01" />
+              </div>
+            </div>
+            <div class="flex" style="margin-top:12px;">
+              <button class="btn buy" id="placeBuy">Place BUY</button>
+              <button class="btn sell" id="placeSell">Place SELL</button>
+              <button class="btn secondary" id="reset">Reset</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="metrics">
+              <div class="metric">
+                <div class="label">Saldo IDR</div>
+                <div class="value" id="balIDR">—</div>
+              </div>
+              <div class="metric">
+                <div class="label">Saldo BTC</div>
+                <div class="value" id="balBTC">—</div>
+              </div>
+            </div>
+            <div class="muted" style="margin-top:8px;">Fee taker 0.1%, maker 0.0% (simulasi)</div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>Tentang Saya</h2>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>Professional Algorithmic Trader</h3>
-                    <p>Saya Alex Gunawan, seorang algorithmic trader dengan spesialisasi dalam high-frequency trading dan pengembangan strategi berbasis AI. Dengan pengalaman lebih dari 10 tahun di pasar finansial global, saya telah mengembangkan sistem trading yang menghasilkan konsistensi profit dalam berbagai kondisi pasar.</p>
-                    <p>Pendekatan trading saya menggabungkan analisis teknikal tingkat lanjut, machine learning, dan eksekusi berkecepatan tinggi untuk mengekstrak profit dari ketidakefisienan pasar.</p>
-                    
-                    <div class="about-features">
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-brain"></i>
-                            </div>
-                            <div>
-                                <h4>AI-Powered Analysis</h4>
-                                <p>Strategi berbasis machine learning</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <div>
-                                <h4>Ultra-Fast Execution</h4>
-                                <p>Eksekusi dalam milidetik</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div>
-                                <h4>Risk Management</h4>
-                                <p>Perlindungan modal maksimal</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-chart-network"></i>
-                            </div>
-                            <div>
-                                <h4>Multi-Market</h4>
-                                <p>Forex, Crypto, Indeks, Komoditas</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-image">
-                    <!-- Placeholder untuk gambar -->
-                    <div style="width:100%;height:400px;background:linear-gradient(135deg, #000000 0%, #1a1a1a 100%);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:24px;position:relative;">
-                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwMCAxMDAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDAwMDAiLz48cGF0aCBkPSJNMCw1MDBMMTAwLDUwMEwxMDAsNjAwTDIwMCw2MDAgTDIwMCw0MDBMMzAwLDQwMEwzMDAsNzAwTDQwMCw3MDBMNDAwLDMwMEw1MDAsMzAwTDUwMCw4MDBMNjAwLDgwMEw2MDAsMjAwTDcwMCwyMDBMNzAwLDkwMEw4MDAsOTAwTDgwMCwxMDBMOTAwLDEwMEw5MDAsMTAwMEwxMDAwLDEwMDBMMTAwMCwwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjAwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==');opacity:0.3;"></div>
-                        <i class="fas fa-user-ninja" style="font-size:80px;text-shadow:0 0 20px var(--primary);"></i>
-                    </div>
-                </div>
-            </div>
+    <!-- Right: Orderbook & trades -->
+    <div class="panel">
+      <h2>Order book & trades</h2>
+      <div class="content">
+        <div class="grid">
+          <div>
+            <div class="muted">Asks (sell orders)</div>
+            <table class="asks">
+              <thead><tr><th>Harga</th><th>Qty</th></tr></thead>
+              <tbody id="asksBody"></tbody>
+            </table>
+          </div>
+          <div>
+            <div class="muted">Bids (buy orders)</div>
+            <table class="bids">
+              <thead><tr><th>Harga</th><th>Qty</th></tr></thead>
+              <tbody id="bidsBody"></tbody>
+            </table>
+          </div>
         </div>
-    </section>
 
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="container">
-            <div class="section-title">
-                <h2>Layanan Elite</h2>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>AI Trading Signals</h3>
-                    <p>Sinyal trading berbasis artificial intelligence dengan akurasi tertinggi di industri. Sistem kami menganalisis ratusan indikator secara real-time.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>High-Frequency Trading</h3>
-                    <p>Eksekusi ultra-cepat dengan latency terendah di pasar. Manfaatkan kecepatan untuk mendapatkan harga terbaik.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-chart-network"></i>
-                    </div>
-                    <h3>Algorithmic Strategies</h3>
-                    <p>Strategi trading algoritmik yang dioptimalkan untuk berbagai kondisi pasar dan timeframes.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                    <h3>Elite Mentorship</h3>
-                    <p>Program mentorship eksklusif untuk trader serius yang ingin menguasai seni algorithmic trading.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h3>VPS Hosting</h3>
-                    <p>Hosting VPS berperforma tinggi dengan koneksi langsung ke broker untuk eksekusi maksimal.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Portfolio Management</h3>
-                    <p>Manajemen portfolio profesional dengan diversifikasi optimal dan pengelolaan risiko ketat.</p>
-                </div>
-            </div>
+        <div style="margin-top:12px;">
+          <div class="muted">Trade history</div>
+          <table>
+            <thead><tr><th>Waktu</th><th>Side</th><th>Harga</th><th>Qty</th><th>Nilai (IDR)</th></tr></thead>
+            <tbody id="tradesBody"></tbody>
+          </table>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
 
-    <!-- Trading Tools -->
-    <section class="tools" id="tools">
-        <div class="container">
-            <div class="section-title">
-                <h2>Advanced Trading Tools</h2>
-            </div>
-            <div class="tools-container">
-                <div class="tool-item">
-                    <div class="tool-icon">
-                        <i class="fas fa-chess-board"></i>
-                    </div>
-                    <h3>Market Matrix</h3>
-                    <p>Analisis korelasi pasar multidimensi untuk identifikasi peluang arbitrase dan hedging.</p>
-                </div>
-                <div class="tool-item">
-                    <div class="tool-icon">
-                        <i class="fas fa-wave-square"></i>
-                    </div>
-                    <h3>Volume Profile</h3>
-                    <p>Analisis volume trading untuk identifikasi level support dan resistance yang kuat.</p>
-                </div>
-                <div class="tool-item">
-                    <div class="tool-icon">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <h3>Order Flow</h3>
-                    <p>Monitoring aliran order institusional untuk mengidentifikasi pergerakan besar.</p>
-                </div>
-                <div class="tool-item">
-                    <div class="tool-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3>Neural Scanner</h3>
-                    <p>Scanner AI yang menganalisis ratusan pasar secara simultan untuk peluang terbaik.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="footer">
+    <div class="tag">Tips: isi order book dulu pakai limit order, lalu eksekusi market biar kebayang matching engine-nya.</div>
+  </div>
 
-    <!-- Platform Preview -->
-    <section class="platform-preview" id="platform">
-        <div class="container">
-            <div class="section-title">
-                <h2>TraderX Platform</h2>
-            </div>
-            <div class="platform-container">
-                <div class="platform-header">
-                    <div class="platform-window-controls">
-                        <div class="control close"></div>
-                        <div class="control minimize"></div>
-                        <div class="control maximize"></div>
-                    </div>
-                    <div style="color: var(--text-secondary); font-size: 14px;">TraderX Terminal v3.7 - EUR/USD - 1 Minute</div>
-                </div>
-                <div class="platform-content">
-                    <div class="chart-container">
-                        <div class="chart-line"></div>
-                        <div class="price-indicator">
-                            <div>EUR/USD</div>
-                            <div class="price-up">1.09472 <i class="fas fa-arrow-up"></i></div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">+0.24%</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <script>
+    // State
+    const state = {
+      balance: { IDR: 100_000_000, BTC: 0.05 }, // default saldo
+      bids: [], // buy orders: highest price first
+      asks: [], // sell orders: lowest price first
+      trades: [],
+      lastPrice: null,
+      fees: { taker: 0.001, maker: 0.0 }
+    };
 
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>Testimoni Trader Elite</h2>
-            </div>
-            <div class="testimonial-slider">
-                <div class="testimonial-item">
-                    <div class="client-img">
-                        <!-- Placeholder untuk gambar klien -->
-                        <div style="width:100%;height:100%;background:linear-gradient(135deg, #1a1a1a 0%, #000000 100%);display:flex;align-items:center;justify-content:center;color:var(--primary);">
-                            <i class="fas fa-user-tie" style="font-size:30px;"></i>
-                        </div>
-                    </div>
-                    <p class="testimonial-text">"Sejak menggunakan sistem TraderX, profit konsisten saya meningkat drastis. AI mereka mampu mengidentifikasi pola pasar yang tidak terlihat oleh analisis manual."</p>
-                    <h4 class="client-name">Michael Chen</h4>
-                    <p class="client-title">Institutional Trader</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    // Utils
+    const fmtIDR = v => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(v);
+    const fmtBTC = v => Number(v).toFixed(8);
+    const now = () => new Date().toLocaleTimeString('id-ID', { hour12:false });
 
-    <!-- Contact -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Hubungi Saya</h2>
-            </div>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Lokasi</h3>
-                            <p>Jakarta Financial District</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Telepon</h3>
-                            <p>+62 819-9999-8888</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Email</h3>
-                            <p>alex@traderx-elite.com</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Jam Trading</h3>
-                            <p>24/5 (Market Hours)</p>
-                            <p>Support: 24/7</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="contact-form">
-                    <form>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Nama Lengkap" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Subjek" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" placeholder="Pesan" required></textarea>
-                        </div>
-                        <button type="submit" class="btn">Kirim Pesan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+    // UI refs
+    const el = {
+      lastPrice: document.getElementById('lastPrice'),
+      bestBid: document.getElementById('bestBid'),
+      bestAsk: document.getElementById('bestAsk'),
+      balIDR: document.getElementById('balIDR'),
+      balBTC: document.getElementById('balBTC'),
+      bidsBody: document.getElementById('bidsBody'),
+      asksBody: document.getElementById('asksBody'),
+      tradesBody: document.getElementById('tradesBody'),
+      orderType: document.getElementById('orderType'),
+      orderSide: document.getElementById('orderSide'),
+      price: document.getElementById('price'),
+      qty: document.getElementById('qty'),
+      placeBuy: document.getElementById('placeBuy'),
+      placeSell: document.getElementById('placeSell'),
+      reset: document.getElementById('reset'),
+    };
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>TraderX Elite</h3>
-                    <p>Platform trading algoritmik terdepan dengan teknologi AI untuk trader profesional yang menginginkan keunggulan kompetitif di pasar finansial.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-discord"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Link Cepat</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">Tentang</a></li>
-                        <li><a href="#services">Layanan</a></li>
-                        <li><a href="#tools">Tools</a></li>
-                        <li><a href="#platform">Platform</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Layanan</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">AI Trading Signals</a></li>
-                        <li><a href="#">HFT Execution</a></li>
-                        <li><a href="#">Algorithmic Strategies</a></li>
-                        <li><a href="#">Elite Mentorship</a></li>
-                        <li><a href="#">VPS Hosting</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Newsletter</h3>
-                    <p>Dapatkan analisis pasar eksklusif dan update trading langsung ke inbox Anda.</p>
-                    <form>
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email Anda" required>
-                        </div>
-                        <button type="submit" class="btn btn-secondary">Berlangganan</button>
-                    </form>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2023 TraderX Elite. All Rights Reserved. | Designed for Professional Traders</p>
-            </div>
-        </div>
-    </footer>
+    function render() {
+      // Balances
+      el.balIDR.textContent = fmtIDR(state.balance.IDR);
+      el.balBTC.textContent = fmtBTC(state.balance.BTC) + ' BTC';
 
-    <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        });
+      // Orderbook
+      state.bids.sort((a,b)=> b.price - a.price || a.ts - b.ts);
+      state.asks.sort((a,b)=> a.price - b.price || a.ts - b.ts);
 
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu after clicking a link
-                    document.querySelector('.nav-links').classList.remove('active');
-                }
-            });
-        });
+      el.bidsBody.innerHTML = state.bids.map(o =>
+        `<tr><td>${fmtIDR(o.price)}</td><td>${fmtBTC(o.qty)}</td></tr>`
+      ).join('');
 
-        // Simple counter animation for stats
-        const statValues = document.querySelectorAll('.stat-value');
-        const observerOptions = {
-            threshold: 0.5
-        };
+      el.asksBody.innerHTML = state.asks.map(o =>
+        `<tr><td>${fmtIDR(o.price)}</td><td>${fmtBTC(o.qty)}</td></tr>`
+      ).join('');
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statValue = entry.target;
-                    let targetValue;
-                    
-                    if (statValue.textContent.includes('%')) {
-                        targetValue = parseFloat(statValue.textContent);
-                    } else if (statValue.textContent.includes('s')) {
-                        targetValue = parseFloat(statValue.textContent);
-                    } else {
-                        targetValue = parseInt(statValue.textContent.replace('+', ''));
-                    }
-                    
-                    let currentValue = 0;
-                    const increment = targetValue / 50;
-                    const isPercentage = statValue.textContent.includes('%');
-                    const isSeconds = statValue.textContent.includes('s');
-                    
-                    const timer = setInterval(() => {
-                        currentValue += increment;
-                        if (currentValue >= targetValue) {
-                            if (isPercentage) {
-                                statValue.textContent = '+' + targetValue.toFixed(1) + '%';
-                            } else if (isSeconds) {
-                                statValue.textContent = targetValue.toFixed(3) + 's';
-                            } else {
-                                statValue.textContent = targetValue.toLocaleString() + '+';
-                            }
-                            clearInterval(timer);
-                        } else {
-                            if (isPercentage) {
-                                statValue.textContent = '+' + currentValue.toFixed(1) + '%';
-                            } else if (isSeconds) {
-                                statValue.textContent = currentValue.toFixed(3) + 's';
-                            } else {
-                                statValue.textContent = Math.floor(currentValue).toLocaleString() + '+';
-                            }
-                        }
-                    }, 30);
-                    
-                    observer.unobserve(statValue);
-                }
-            });
-        }, observerOptions);
+      // Best bid/ask & last
+      const bestBid = state.bids[0]?.price ?? null;
+      const bestAsk = state.asks[0]?.price ?? null;
+      el.bestBid.textContent = bestBid ? fmtIDR(bestBid) : '—';
+      el.bestAsk.textContent = bestAsk ? fmtIDR(bestAsk) : '—';
+      el.lastPrice.textContent = state.lastPrice ? fmtIDR(state.lastPrice) : '—';
 
-        statValues.forEach(statValue => {
-            observer.observe(statValue);
-        });
+      // Trades
+      el.tradesBody.innerHTML = state.trades.slice().reverse().map(t =>
+        `<tr>
+          <td>${t.time}</td>
+          <td>${t.side.toUpperCase()}</td>
+          <td>${fmtIDR(t.price)}</td>
+          <td>${fmtBTC(t.qty)}</td>
+          <td>${fmtIDR(t.price * t.qty)}</td>
+        </tr>`
+      ).join('');
+    }
 
-        // Add glow effect to elements on scroll
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const rate = scrolled * -0.5;
-            
-            document.querySelector('.hero').style.backgroundPosition = `0px ${rate}px`;
-        });
-    </script>
+    function addOrder({ side, price, qty, maker=true }) {
+      if(qty <= 0 || price <= 0) return;
+      const order = { side, price, qty, ts: performance.now() };
+
+      // Try match immediately
+      if(side === 'buy') {
+        // match against best asks
+        while(order.qty > 0 && state.asks.length) {
+          const best = state.asks[0];
+          if(best.price > order.price) break; // only match if ask <= buy price
+
+          const tradable = Math.min(order.qty, best.qty);
+          const fee = (maker ? state.fees.maker : state.fees.taker) * best.price * tradable;
+
+          // Check balance IDR for buyer
+          const cost = best.price * tradable + (maker ? 0 : fee);
+          if(state.balance.IDR < cost && side === 'buy') break;
+
+          // Execute
+          state.balance.IDR -= cost;
+          state.balance.BTC += tradable;
+
+          // Seller receives IDR (no fee deducted in this simple model for maker)
+          // We don't model individual seller balances in this demo.
+
+          best.qty -= tradable;
+          order.qty -= tradable;
+
+          recordTrade({ side:'buy', price: best.price, qty: tradable });
+          if(best.qty <= 0) state.asks.shift();
+        }
+        // leftover goes to book
+        if(order.qty > 0) {
+          // place as bid
+          state.bids.push({ price: order.price, qty: order.qty, ts: order.ts });
+        }
+      } else {
+        // side === 'sell', match against best bids
+        while(order.qty > 0 && state.bids.length) {
+          const best = state.bids[0];
+          if(best.price < order.price) break; // only match if bid >= sell price
+
+          const tradable = Math.min(order.qty, best.qty);
+          const fee = (maker ? state.fees.maker : state.fees.taker) * best.price * tradable;
+
+          // Check balance BTC for seller
+          if(state.balance.BTC < tradable) break;
+
+          const proceeds = best.price * tradable - (maker ? 0 : fee);
+
+          // Execute
+          state.balance.BTC -= tradable;
+          state.balance.IDR += proceeds;
+
+          best.qty -= tradable;
+          order.qty -= tradable;
+
+          recordTrade({ side:'sell', price: best.price, qty: tradable });
+          if(best.qty <= 0) state.bids.shift();
+        }
+        // leftover goes to book
+        if(order.qty > 0) {
+          state.asks.push({ price: order.price, qty: order.qty, ts: order.ts });
+        }
+      }
+      render();
+    }
+
+    function executeMarket({ side, qty }) {
+      if(qty <= 0) return;
+      if(side === 'buy') {
+        // consume asks from lowest price
+        while(qty > 0 && state.asks.length) {
+          const ask = state.asks[0];
+          const take = Math.min(qty, ask.qty);
+          const fee = state.fees.taker * ask.price * take;
+          const cost = ask.price * take + fee;
+
+          if(state.balance.IDR < cost) break;
+
+          state.balance.IDR -= cost;
+          state.balance.BTC += take;
+
+          ask.qty -= take;
+          qty -= take;
+          recordTrade({ side:'buy', price: ask.price, qty: take });
+          if(ask.qty <= 0) state.asks.shift();
+        }
+      } else {
+        // sell into bids from highest price
+        while(qty > 0 && state.bids.length) {
+          const bid = state.bids[0];
+          const take = Math.min(qty, bid.qty);
+          const fee = state.fees.taker * bid.price * take;
+          const proceeds = bid.price * take - fee;
+
+          if(state.balance.BTC < take) break;
+
+          state.balance.BTC -= take;
+          state.balance.IDR += proceeds;
+
+          bid.qty -= take;
+          qty -= take;
+          recordTrade({ side:'sell', price: bid.price, qty: take });
+          if(bid.qty <= 0) state.bids.shift();
+        }
+      }
+      render();
+    }
+
+    function recordTrade(t) {
+      state.lastPrice = t.price;
+      state.trades.push({ time: now(), ...t });
+    }
+
+    // Seed book with sample liquidity
+    function seedBook() {
+      state.bids = [
+        { price: 940_000_000, qty: 0.015, ts: performance.now() },
+        { price: 935_000_000, qty: 0.020, ts: performance.now()+1 },
+        { price: 930_000_000, qty: 0.030, ts: performance.now()+2 },
+      ];
+      state.asks = [
+        { price: 960_000_000, qty: 0.010, ts: performance.now() },
+        { price: 965_000_000, qty: 0.020, ts: performance.now()+1 },
+        { price: 970_000_000, qty: 0.025, ts: performance.now()+2 },
+      ];
+      state.lastPrice = 950_000_000;
+    }
+
+    function resetAll() {
+      state.balance = { IDR: 100_000_000, BTC: 0.05 };
+      state.trades = [];
+      seedBook();
+      render();
+    }
+
+    // Events
+    el.placeBuy.addEventListener('click', () => {
+      const type = el.orderType.value;
+      const qty = parseFloat(el.qty.value || '0');
+      if(type === 'market') {
+        executeMarket({ side:'buy', qty });
+      } else {
+        const price = parseFloat(el.price.value || '0');
+        addOrder({ side:'buy', price, qty, maker:true });
+      }
+    });
+
+    el.placeSell.addEventListener('click', () => {
+      const type = el.orderType.value;
+      const qty = parseFloat(el.qty.value || '0');
+      if(type === 'market') {
+        executeMarket({ side:'sell', qty });
+      } else {
+        const price = parseFloat(el.price.value || '0');
+        addOrder({ side:'sell', price, qty, maker:true });
+      }
+    });
+
+    el.reset.addEventListener('click', resetAll);
+
+    // Init
+    resetAll();
+  </script>
 </body>
 </html>
