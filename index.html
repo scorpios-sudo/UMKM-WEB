@@ -3,63 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trader X Mini Exchange – BTC/IDR</title>
+  <title>Trader X • Mini Exchange + Real-time Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg:#0b0f14; --panel:#121824; --accent:#00e0a4; --accent2:#6ea8fe;
-      --text:#e6edf3; --muted:#9aa7b2; --danger:#ff5c7a; --good:#23d18b;
+      --bg:#0a0f17; --panel:#111725; --border:#1b2333; --muted:#93a1b3;
+      --text:#e7edf5; --accent:#00e0a4; --accent2:#6ea8fe; --danger:#ff5c7a; --good:#22d197;
     }
+    * { box-sizing:border-box }
     body { background:var(--bg); color:var(--text); font-family:Inter,system-ui,Arial; margin:0; }
-    header { padding:16px 20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #1c2330; }
-    header h1 { font-size:18px; margin:0; letter-spacing:0.3px; }
-    header .pair { color:var(--muted); font-weight:600; }
-    .container { padding:20px; display:grid; grid-template-columns: 1.1fr 0.9fr; gap:20px; }
-    .panel { background:var(--panel); border:1px solid #1c2330; border-radius:12px; }
-    .panel h2 { margin:0; padding:12px 14px; font-size:14px; border-bottom:1px solid #1c2330; color:var(--muted); }
+    header { padding:16px 20px; display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--border); }
+    header h1 { font-size:18px; letter-spacing:.3px; margin:0; }
+    .pair { color:var(--muted); font-weight:600; }
+    .tag { color:#b9c3cf; background:#0d1422; border:1px dashed #2a3246; padding:6px 8px; border-radius:8px; }
+    .container { padding:20px; display:grid; grid-template-columns: 1fr 1fr; grid-template-rows:auto 1fr; gap:20px; }
+    .panel { background:var(--panel); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+    .panel h2 { margin:0; padding:12px 14px; font-size:14px; border-bottom:1px solid var(--border); color:var(--muted); }
     .content { padding:14px; }
+    .metrics { display:flex; gap:18px; flex-wrap:wrap; }
+    .metric { background:#0e1422; border:1px solid #283042; border-radius:10px; padding:10px 12px; }
+    .metric .label { font-size:11px; color:var(--muted); }
+    .metric .value { font-size:18px; font-weight:800; margin-top:2px; color:var(--accent); }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
     .row { display:flex; gap:14px; }
     .col { flex:1; }
     label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
-    input, select { width:100%; padding:10px; border-radius:8px; border:1px solid #283042; background:#0f1420; color:var(--text); }
-    .btn { padding:10px 12px; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
-    .btn.buy { background:var(--good); color:#07150f; }
+    input, select { width:100%; padding:10px; border-radius:10px; border:1px solid #283042; background:#0f1421; color:var(--text); }
+    .btn { padding:10px 12px; border:none; border-radius:10px; font-weight:700; cursor:pointer; }
+    .btn.buy { background:var(--good); color:#06140f; }
     .btn.sell { background:var(--danger); color:#2b0a11; }
-    .btn.secondary { background:#1c2330; color:var(--text); border:1px solid #283042; }
-    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    .metrics { display:flex; gap:18px; flex-wrap:wrap; }
-    .metric { background:#0f1420; border:1px solid #283042; border-radius:10px; padding:10px 12px; }
-    .metric .label { font-size:11px; color:var(--muted); }
-    .metric .value { font-size:16px; font-weight:700; margin-top:4px; }
-    table { width:100%; border-collapse: collapse; }
-    th, td { font-size:12px; padding:8px; border-bottom:1px solid #1c2330; }
+    .btn.secondary { background:#1c2333; color:var(--text); border:1px solid #283042; }
+    .btn.ghost { background:transparent; color:var(--muted); border:1px dashed #2b3448; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { font-size:12px; padding:8px; border-bottom:1px solid var(--border); }
     th { color:var(--muted); text-align:left; }
-    .asks tr td { color:#ff8fa1; }
-    .bids tr td { color:#7dffbf; }
+    .asks tr td { color:#ffa1b3; }
+    .bids tr td { color:#8fffd3; }
+    .footer { padding:0 20px 24px; }
     .flex { display:flex; gap:10px; align-items:center; }
     .justify { display:flex; justify-content:space-between; align-items:center; }
-    .price { font-size:20px; font-weight:800; color:var(--accent); }
-    .muted { color:var(--muted); }
-    .footer { padding:0 20px 20px; }
-    .tag { font-size:11px; color:#b9c3cf; background:#0f1420; border:1px dashed #2a3244; padding:6px 8px; border-radius:8px; display:inline-block; }
-    @media (max-width:900px){ .container{ grid-template-columns: 1fr; } }
+    @media (max-width:900px){
+      .container { grid-template-columns:1fr; }
+    }
+    canvas { max-height: 280px; }
   </style>
 </head>
 <body>
   <header>
     <h1>Trader X • Mini Exchange</h1>
-    <div class="pair">Pair: BTC/IDR</div>
-    <div class="tag">Simulasi lokal (no backend)</div>
+    <div class="pair">BTC/IDR</div>
+    <div class="tag">Simulasi lokal (no backend) + chart real-time</div>
   </header>
 
   <div class="container">
-    <!-- Left: Trading -->
+    <!-- Chart -->
+    <div class="panel" style="grid-column: 1 / -1;">
+      <h2>Price chart (BTC/IDR)</h2>
+      <div class="content">
+        <canvas id="priceChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Trading panel -->
     <div class="panel">
       <h2>Trading panel</h2>
       <div class="content">
         <div class="metrics">
-          <div class="metric"><div class="label">Last price (IDR)</div><div class="value" id="lastPrice">—</div></div>
+          <div class="metric"><div class="label">Last price</div><div class="value" id="lastPrice">—</div></div>
           <div class="metric"><div class="label">Best bid</div><div class="value" id="bestBid">—</div></div>
           <div class="metric"><div class="label">Best ask</div><div class="value" id="bestAsk">—</div></div>
+          <div class="metric"><div class="label">Spread</div><div class="value" id="spread">—</div></div>
         </div>
 
         <div class="grid" style="margin-top:12px;">
@@ -93,18 +106,17 @@
               <button class="btn sell" id="placeSell">Place SELL</button>
               <button class="btn secondary" id="reset">Reset</button>
             </div>
+            <div class="flex" style="margin-top:8px;">
+              <button class="btn ghost" id="cancelBids">Cancel all bids</button>
+              <button class="btn ghost" id="cancelAsks">Cancel all asks</button>
+              <button class="btn ghost" id="clearTrades">Clear trades</button>
+            </div>
           </div>
 
           <div>
             <div class="metrics">
-              <div class="metric">
-                <div class="label">Saldo IDR</div>
-                <div class="value" id="balIDR">—</div>
-              </div>
-              <div class="metric">
-                <div class="label">Saldo BTC</div>
-                <div class="value" id="balBTC">—</div>
-              </div>
+              <div class="metric"><div class="label">Saldo IDR</div><div class="value" id="balIDR">—</div></div>
+              <div class="metric"><div class="label">Saldo BTC</div><div class="value" id="balBTC">—</div></div>
             </div>
             <div class="muted" style="margin-top:8px;">Fee taker 0.1%, maker 0.0% (simulasi)</div>
           </div>
@@ -112,7 +124,7 @@
       </div>
     </div>
 
-    <!-- Right: Orderbook & trades -->
+    <!-- Order book & trades -->
     <div class="panel">
       <h2>Order book & trades</h2>
       <div class="content">
@@ -145,30 +157,29 @@
   </div>
 
   <div class="footer">
-    <div class="tag">Tips: isi order book dulu pakai limit order, lalu eksekusi market biar kebayang matching engine-nya.</div>
+    <div class="tag">Tips: isi order book dulu pakai limit order, lalu eksekusi market buat ngerasain matching engine.</div>
   </div>
 
   <script>
-    // State
+    // ===== State & utils =====
     const state = {
-      balance: { IDR: 100_000_000, BTC: 0.05 }, // default saldo
-      bids: [], // buy orders: highest price first
-      asks: [], // sell orders: lowest price first
-      trades: [],
-      lastPrice: null,
-      fees: { taker: 0.001, maker: 0.0 }
+      balance: { IDR: 100_000_000, BTC: 0.05 },
+      bids: [], asks: [], trades: [],
+      lastPrice: 950_000_000,
+      fees: { taker: 0.001, maker: 0.0 },
+      chartData: [],
+      maxChartPoints: 300
     };
 
-    // Utils
     const fmtIDR = v => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(v);
     const fmtBTC = v => Number(v).toFixed(8);
     const now = () => new Date().toLocaleTimeString('id-ID', { hour12:false });
 
-    // UI refs
     const el = {
       lastPrice: document.getElementById('lastPrice'),
       bestBid: document.getElementById('bestBid'),
       bestAsk: document.getElementById('bestAsk'),
+      spread: document.getElementById('spread'),
       balIDR: document.getElementById('balIDR'),
       balBTC: document.getElementById('balBTC'),
       bidsBody: document.getElementById('bidsBody'),
@@ -181,31 +192,81 @@
       placeBuy: document.getElementById('placeBuy'),
       placeSell: document.getElementById('placeSell'),
       reset: document.getElementById('reset'),
+      cancelBids: document.getElementById('cancelBids'),
+      cancelAsks: document.getElementById('cancelAsks'),
+      clearTrades: document.getElementById('clearTrades'),
+      priceChart: document.getElementById('priceChart')
     };
 
+    // ===== Chart =====
+    const gradient = el.priceChart.getContext('2d').createLinearGradient(0,0,0,280);
+    gradient.addColorStop(0,'rgba(0,224,164,0.35)');
+    gradient.addColorStop(1,'rgba(0,224,164,0.00)');
+
+    const chart = new Chart(el.priceChart, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'BTC/IDR',
+          data: [],
+          borderColor: '#00e0a4',
+          backgroundColor: gradient,
+          fill: true,
+          tension: 0.25,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { mode: 'index', intersect: false }
+        },
+        scales: {
+          x: { ticks: { color: '#93a1b3', maxRotation: 0 }, grid: { display:false } },
+          y: { ticks: { color: '#93a1b3' }, grid: { color: '#1b2333' } }
+        }
+      }
+    });
+
+    function pushChart(price){
+      const label = new Date().toLocaleTimeString('id-ID', { hour12:false });
+      chart.data.labels.push(label);
+      chart.data.datasets[0].data.push(price);
+      if(chart.data.labels.length > state.maxChartPoints){
+        chart.data.labels.shift();
+        chart.data.datasets[0].data.shift();
+      }
+      chart.update();
+    }
+
+    // ===== Engine =====
     function render() {
       // Balances
       el.balIDR.textContent = fmtIDR(state.balance.IDR);
       el.balBTC.textContent = fmtBTC(state.balance.BTC) + ' BTC';
 
-      // Orderbook
+      // Sort orderbook
       state.bids.sort((a,b)=> b.price - a.price || a.ts - b.ts);
       state.asks.sort((a,b)=> a.price - b.price || a.ts - b.ts);
 
+      // Fill tables
       el.bidsBody.innerHTML = state.bids.map(o =>
         `<tr><td>${fmtIDR(o.price)}</td><td>${fmtBTC(o.qty)}</td></tr>`
       ).join('');
-
       el.asksBody.innerHTML = state.asks.map(o =>
         `<tr><td>${fmtIDR(o.price)}</td><td>${fmtBTC(o.qty)}</td></tr>`
       ).join('');
 
-      // Best bid/ask & last
+      // Best prices & spread
       const bestBid = state.bids[0]?.price ?? null;
       const bestAsk = state.asks[0]?.price ?? null;
       el.bestBid.textContent = bestBid ? fmtIDR(bestBid) : '—';
       el.bestAsk.textContent = bestAsk ? fmtIDR(bestAsk) : '—';
-      el.lastPrice.textContent = state.lastPrice ? fmtIDR(state.lastPrice) : '—';
+      el.lastPrice.textContent = fmtIDR(state.lastPrice);
+      el.spread.textContent = (bestBid && bestAsk) ? fmtIDR(bestAsk - bestBid) : '—';
 
       // Trades
       el.tradesBody.innerHTML = state.trades.slice().reverse().map(t =>
@@ -219,70 +280,64 @@
       ).join('');
     }
 
-    function addOrder({ side, price, qty, maker=true }) {
+    function recordTrade(t) {
+      state.lastPrice = t.price;
+      state.trades.push({ time: now(), ...t });
+      pushChart(state.lastPrice);
+    }
+
+    function addOrder({ side, price, qty }) {
       if(qty <= 0 || price <= 0) return;
+
+      // Maker balance checks (basic)
+      if(side === 'buy'){
+        // reserve not implemented; balance checked on match
+      } else {
+        if(state.balance.BTC < qty) return; // can't place sell if you don't have BTC in this demo
+      }
+
       const order = { side, price, qty, ts: performance.now() };
 
       // Try match immediately
       if(side === 'buy') {
-        // match against best asks
         while(order.qty > 0 && state.asks.length) {
           const best = state.asks[0];
-          if(best.price > order.price) break; // only match if ask <= buy price
+          if(best.price > order.price) break;
 
           const tradable = Math.min(order.qty, best.qty);
-          const fee = (maker ? state.fees.maker : state.fees.taker) * best.price * tradable;
+          const fee = state.fees.maker * best.price * tradable; // 0
+          const cost = best.price * tradable + fee;
 
-          // Check balance IDR for buyer
-          const cost = best.price * tradable + (maker ? 0 : fee);
-          if(state.balance.IDR < cost && side === 'buy') break;
+          if(state.balance.IDR < cost) break;
 
-          // Execute
           state.balance.IDR -= cost;
           state.balance.BTC += tradable;
 
-          // Seller receives IDR (no fee deducted in this simple model for maker)
-          // We don't model individual seller balances in this demo.
-
           best.qty -= tradable;
           order.qty -= tradable;
-
           recordTrade({ side:'buy', price: best.price, qty: tradable });
           if(best.qty <= 0) state.asks.shift();
         }
-        // leftover goes to book
-        if(order.qty > 0) {
-          // place as bid
-          state.bids.push({ price: order.price, qty: order.qty, ts: order.ts });
-        }
+        if(order.qty > 0) state.bids.push({ price: order.price, qty: order.qty, ts: order.ts });
       } else {
-        // side === 'sell', match against best bids
         while(order.qty > 0 && state.bids.length) {
           const best = state.bids[0];
-          if(best.price < order.price) break; // only match if bid >= sell price
+          if(best.price < order.price) break;
 
           const tradable = Math.min(order.qty, best.qty);
-          const fee = (maker ? state.fees.maker : state.fees.taker) * best.price * tradable;
+          const fee = state.fees.maker * best.price * tradable; // 0
 
-          // Check balance BTC for seller
           if(state.balance.BTC < tradable) break;
 
-          const proceeds = best.price * tradable - (maker ? 0 : fee);
-
-          // Execute
           state.balance.BTC -= tradable;
-          state.balance.IDR += proceeds;
+          state.balance.IDR += best.price * tradable - fee;
 
           best.qty -= tradable;
           order.qty -= tradable;
-
           recordTrade({ side:'sell', price: best.price, qty: tradable });
           if(best.qty <= 0) state.bids.shift();
         }
-        // leftover goes to book
-        if(order.qty > 0) {
-          state.asks.push({ price: order.price, qty: order.qty, ts: order.ts });
-        }
+        if(order.qty > 0) state.asks.push({ price: order.price, qty: order.qty, ts: order.ts });
       }
       render();
     }
@@ -290,36 +345,29 @@
     function executeMarket({ side, qty }) {
       if(qty <= 0) return;
       if(side === 'buy') {
-        // consume asks from lowest price
         while(qty > 0 && state.asks.length) {
           const ask = state.asks[0];
           const take = Math.min(qty, ask.qty);
           const fee = state.fees.taker * ask.price * take;
           const cost = ask.price * take + fee;
-
           if(state.balance.IDR < cost) break;
 
           state.balance.IDR -= cost;
           state.balance.BTC += take;
-
           ask.qty -= take;
           qty -= take;
           recordTrade({ side:'buy', price: ask.price, qty: take });
           if(ask.qty <= 0) state.asks.shift();
         }
       } else {
-        // sell into bids from highest price
         while(qty > 0 && state.bids.length) {
           const bid = state.bids[0];
           const take = Math.min(qty, bid.qty);
           const fee = state.fees.taker * bid.price * take;
-          const proceeds = bid.price * take - fee;
-
           if(state.balance.BTC < take) break;
 
           state.balance.BTC -= take;
-          state.balance.IDR += proceeds;
-
+          state.balance.IDR += bid.price * take - fee;
           bid.qty -= take;
           qty -= take;
           recordTrade({ side:'sell', price: bid.price, qty: take });
@@ -329,12 +377,7 @@
       render();
     }
 
-    function recordTrade(t) {
-      state.lastPrice = t.price;
-      state.trades.push({ time: now(), ...t });
-    }
-
-    // Seed book with sample liquidity
+    // ===== Simulation helpers =====
     function seedBook() {
       state.bids = [
         { price: 940_000_000, qty: 0.015, ts: performance.now() },
@@ -347,6 +390,29 @@
         { price: 970_000_000, qty: 0.025, ts: performance.now()+2 },
       ];
       state.lastPrice = 950_000_000;
+      // prime chart with 40 points
+      for(let i=0;i<40;i++){
+        const drift = (Math.random()-0.5) * 1_000_000;
+        pushChart(state.lastPrice + drift);
+      }
+    }
+
+    function heartbeatTick(){
+      // Small random walk on lastPrice
+      const drift = (Math.random()-0.5) * 800_000; // ~±800k IDR
+      state.lastPrice = Math.max(100_000_000, state.lastPrice + drift|0);
+
+      // Nudge best bid/ask around lastPrice to keep book realistic
+      const mid = state.lastPrice;
+      const spread = 500_000 + Math.random()*500_000;
+      const bid = Math.floor(mid - spread/2);
+      const ask = Math.floor(mid + spread/2);
+
+      if(state.bids.length) state.bids[0].price = bid;
+      if(state.asks.length) state.asks[0].price = ask;
+
+      pushChart(state.lastPrice);
+      render();
     }
 
     function resetAll() {
@@ -356,7 +422,7 @@
       render();
     }
 
-    // Events
+    // ===== Events =====
     el.placeBuy.addEventListener('click', () => {
       const type = el.orderType.value;
       const qty = parseFloat(el.qty.value || '0');
@@ -364,7 +430,7 @@
         executeMarket({ side:'buy', qty });
       } else {
         const price = parseFloat(el.price.value || '0');
-        addOrder({ side:'buy', price, qty, maker:true });
+        addOrder({ side:'buy', price, qty });
       }
     });
 
@@ -375,14 +441,18 @@
         executeMarket({ side:'sell', qty });
       } else {
         const price = parseFloat(el.price.value || '0');
-        addOrder({ side:'sell', price, qty, maker:true });
+        addOrder({ side:'sell', price, qty });
       }
     });
 
     el.reset.addEventListener('click', resetAll);
+    el.cancelBids.addEventListener('click', () => { state.bids = []; render(); });
+    el.cancelAsks.addEventListener('click', () => { state.asks = []; render(); });
+    el.clearTrades.addEventListener('click', () => { state.trades = []; render(); });
 
-    // Init
+    // ===== Init =====
     resetAll();
+    setInterval(heartbeatTick, 1000);
   </script>
 </body>
 </html>
