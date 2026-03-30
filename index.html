@@ -10,7 +10,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -20,7 +19,6 @@
             align-items: center;
             padding: 20px;
         }
-
         .container {
             width: 100%;
             max-width: 800px;
@@ -33,24 +31,20 @@
             height: 90vh;
             max-height: 800px;
         }
-
         .header {
             background: #1a1a2e;
             color: white;
             padding: 20px;
             text-align: center;
         }
-
         .header h1 {
             font-size: 1.5rem;
             margin-bottom: 5px;
         }
-
         .header p {
             font-size: 0.8rem;
             opacity: 0.8;
         }
-
         .status-bar {
             background: #f0f0f0;
             padding: 8px 16px;
@@ -58,14 +52,13 @@
             display: flex;
             justify-content: space-between;
             border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
         }
-
         .status {
             display: flex;
             align-items: center;
             gap: 8px;
         }
-
         .status-dot {
             width: 10px;
             height: 10px;
@@ -73,12 +66,26 @@
             background-color: #4caf50;
             box-shadow: 0 0 5px #4caf50;
         }
-
         .status-dot.off {
             background-color: #f44336;
             box-shadow: none;
         }
-
+        .mode-switch {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .mode-switch select {
+            border: 1px solid #ccc;
+            border-radius: 16px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            background: white;
+        }
         .chat-area {
             flex: 1;
             overflow-y: auto;
@@ -88,7 +95,6 @@
             gap: 12px;
             background: #f9f9fc;
         }
-
         .message {
             max-width: 80%;
             padding: 10px 14px;
@@ -96,19 +102,16 @@
             word-wrap: break-word;
             animation: fadeIn 0.2s ease;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px);}
             to { opacity: 1; transform: translateY(0);}
         }
-
         .user {
             align-self: flex-end;
             background: #667eea;
             color: white;
             border-bottom-right-radius: 4px;
         }
-
         .bot {
             align-self: flex-start;
             background: white;
@@ -116,7 +119,6 @@
             border-bottom-left-radius: 4px;
             color: #333;
         }
-
         .typing {
             align-self: flex-start;
             background: white;
@@ -129,16 +131,13 @@
             align-items: center;
             gap: 4px;
         }
-
         .typing span {
             animation: blink 1.4s infinite;
         }
-
         @keyframes blink {
             0%, 100% { opacity: 0.2; }
             50% { opacity: 1; }
         }
-
         .input-area {
             display: flex;
             padding: 16px;
@@ -146,7 +145,6 @@
             border-top: 1px solid #eee;
             gap: 10px;
         }
-
         .input-area input {
             flex: 1;
             border: 1px solid #ddd;
@@ -156,11 +154,9 @@
             outline: none;
             transition: 0.2s;
         }
-
         .input-area input:focus {
             border-color: #667eea;
         }
-
         .input-area button {
             background: #667eea;
             border: none;
@@ -171,11 +167,9 @@
             cursor: pointer;
             transition: 0.2s;
         }
-
         .input-area button:hover {
             background: #5a67d8;
         }
-
         .footer {
             padding: 8px;
             text-align: center;
@@ -184,8 +178,6 @@
             background: white;
             border-top: 1px solid #eee;
         }
-
-        /* Responsive */
         @media (max-width: 600px) {
             .message {
                 max-width: 90%;
@@ -193,6 +185,10 @@
             .container {
                 height: 95vh;
                 border-radius: 16px;
+            }
+            .status-bar {
+                flex-direction: column;
+                gap: 6px;
             }
         }
     </style>
@@ -212,6 +208,13 @@
             <div class="status-dot" id="hpStatusDot"></div>
             <span id="hpStatusText">HP: belum terhubung</span>
         </div>
+        <div class="mode-switch">
+            🔧 Mode:
+            <select id="modeSelect">
+                <option value="simulasi">Simulasi (tanpa backend)</option>
+                <option value="produksi">Produksi (backend real)</option>
+            </select>
+        </div>
     </div>
     <div class="chat-area" id="chatArea">
         <div class="message bot">
@@ -228,17 +231,14 @@
         <button id="sendBtn">Kirim</button>
     </div>
     <div class="footer">
-        Pastikan aplikasi Android berjalan & layanan aksesibilitas aktif.
+        Mode Simulasi: backend tidak perlu. Mode Produksi: pastikan backend berjalan dan URL diatur.
     </div>
 </div>
 
 <script>
     // ========== KONFIGURASI ==========
-    // Ganti dengan URL backend Node.js kamu (bisa di Render, Railway, atau local dengan ngrok)
-    const BACKEND_URL = 'https://ai-backend-kamu.onrender.com'; // <-- GANTI DENGAN URL BACKEND ASLI
-    // IP HP untuk tes langsung (jika backend bisa akses ke HP di jaringan lokal)
-    // TAPI backend di cloud tidak bisa akses IP lokal, jadi butuh solusi lain (WebSocket atau tunnel)
-    // Untuk demo, kita hanya akan mengirim perintah ke backend, lalu backend mengirim ke HP (asumsi backend terhubung ke HP via WebSocket atau FCM)
+    // Ganti dengan URL backend kamu jika mode produksi
+    const BACKEND_URL_PRODUKSI = 'https://ai-bot-backend.onrender.com'; // <-- GANTI
 
     // ========== DOM Elements ==========
     const chatArea = document.getElementById('chatArea');
@@ -248,6 +248,9 @@
     const backendStatusText = document.getElementById('backendStatusText');
     const hpStatusDot = document.getElementById('hpStatusDot');
     const hpStatusText = document.getElementById('hpStatusText');
+    const modeSelect = document.getElementById('modeSelect');
+
+    let currentMode = 'simulasi'; // simulasi / produksi
 
     // ========== Helper Functions ==========
     function addMessage(text, sender) {
@@ -272,10 +275,15 @@
         if (typing) typing.remove();
     }
 
-    // Cek kesehatan backend
+    // ========== Status Backend (Produksi) ==========
     async function checkBackendStatus() {
+        if (currentMode !== 'produksi') {
+            backendStatusDot.classList.add('off');
+            backendStatusText.innerText = 'Backend: mode simulasi';
+            return;
+        }
         try {
-            const response = await fetch(`${BACKEND_URL}/health`, { method: 'GET', timeout: 5000 });
+            const response = await fetch(`${BACKEND_URL_PRODUKSI}/health`, { method: 'GET', signal: AbortSignal.timeout(5000) });
             if (response.ok) {
                 backendStatusDot.classList.remove('off');
                 backendStatusText.innerText = 'Backend: online';
@@ -288,14 +296,18 @@
         }
     }
 
-    // Update status HP dari backend (misal backend punya endpoint /hp-status)
     async function checkHPStatus() {
+        if (currentMode !== 'produksi') {
+            hpStatusDot.classList.add('off');
+            hpStatusText.innerText = 'HP: mode simulasi';
+            return;
+        }
         try {
-            const response = await fetch(`${BACKEND_URL}/hp-status`);
+            const response = await fetch(`${BACKEND_URL_PRODUKSI}/hp-status`, { signal: AbortSignal.timeout(5000) });
             const data = await response.json();
             if (data.connected) {
                 hpStatusDot.classList.remove('off');
-                hpStatusText.innerText = `HP: terhubung (${data.device || 'Android'})`;
+                hpStatusText.innerText = `HP: terhubung`;
             } else {
                 hpStatusDot.classList.add('off');
                 hpStatusText.innerText = 'HP: tidak terhubung';
@@ -306,10 +318,39 @@
         }
     }
 
-    // Kirim pesan ke backend
-    async function sendMessageToAI(message) {
+    // ========== Simulasi AI (tanpa backend) ==========
+    function simulateAI(message) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const lower = message.toLowerCase();
+                // Deteksi perintah sederhana
+                if (lower.includes('buka') || lower.includes('open')) {
+                    let app = message.match(/(?:buka|open)\s+(\w+)/i);
+                    let appName = app ? app[1] : 'aplikasi';
+                    resolve(`✅ Simulasi: perintah "buka ${appName}" dikirim ke HP. (Mode simulasi)`);
+                } else if (lower.includes('klik teks')) {
+                    let text = message.match(/klik teks\s+(.+)/i);
+                    let txt = text ? text[1] : 'teks';
+                    resolve(`✅ Simulasi: perintah "klik teks ${txt}" dikirim ke HP.`);
+                } else if (lower.includes('ketik')) {
+                    let txt = message.match(/ketik\s+(.+)/i);
+                    let teks = txt ? txt[1] : 'pesan';
+                    resolve(`✅ Simulasi: perintah "ketik ${teks}" dikirim ke HP.`);
+                } else if (lower.includes('back')) {
+                    resolve(`✅ Simulasi: perintah "back" dikirim ke HP.`);
+                } else if (lower.includes('home')) {
+                    resolve(`✅ Simulasi: perintah "home" dikirim ke HP.`);
+                } else {
+                    resolve(`🤖 Saya dalam mode simulasi. Saya tidak mengerti perintah: "${message}". Coba: "buka WhatsApp", "klik teks Login", "ketik halo", "back", "home".`);
+                }
+            }, 800);
+        });
+    }
+
+    // ========== Kirim ke Backend (Produksi) ==========
+    async function sendToBackend(message) {
         try {
-            const response = await fetch(`${BACKEND_URL}/chat`, {
+            const response = await fetch(`${BACKEND_URL_PRODUKSI}/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message })
@@ -319,11 +360,11 @@
             return data.reply;
         } catch (error) {
             console.error('Error:', error);
-            return 'Maaf, terjadi kesalahan saat menghubungi AI. Cek koneksi backend.';
+            return 'Maaf, terjadi kesalahan saat menghubungi backend. Cek URL atau koneksi.';
         }
     }
 
-    // Proses utama: kirim pesan user, tampilkan jawaban AI, dan jika ada perintah eksekusi ke HP
+    // ========== Proses Utama ==========
     async function handleUserMessage() {
         const message = messageInput.value.trim();
         if (!message) return;
@@ -332,15 +373,36 @@
         messageInput.value = '';
 
         showTyping();
-        const aiReply = await sendMessageToAI(message);
+
+        let reply;
+        if (currentMode === 'simulasi') {
+            reply = await simulateAI(message);
+        } else {
+            reply = await sendToBackend(message);
+        }
+
         removeTyping();
+        addMessage(reply, 'bot');
+    }
 
-        addMessage(aiReply, 'bot');
-
-        // Opsional: coba ekstrak apakah AI mengembalikan perintah untuk HP?
-        // Bisa juga backend langsung mengirim perintah ke HP via WebSocket.
-        // Di sini kita hanya menampilkan respons AI.
-        // Jika backend sudah terintegrasi dengan HP, tidak perlu kode tambahan.
+    // ========== Ganti Mode ==========
+    function changeMode() {
+        currentMode = modeSelect.value;
+        // Reset status
+        if (currentMode === 'simulasi') {
+            backendStatusDot.classList.add('off');
+            backendStatusText.innerText = 'Backend: mode simulasi';
+            hpStatusDot.classList.add('off');
+            hpStatusText.innerText = 'HP: mode simulasi';
+        } else {
+            checkBackendStatus();
+            checkHPStatus();
+            // Mulai interval jika belum
+            if (!window.backendInterval) {
+                window.backendInterval = setInterval(checkBackendStatus, 10000);
+                window.hpInterval = setInterval(checkHPStatus, 15000);
+            }
+        }
     }
 
     // ========== Event Listener ==========
@@ -348,12 +410,10 @@
     messageInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleUserMessage();
     });
+    modeSelect.addEventListener('change', changeMode);
 
     // ========== Inisialisasi ==========
-    setInterval(checkBackendStatus, 10000);
-    setInterval(checkHPStatus, 15000);
-    checkBackendStatus();
-    checkHPStatus();
+    changeMode(); // set awal
 </script>
 </body>
 </html>
