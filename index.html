@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Jurnal Trading - Profit/Loss Otomatis (USD per Lot)</title>
+    <title>Jurnal Trading - Perhitungan Pip (0.01 lot = $1/pip)</title>
     <style>
         * {
             box-sizing: border-box;
@@ -16,7 +16,7 @@
             color: #1e293b;
         }
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
             background: white;
             border-radius: 32px;
@@ -85,15 +85,6 @@
             outline: none;
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
-        }
-        .profit-preview {
-            background: #eef2ff;
-            border-radius: 24px;
-            padding: 12px 16px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #1e40af;
-            text-align: center;
         }
         button {
             background: #2563eb;
@@ -248,15 +239,23 @@
                 font-size: 1.2rem;
             }
         }
+        .note {
+            background: #fef9e3;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-top: 12px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>
         📊 Jurnal Trading Pro
-        <small>Auto P/L USD per Lot (0.01 - 100)</small>
+        <small>Pip-based: 0.01 lot = $1/pip</small>
     </h1>
-    <div class="sub">💡 Hitung profit/loss otomatis: (Harga Keluar - Harga Masuk) × Lot × 100.000 × arah (Buy/Sell) → USD (asumsi pair XXX/USD)</div>
+    <div class="sub">💡 Perhitungan profit: (Harga Keluar - Harga Masuk) × Lot × 1.000.000 × Arah (Buy=+, Sell=-) → USD. 1 pip = 0.0001, jadi 0.01 lot = $1/pip.</div>
 
     <!-- Form Tambah / Edit -->
     <div class="form-panel">
@@ -288,7 +287,11 @@
                 <div class="form-field">
                     <label>📦 Lot (0.01 - 100)</label>
                     <input type="number" step="0.01" min="0.01" max="100" id="lot" placeholder="0.1" value="">
-                    <div style="font-size: 0.7rem; color: #4b5563;">1 lot = 100.000 unit</div>
+                    <div style="font-size: 0.7rem; color: #4b5563;">0.01 lot = $1/pip</div>
+                </div>
+                <div class="form-field">
+                    <label>📏 Pips</label>
+                    <input type="number" step="any" id="pips" readonly style="background:#eef2ff; font-weight:bold;">
                 </div>
                 <div class="form-field">
                     <label>💵 Profit / Loss (USD) *otomatis</label>
@@ -339,15 +342,16 @@
             <thead>
                 <tr>
                     <th>Tanggal</th><th>Pasangan</th><th>Arah</th><th>Entry</th><th>Exit</th><th>Lot</th>
-                    <th>P/L (USD)</th><th>Komisi</th><th>Swap</th><th>Net Profit</th><th>Strategi</th><th>Status</th><th>Catatan</th><th>Aksi</th>
+                    <th>Pips</th><th>P/L (USD)</th><th>Komisi</th><th>Swap</th><th>Net Profit</th><th>Strategi</th><th>Status</th><th>Catatan</th><th>Aksi</th>
                 </tr>
             </thead>
             <tbody id="tradeTableBody">
-                <tr><td colspan="14" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>
+                <tr><td colspan="15" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>
             </tbody>
         </table>
     </div>
-    <footer>⚡ Profit/Loss otomatis = (Harga Keluar - Harga Masuk) × Lot × 100.000 × (1 untuk Buy, -1 untuk Sell). Hasil dalam USD (asumsi pair XXX/USD). Net Profit = P/L - Komisi - Swap. Data tersimpan otomatis di browser.</footer>
+    <footer>⚡ Perhitungan: Pips = (Harga Keluar - Harga Masuk) / 0.0001 (disesuaikan arah). Profit = Pips × Lot × 100 (karena 0.01 lot = $1/pip, maka 1 lot = $100/pip). Net Profit = P/L - Komisi - Swap. Data tersimpan otomatis di browser.</footer>
+    <div class="note">📌 Catatan: Rumus profit = (Harga Keluar - Harga Masuk) × Lot × 1.000.000 × Arah. 1.000.000 = 100 (pip value per lot) / 0.0001. Untuk 0.01 lot, 1 pip = $1.</div>
 </div>
 
 <script>
@@ -355,34 +359,48 @@
     let trades = [];
     let editIndex = null;
 
-    // Fungsi hitung profit/loss otomatis dari entry, exit, lot, arah
-    function calculateAutoPL(entry, exit, lot, arah) {
-        if (entry === null || exit === null || lot === null || isNaN(entry) || isNaN(exit) || isNaN(lot)) return 0;
-        const diff = exit - entry;
-        const direction = (arah === "Buy") ? 1 : -1;
-        const pl = diff * lot * 100000 * direction;
-        return parseFloat(pl.toFixed(2));
+    // Fungsi hitung pips (absolut berdasarkan selisih harga)
+    function calculatePips(entry, exit, arah) {
+        if (entry === null || exit === null || isNaN(entry) || isNaN(exit)) return 0;
+        let diff = exit - entry;
+        if (arah === "Sell") diff = entry - exit; // untuk pips, kita ingin pips positif jika profit
+        const pips = diff / 0.0001;
+        return parseFloat(pips.toFixed(2));
     }
 
-    // Update field profit/loss secara realtime
-    function updateProfitLossPreview() {
+    // Hitung profit/loss berdasarkan pips dan lot (0.01 lot = $1/pip)
+    function calculateProfitFromPips(pips, lot, arah) {
+        if (pips === null || lot === null || isNaN(pips) || isNaN(lot)) return 0;
+        // Untuk Buy, pips positif = profit; Sell, pips positif = profit (sudah dibalik di calculatePips)
+        // Profit = pips * lot * 100 (karena 1 lot = $100/pip)
+        const profit = pips * lot * 100;
+        return parseFloat(profit.toFixed(2));
+    }
+
+    // Fungsi utama: update pips dan profit dari entry, exit, lot, arah
+    function updatePipsAndProfit() {
         const entry = parseFloat(document.getElementById("hargaMasuk").value);
         const exit = parseFloat(document.getElementById("hargaKeluar").value);
         const lot = parseFloat(document.getElementById("lot").value);
         const arah = document.getElementById("arah").value;
-        const pl = calculateAutoPL(entry, exit, lot, arah);
+        let pips = 0, pl = 0;
+        if (!isNaN(entry) && !isNaN(exit) && !isNaN(lot)) {
+            pips = calculatePips(entry, exit, arah);
+            pl = calculateProfitFromPips(pips, lot, arah);
+        }
+        document.getElementById("pips").value = pips;
         document.getElementById("profitLossManual").value = pl;
     }
 
-    // Event listener untuk input yang mempengaruhi profit
-    function bindAutoPL() {
+    // Event listener untuk input yang mempengaruhi perhitungan
+    function bindAutoCalculations() {
         const fields = ['hargaMasuk', 'hargaKeluar', 'lot', 'arah'];
         fields.forEach(id => {
             const el = document.getElementById(id);
-            el.addEventListener('input', updateProfitLossPreview);
-            el.addEventListener('change', updateProfitLossPreview);
+            el.addEventListener('input', updatePipsAndProfit);
+            el.addEventListener('change', updatePipsAndProfit);
         });
-        updateProfitLossPreview();
+        updatePipsAndProfit();
     }
 
     // Helper: hitung net profit & status
@@ -398,13 +416,13 @@
 
     // Simpan ke localStorage & render ulang
     function saveTrades() {
-        localStorage.setItem("tradingJournalAutoLot", JSON.stringify(trades));
+        localStorage.setItem("tradingJournalPip", JSON.stringify(trades));
         renderStats();
         renderTable();
     }
 
     function loadTrades() {
-        const stored = localStorage.getItem("tradingJournalAutoLot");
+        const stored = localStorage.getItem("tradingJournalPip");
         if(stored) {
             try {
                 trades = JSON.parse(stored);
@@ -438,6 +456,7 @@
     function resetForm() {
         document.getElementById("tradeForm").reset();
         document.getElementById("tanggal").valueAsDate = new Date();
+        document.getElementById("pips").value = "";
         document.getElementById("profitLossManual").value = "";
         document.getElementById("komisi").value = "0";
         document.getElementById("swap").value = "0";
@@ -447,7 +466,7 @@
         editIndex = null;
         document.getElementById("submitBtn").innerHTML = "➕ Tambah Transaksi";
         document.getElementById("cancelEditBtn").style.display = "none";
-        updateProfitLossPreview();
+        updatePipsAndProfit();
     }
 
     function editTrade(index) {
@@ -459,6 +478,7 @@
         document.getElementById("hargaMasuk").value = t.hargaMasuk ?? "";
         document.getElementById("hargaKeluar").value = t.hargaKeluar ?? "";
         document.getElementById("lot").value = t.lot ?? "";
+        document.getElementById("pips").value = t.pips ?? "";
         document.getElementById("profitLossManual").value = t.profitLossManual ?? "";
         document.getElementById("komisi").value = t.komisi ?? 0;
         document.getElementById("swap").value = t.swap ?? 0;
@@ -467,7 +487,7 @@
         editIndex = index;
         document.getElementById("submitBtn").innerHTML = "✏️ Simpan Perubahan";
         document.getElementById("cancelEditBtn").style.display = "inline-flex";
-        updateProfitLossPreview();
+        updatePipsAndProfit();
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -492,13 +512,14 @@
     function renderTable() {
         const tbody = document.getElementById("tradeTableBody");
         if(trades.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="14" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="15" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>';
             return;
         }
         let html = "";
         trades.forEach((trade, idx) => {
             const net = (trade.netProfit !== undefined ? trade.netProfit : 0).toFixed(2);
             const plRaw = (trade.profitLossManual || 0).toFixed(2);
+            const pips = (trade.pips !== undefined ? trade.pips : 0).toFixed(1);
             let statusClass = "";
             let statusText = trade.status || (net>0?"Win":net<0?"Loss":"Breakeven");
             if(statusText === "Win") statusClass = "win";
@@ -511,6 +532,7 @@
                 <td>${trade.hargaMasuk ?? "-"}</td>
                 <td>${trade.hargaKeluar ?? "-"}</td>
                 <td>${trade.lot ?? "-"}</td>
+                <td>${pips}</td>
                 <td>${plRaw}</td>
                 <td>${(trade.komisi || 0).toFixed(2)}</td>
                 <td>${(trade.swap || 0).toFixed(2)}</td>
@@ -549,10 +571,10 @@
             alert("Tidak ada data untuk diexport.");
             return;
         }
-        const headers = ["Tanggal","Pasangan","Arah","Harga Masuk","Harga Keluar","Lot","Profit/Loss (USD)","Komisi","Swap","Net Profit","Strategi","Status","Catatan"];
+        const headers = ["Tanggal","Pasangan","Arah","Harga Masuk","Harga Keluar","Lot","Pips","Profit/Loss (USD)","Komisi","Swap","Net Profit","Strategi","Status","Catatan"];
         const rows = trades.map(t => [
             t.tanggal, t.pasangan, t.arah, t.hargaMasuk, t.hargaKeluar, t.lot,
-            t.profitLossManual, t.komisi, t.swap, t.netProfit, t.strategi, t.status, t.catatan
+            t.pips, t.profitLossManual, t.komisi, t.swap, t.netProfit, t.strategi, t.status, t.catatan
         ]);
         let csvContent = headers.map(h => `"${h}"`).join(",") + "\n";
         rows.forEach(row => {
@@ -568,7 +590,7 @@
         const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
         link.href = url;
-        link.setAttribute("download", "jurnal_trading_lot.csv");
+        link.setAttribute("download", "jurnal_trading_pip.csv");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -584,6 +606,7 @@
             hargaMasuk: parseFloat(document.getElementById("hargaMasuk").value) || null,
             hargaKeluar: parseFloat(document.getElementById("hargaKeluar").value) || null,
             lot: parseFloat(document.getElementById("lot").value) || null,
+            pips: parseFloat(document.getElementById("pips").value) || 0,
             profitLossManual: parseFloat(document.getElementById("profitLossManual").value) || 0,
             komisi: parseFloat(document.getElementById("komisi").value) || 0,
             swap: parseFloat(document.getElementById("swap").value) || 0,
@@ -605,7 +628,7 @@
             return;
         }
         if(formData.hargaMasuk === null || formData.hargaKeluar === null || formData.lot === null) {
-            alert("Harga Masuk, Harga Keluar, dan Lot harus diisi agar profit/loss terhitung.");
+            alert("Harga Masuk, Harga Keluar, dan Lot harus diisi.");
             return;
         }
         if(formData.lot < 0.01 || formData.lot > 100) {
@@ -626,7 +649,7 @@
 
     // Set tanggal default hari ini
     document.getElementById("tanggal").valueAsDate = new Date();
-    bindAutoPL();
+    bindAutoCalculations();
     loadTrades();
 </script>
 </body>
