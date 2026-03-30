@@ -3,794 +3,357 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Jurnal Trading - Dengan Grafik Equity</title>
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <title>AI Bot Worker - Asisten HP</title>
     <style>
         * {
-            box-sizing: border-box;
-            font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
-        }
-        body {
-            background: #f0f4f8;
             margin: 0;
-            padding: 20px;
-            color: #1e293b;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container {
-            max-width: 1500px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-            padding: 24px 28px;
-        }
-        h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0 0 0.25rem 0;
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
+            padding: 20px;
         }
-        h1 small {
-            font-size: 0.8rem;
-            font-weight: normal;
-            background: #e6f0fa;
-            padding: 5px 14px;
-            border-radius: 40px;
-            color: #0f3b5c;
-        }
-        .sub {
-            color: #475569;
-            border-left: 4px solid #2563eb;
-            padding-left: 16px;
-            margin: 12px 0 24px 0;
-            font-size: 0.9rem;
-        }
-        .form-panel {
-            background: #f9fafb;
-            border-radius: 28px;
-            padding: 20px 24px;
-            margin-bottom: 32px;
-            border: 1px solid #e2e8f0;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 18px 20px;
-            align-items: end;
-        }
-        .form-field {
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            height: 90vh;
+            max-height: 800px;
         }
-        .form-field label {
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #334155;
-        }
-        input, select, textarea {
-            padding: 10px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 18px;
-            font-size: 0.9rem;
-            background: white;
-            transition: 0.2s;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
-        }
-        button {
-            background: #2563eb;
+
+        .header {
+            background: #1a1a2e;
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .status-bar {
+            background: #f0f0f0;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .status {
+            display: flex;
             align-items: center;
             gap: 8px;
-            justify-content: center;
         }
-        button:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4caf50;
+            box-shadow: 0 0 5px #4caf50;
         }
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #1e293b;
+
+        .status-dot.off {
+            background-color: #f44336;
+            box-shadow: none;
         }
-        .btn-secondary:hover {
-            background: #cbd5e1;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #cbd5e1;
-            color: #334155;
-        }
-        .btn-outline:hover {
-            background: #f1f5f9;
-        }
-        .btn-danger {
-            background: #dc2626;
-        }
-        .btn-danger:hover {
-            background: #b91c1c;
-        }
-        .action-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        .stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .stat-card {
-            background: #f8fafc;
-            border-radius: 28px;
-            padding: 8px 20px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-        }
-        .stat-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: #475569;
-        }
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-        .chart-container {
-            background: #ffffff;
-            border-radius: 24px;
+
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
             padding: 20px;
-            margin-bottom: 30px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #f9f9fc;
         }
-        .chart-container h3 {
-            margin-top: 0;
-            margin-bottom: 16px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1e293b;
+
+        .message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            animation: fadeIn 0.2s ease;
         }
-        canvas {
-            max-height: 400px;
-            width: 100%;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px);}
+            to { opacity: 1; transform: translateY(0);}
         }
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
+
+        .user {
+            align-self: flex-end;
+            background: #667eea;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot {
+            align-self: flex-start;
             background: white;
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 4px;
+            color: #333;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
+
+        .typing {
+            align-self: flex-start;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 18px;
+            padding: 10px 14px;
+            color: #888;
+            font-style: italic;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
-        th {
-            background: #f1f5f9;
-            padding: 14px 10px;
-            text-align: left;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
+
+        .typing span {
+            animation: blink 1.4s infinite;
         }
-        td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e9eef3;
-            vertical-align: middle;
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
         }
-        td.numeric, th.numeric {
-            text-align: right;
+
+        .input-area {
+            display: flex;
+            padding: 16px;
+            background: white;
+            border-top: 1px solid #eee;
+            gap: 10px;
         }
-        .win {
-            background-color: #d1fae5;
-            color: #065f46;
-            font-weight: 600;
+
+        .input-area input {
+            flex: 1;
+            border: 1px solid #ddd;
             border-radius: 40px;
-            display: inline-block;
-            padding: 4px 12px;
+            padding: 12px 18px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s;
         }
-        .loss {
-            background-color: #fee2e2;
-            color: #991b1b;
-            font-weight: 600;
+
+        .input-area input:focus {
+            border-color: #667eea;
+        }
+
+        .input-area button {
+            background: #667eea;
+            border: none;
             border-radius: 40px;
-            display: inline-block;
-            padding: 4px 12px;
+            padding: 0 24px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
         }
-        .neutral {
-            background-color: #fef9c3;
-            color: #854d0e;
-            border-radius: 40px;
-            display: inline-block;
-            padding: 4px 12px;
+
+        .input-area button:hover {
+            background: #5a67d8;
         }
-        .btn-icon {
-            background: none;
-            padding: 6px 12px;
-            color: #2563eb;
-            border-radius: 30px;
-            font-size: 0.75rem;
-        }
-        .btn-icon:hover {
-            background: #eef2ff;
-            transform: none;
-        }
-        .delete-icon {
-            color: #dc2626;
-        }
-        .empty-row {
+
+        .footer {
+            padding: 8px;
             text-align: center;
-            padding: 40px;
-            color: #64748b;
+            font-size: 0.7rem;
+            color: #aaa;
+            background: white;
+            border-top: 1px solid #eee;
         }
-        footer {
-            margin-top: 28px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-        @media (max-width: 700px) {
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .message {
+                max-width: 90%;
+            }
             .container {
-                padding: 16px;
+                height: 95vh;
+                border-radius: 16px;
             }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .stat-value {
-                font-size: 1.2rem;
-            }
-            .chart-container {
-                padding: 12px;
-            }
-        }
-        .note {
-            background: #fef9e3;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            margin-top: 12px;
-            text-align: center;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>
-        📊 Jurnal Trading Pro
-        <small>Pip: 0.01 lot = $1/pip | Grafik Equity</small>
-    </h1>
-    <div class="sub">💡 Perhitungan profit: (Harga Keluar - Harga Masuk) × Lot × 1.000.000 × Arah → USD. Semua nilai USD ditampilkan dengan 2 angka desimal dan simbol $.</div>
-
-    <!-- Form Tambah / Edit -->
-    <div class="form-panel">
-        <form id="tradeForm">
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>📅 Tanggal</label>
-                    <input type="date" id="tanggal" required>
-                </div>
-                <div class="form-field">
-                    <label>🪙 Pasangan</label>
-                    <input type="text" id="pasangan" placeholder="EUR/USD, GBP/USD" required>
-                </div>
-                <div class="form-field">
-                    <label>⬆️ Arah</label>
-                    <select id="arah">
-                        <option value="Buy">Buy (Long)</option>
-                        <option value="Sell">Sell (Short)</option>
-                    </select>
-                </div>
-                <div class="form-field">
-                    <label>💰 Harga Masuk (Entry)</label>
-                    <input type="number" step="any" id="hargaMasuk" placeholder="1.0850" value="">
-                </div>
-                <div class="form-field">
-                    <label>💸 Harga Keluar (Exit)</label>
-                    <input type="number" step="any" id="hargaKeluar" placeholder="1.0875" value="">
-                </div>
-                <div class="form-field">
-                    <label>📦 Lot (0.01 - 100)</label>
-                    <input type="number" step="0.01" min="0.01" max="100" id="lot" placeholder="0.1" value="">
-                    <div style="font-size: 0.7rem; color: #4b5563;">0.01 lot = $1/pip</div>
-                </div>
-                <div class="form-field">
-                    <label>📏 Pips</label>
-                    <input type="number" step="any" id="pips" readonly style="background:#eef2ff; font-weight:bold;">
-                </div>
-                <div class="form-field">
-                    <label>💵 Profit / Loss (USD)</label>
-                    <input type="number" step="any" id="profitLossManual" readonly style="background:#eef2ff; font-weight:bold;">
-                </div>
-                <div class="form-field">
-                    <label>💸 Komisi (USD)</label>
-                    <input type="number" step="any" id="komisi" value="0">
-                </div>
-                <div class="form-field">
-                    <label>🔄 Swap (USD)</label>
-                    <input type="number" step="any" id="swap" value="0">
-                </div>
-                <div class="form-field">
-                    <label>📌 Strategi</label>
-                    <input type="text" id="strategi" placeholder="Scalping, Breakout...">
-                </div>
-                <div class="form-field">
-                    <label>📝 Catatan</label>
-                    <input type="text" id="catatan" placeholder="Emosi, konteks...">
-                </div>
-            </div>
-            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-                <button type="button" id="cancelEditBtn" class="btn-outline" style="display: none;">Batal Edit</button>
-                <button type="submit" id="submitBtn">➕ Tambah Transaksi</button>
-            </div>
-        </form>
+    <div class="header">
+        <h1>🤖 AI Bot Worker</h1>
+        <p>Asisten pribadi untuk Android • Bisa buka app & klik otomatis</p>
     </div>
-
-    <!-- Grafik Equity -->
-    <div class="chart-container">
-        <h3>📈 Equity Curve (Cumulative Net Profit)</h3>
-        <canvas id="equityChart" width="800" height="400" style="max-width:100%; height:auto;"></canvas>
-    </div>
-
-    <!-- Action Bar + Statistik -->
-    <div class="action-bar">
-        <div class="stats">
-            <div class="stat-card"><div class="stat-label">Total Trades</div><div class="stat-value" id="totalTrades">0</div></div>
-            <div class="stat-card"><div class="stat-label">Win Rate</div><div class="stat-value" id="winRate">0%</div></div>
-            <div class="stat-card"><div class="stat-label">Net Profit (USD)</div><div class="stat-value" id="totalNetProfit">$0.00</div></div>
-            <div class="stat-card"><div class="stat-label">Avg R/R</div><div class="stat-value" id="avgRR">-</div></div>
+    <div class="status-bar">
+        <div class="status">
+            <div class="status-dot" id="backendStatusDot"></div>
+            <span id="backendStatusText">Backend: mengecek...</span>
         </div>
-        <div style="display: flex; gap: 10px;">
-            <button id="exportExcelBtn" class="btn-secondary">📎 Export CSV (Excel)</button>
-            <button id="printPdfBtn" class="btn-secondary">🖨️ Cetak / PDF</button>
-            <button id="clearAllBtn" class="btn-danger">🗑️ Hapus Semua</button>
+        <div class="status">
+            <div class="status-dot" id="hpStatusDot"></div>
+            <span id="hpStatusText">HP: belum terhubung</span>
         </div>
     </div>
-
-    <!-- Tabel Jurnal -->
-    <div class="table-wrapper">
-        <table id="tradeTable">
-            <thead>
-                <tr>
-                    <th>Tanggal</th><th>Pasangan</th><th>Arah</th><th>Entry</th><th>Exit</th><th>Lot</th>
-                    <th class="numeric">Pips</th><th class="numeric">P/L (USD)</th><th class="numeric">Komisi</th><th class="numeric">Swap</th><th class="numeric">Net Profit</th><th>Strategi</th><th>Status</th><th>Catatan</th><th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="tradeTableBody">
-                <tr><td colspan="15" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>
-            </tbody>
-        </table>
+    <div class="chat-area" id="chatArea">
+        <div class="message bot">
+            Halo! Saya asisten AI yang bisa mengontrol HP Android kamu. <br>
+            Contoh perintah:<br>
+            • "Buka WhatsApp"<br>
+            • "Klik teks 'Login'"<br>
+            • "Ketik 'Halo' di kolom chat"<br>
+            • "Back" atau "Home"
+        </div>
     </div>
-    <footer>⚡ Perhitungan: Pips = (Harga Keluar - Harga Masuk) / 0.0001 (disesuaikan arah). Profit = Pips × Lot × 100. Net Profit = Profit - Komisi - Swap. Semua USD ditampilkan dengan 2 angka desimal dan simbol $.</footer>
-    <div class="note">📌 Catatan: 0.01 lot = $1/pip → 1 lot = $100/pip. Grafik equity menampilkan akumulasi net profit berdasarkan urutan tanggal.</div>
+    <div class="input-area">
+        <input type="text" id="messageInput" placeholder="Ketik perintah untuk AI..." autofocus>
+        <button id="sendBtn">Kirim</button>
+    </div>
+    <div class="footer">
+        Pastikan aplikasi Android berjalan & layanan aksesibilitas aktif.
+    </div>
 </div>
 
 <script>
-    // ---------- DATA ----------
-    let trades = [];
-    let editIndex = null;
-    let chart; // Chart.js instance
+    // ========== KONFIGURASI ==========
+    // Ganti dengan URL backend Node.js kamu (bisa di Render, Railway, atau local dengan ngrok)
+    const BACKEND_URL = 'https://ai-backend-kamu.onrender.com'; // <-- GANTI DENGAN URL BACKEND ASLI
+    // IP HP untuk tes langsung (jika backend bisa akses ke HP di jaringan lokal)
+    // TAPI backend di cloud tidak bisa akses IP lokal, jadi butuh solusi lain (WebSocket atau tunnel)
+    // Untuk demo, kita hanya akan mengirim perintah ke backend, lalu backend mengirim ke HP (asumsi backend terhubung ke HP via WebSocket atau FCM)
 
-    // Fungsi hitung pips (absolut berdasarkan selisih harga)
-    function calculatePips(entry, exit, arah) {
-        if (entry === null || exit === null || isNaN(entry) || isNaN(exit)) return 0;
-        let diff = exit - entry;
-        if (arah === "Sell") diff = entry - exit;
-        const pips = diff / 0.0001;
-        return parseFloat(pips.toFixed(2));
+    // ========== DOM Elements ==========
+    const chatArea = document.getElementById('chatArea');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const backendStatusDot = document.getElementById('backendStatusDot');
+    const backendStatusText = document.getElementById('backendStatusText');
+    const hpStatusDot = document.getElementById('hpStatusDot');
+    const hpStatusText = document.getElementById('hpStatusText');
+
+    // ========== Helper Functions ==========
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', sender);
+        messageDiv.innerText = text;
+        chatArea.appendChild(messageDiv);
+        chatArea.scrollTop = chatArea.scrollHeight;
     }
 
-    // Hitung profit berdasarkan pips dan lot (0.01 lot = $1/pip)
-    function calculateProfitFromPips(pips, lot) {
-        if (pips === null || lot === null || isNaN(pips) || isNaN(lot)) return 0;
-        const profit = pips * lot * 100;
-        return parseFloat(profit.toFixed(2));
+    function showTyping() {
+        const typingDiv = document.createElement('div');
+        typingDiv.classList.add('typing');
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = 'AI sedang mengetik<span>.</span><span>.</span><span>.</span>';
+        chatArea.appendChild(typingDiv);
+        chatArea.scrollTop = chatArea.scrollHeight;
     }
 
-    // Fungsi utama: update pips dan profit dari entry, exit, lot, arah
-    function updatePipsAndProfit() {
-        const entry = parseFloat(document.getElementById("hargaMasuk").value);
-        const exit = parseFloat(document.getElementById("hargaKeluar").value);
-        const lot = parseFloat(document.getElementById("lot").value);
-        const arah = document.getElementById("arah").value;
-        let pips = 0, pl = 0;
-        if (!isNaN(entry) && !isNaN(exit) && !isNaN(lot)) {
-            pips = calculatePips(entry, exit, arah);
-            pl = calculateProfitFromPips(pips, lot);
-        }
-        document.getElementById("pips").value = pips;
-        document.getElementById("profitLossManual").value = pl;
+    function removeTyping() {
+        const typing = document.getElementById('typingIndicator');
+        if (typing) typing.remove();
     }
 
-    // Event listener untuk input yang mempengaruhi perhitungan
-    function bindAutoCalculations() {
-        const fields = ['hargaMasuk', 'hargaKeluar', 'lot', 'arah'];
-        fields.forEach(id => {
-            const el = document.getElementById(id);
-            el.addEventListener('input', updatePipsAndProfit);
-            el.addEventListener('change', updatePipsAndProfit);
-        });
-        updatePipsAndProfit();
-    }
-
-    // Helper: hitung net profit & status
-    function computeNetProfitAndStatus(trade) {
-        let pl = parseFloat(trade.profitLossManual) || 0;
-        let komisi = parseFloat(trade.komisi) || 0;
-        let swap = parseFloat(trade.swap) || 0;
-        let net = pl - komisi - swap;
-        trade.netProfit = parseFloat(net.toFixed(2));
-        trade.status = net > 0 ? "Win" : (net < 0 ? "Loss" : "Breakeven");
-        return trade;
-    }
-
-    // Simpan ke localStorage & render ulang
-    function saveTrades() {
-        localStorage.setItem("tradingJournalPip", JSON.stringify(trades));
-        renderStats();
-        renderTable();
-        updateChart(); // Update grafik setelah data berubah
-    }
-
-    function loadTrades() {
-        const stored = localStorage.getItem("tradingJournalPip");
-        if(stored) {
-            try {
-                trades = JSON.parse(stored);
-                trades = trades.map(t => computeNetProfitAndStatus(t));
-            } catch(e) { trades = []; }
-        } else {
-            trades = [];
-        }
-        renderStats();
-        renderTable();
-        updateChart();
-    }
-
-    // Tambah / Update trade
-    function addOrUpdateTrade(formData) {
-        if(editIndex !== null) {
-            let updated = { ...formData };
-            updated = computeNetProfitAndStatus(updated);
-            trades[editIndex] = updated;
-            editIndex = null;
-            document.getElementById("submitBtn").innerHTML = "➕ Tambah Transaksi";
-            document.getElementById("cancelEditBtn").style.display = "none";
-        } else {
-            let newTrade = { ...formData };
-            newTrade = computeNetProfitAndStatus(newTrade);
-            trades.push(newTrade);
-        }
-        saveTrades();
-        resetForm();
-    }
-
-    function resetForm() {
-        document.getElementById("tradeForm").reset();
-        document.getElementById("tanggal").valueAsDate = new Date();
-        document.getElementById("pips").value = "";
-        document.getElementById("profitLossManual").value = "";
-        document.getElementById("komisi").value = "0";
-        document.getElementById("swap").value = "0";
-        document.getElementById("lot").value = "";
-        document.getElementById("hargaMasuk").value = "";
-        document.getElementById("hargaKeluar").value = "";
-        editIndex = null;
-        document.getElementById("submitBtn").innerHTML = "➕ Tambah Transaksi";
-        document.getElementById("cancelEditBtn").style.display = "none";
-        updatePipsAndProfit();
-    }
-
-    function editTrade(index) {
-        const t = trades[index];
-        if(!t) return;
-        document.getElementById("tanggal").value = t.tanggal || "";
-        document.getElementById("pasangan").value = t.pasangan || "";
-        document.getElementById("arah").value = t.arah || "Buy";
-        document.getElementById("hargaMasuk").value = t.hargaMasuk ?? "";
-        document.getElementById("hargaKeluar").value = t.hargaKeluar ?? "";
-        document.getElementById("lot").value = t.lot ?? "";
-        document.getElementById("pips").value = t.pips ?? "";
-        document.getElementById("profitLossManual").value = t.profitLossManual ?? "";
-        document.getElementById("komisi").value = t.komisi ?? 0;
-        document.getElementById("swap").value = t.swap ?? 0;
-        document.getElementById("strategi").value = t.strategi || "";
-        document.getElementById("catatan").value = t.catatan || "";
-        editIndex = index;
-        document.getElementById("submitBtn").innerHTML = "✏️ Simpan Perubahan";
-        document.getElementById("cancelEditBtn").style.display = "inline-flex";
-        updatePipsAndProfit();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function deleteTrade(index) {
-        if(confirm("Hapus transaksi ini?")) {
-            trades.splice(index,1);
-            saveTrades();
-            if(editIndex === index) resetForm();
-            else if(editIndex !== null && editIndex > index) editIndex--;
-        }
-    }
-
-    function confirmClearAll() {
-        if(confirm("⚠️ Yakin ingin menghapus SEMUA data jurnal?")) {
-            trades = [];
-            saveTrades();
-            resetForm();
-        }
-    }
-
-    // Helper format USD dengan 2 desimal dan simbol $
-    function formatUSD(value) {
-        return "$" + value.toFixed(2);
-    }
-
-    // Render tabel dengan format rapi
-    function renderTable() {
-        const tbody = document.getElementById("tradeTableBody");
-        if(trades.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="15" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>';
-            return;
-        }
-        let html = "";
-        trades.forEach((trade, idx) => {
-            const net = trade.netProfit !== undefined ? trade.netProfit : 0;
-            const plRaw = trade.profitLossManual || 0;
-            const pips = trade.pips !== undefined ? trade.pips : 0;
-            const komisi = trade.komisi || 0;
-            const swap = trade.swap || 0;
-            
-            let statusClass = "";
-            let statusText = trade.status || (net>0?"Win":net<0?"Loss":"Breakeven");
-            if(statusText === "Win") statusClass = "win";
-            else if(statusText === "Loss") statusClass = "loss";
-            else statusClass = "neutral";
-            
-            html += `<tr>
-                <td>${trade.tanggal || "-"}</td>
-                <td>${trade.pasangan || "-"}</td>
-                <td>${trade.arah || "-"}</td>
-                <td>${trade.hargaMasuk ?? "-"}</td>
-                <td>${trade.hargaKeluar ?? "-"}</td>
-                <td>${trade.lot ?? "-"}</td>
-                <td class="numeric">${pips.toFixed(1)}</td>
-                <td class="numeric">${formatUSD(plRaw)}</td>
-                <td class="numeric">${formatUSD(komisi)}</td>
-                <td class="numeric">${formatUSD(swap)}</td>
-                <td class="numeric"><strong>${formatUSD(net)}</strong></td>
-                <td>${trade.strategi || "-"}</td>
-                <td><span class="${statusClass}">${statusText}</span></td>
-                <td style="max-width:150px; overflow-x:auto;">${trade.catatan || "-"}</td>
-                <td>
-                    <button class="btn-icon" onclick="editTrade(${idx})">✏️ Edit</button>
-                    <button class="btn-icon delete-icon" onclick="deleteTrade(${idx})">🗑️</button>
-                </td>
-            </tr>`;
-        });
-        tbody.innerHTML = html;
-    }
-
-    // Statistik dengan format USD
-    function renderStats() {
-        const total = trades.length;
-        let wins = trades.filter(t => t.netProfit > 0).length;
-        let loss = trades.filter(t => t.netProfit < 0).length;
-        let winRate = total === 0 ? 0 : (wins / total) * 100;
-        let totalNet = trades.reduce((sum, t) => sum + (t.netProfit || 0), 0);
-        document.getElementById("totalTrades").innerText = total;
-        document.getElementById("winRate").innerText = winRate.toFixed(1) + "%";
-        document.getElementById("totalNetProfit").innerHTML = formatUSD(totalNet);
-        let avgProfit = trades.filter(t=>t.netProfit>0).reduce((a,b)=>a+(b.netProfit||0),0) / (wins||1);
-        let avgLoss = trades.filter(t=>t.netProfit<0).reduce((a,b)=>a+Math.abs(b.netProfit||0),0) / (loss||1);
-        let rr = (avgProfit && avgLoss) ? (avgProfit/avgLoss).toFixed(2) : "-";
-        document.getElementById("avgRR").innerText = (rr !== "-" && rr !== "Infinity") ? rr : "-";
-    }
-
-    // Grafik equity curve (cumulative net profit berdasarkan tanggal)
-    function updateChart() {
-        const ctx = document.getElementById('equityChart').getContext('2d');
-        if (trades.length === 0) {
-            if (chart) {
-                chart.destroy();
-                chart = null;
+    // Cek kesehatan backend
+    async function checkBackendStatus() {
+        try {
+            const response = await fetch(`${BACKEND_URL}/health`, { method: 'GET', timeout: 5000 });
+            if (response.ok) {
+                backendStatusDot.classList.remove('off');
+                backendStatusText.innerText = 'Backend: online';
+            } else {
+                throw new Error();
             }
-            // Tampilkan pesan tidak ada data di canvas
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.font = "14px system-ui";
-            ctx.fillStyle = "#94a3b8";
-            ctx.textAlign = "center";
-            ctx.fillText("Belum ada data transaksi", ctx.canvas.width/2, ctx.canvas.height/2);
-            return;
+        } catch (e) {
+            backendStatusDot.classList.add('off');
+            backendStatusText.innerText = 'Backend: offline';
         }
+    }
 
-        // Urutkan berdasarkan tanggal (string YYYY-MM-DD)
-        const sorted = [...trades].sort((a,b) => (a.tanggal || "").localeCompare(b.tanggal || ""));
-        const labels = sorted.map(t => t.tanggal || "?");
-        // Hitung cumulative net profit
-        let cumulative = 0;
-        const cumulativeData = sorted.map(t => {
-            cumulative += (t.netProfit || 0);
-            return parseFloat(cumulative.toFixed(2));
-        });
+    // Update status HP dari backend (misal backend punya endpoint /hp-status)
+    async function checkHPStatus() {
+        try {
+            const response = await fetch(`${BACKEND_URL}/hp-status`);
+            const data = await response.json();
+            if (data.connected) {
+                hpStatusDot.classList.remove('off');
+                hpStatusText.innerText = `HP: terhubung (${data.device || 'Android'})`;
+            } else {
+                hpStatusDot.classList.add('off');
+                hpStatusText.innerText = 'HP: tidak terhubung';
+            }
+        } catch (e) {
+            hpStatusDot.classList.add('off');
+            hpStatusText.innerText = 'HP: status tidak diketahui';
+        }
+    }
 
-        if (chart) {
-            chart.data.labels = labels;
-            chart.data.datasets[0].data = cumulativeData;
-            chart.update();
-        } else {
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Cumulative Net Profit (USD)',
-                        data: cumulativeData,
-                        borderColor: '#2563eb',
-                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.2,
-                        pointRadius: 3,
-                        pointBackgroundColor: '#2563eb',
-                        pointBorderColor: '#ffffff',
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `Net Profit: $${context.raw.toFixed(2)}`;
-                                }
-                            }
-                        },
-                        legend: {
-                            position: 'top',
-                        }
-                    },
-                    scales: {
-                        y: {
-                            ticks: {
-                                callback: function(value) {
-                                    return '$' + value.toFixed(2);
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'USD',
-                                color: '#475569'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Tanggal Transaksi',
-                                color: '#475569'
-                            },
-                            ticks: {
-                                maxRotation: 45,
-                                minRotation: 30,
-                                autoSkip: true,
-                                maxTicksLimit: 10
-                            }
-                        }
-                    }
-                }
+    // Kirim pesan ke backend
+    async function sendMessageToAI(message) {
+        try {
+            const response = await fetch(`${BACKEND_URL}/chat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
             });
+            if (!response.ok) throw new Error('HTTP error');
+            const data = await response.json();
+            return data.reply;
+        } catch (error) {
+            console.error('Error:', error);
+            return 'Maaf, terjadi kesalahan saat menghubungi AI. Cek koneksi backend.';
         }
     }
 
-    // Export CSV (nilai mentah tanpa simbol, tapi tetap 2 desimal)
-    function exportToCSV() {
-        if(trades.length === 0) {
-            alert("Tidak ada data untuk diexport.");
-            return;
-        }
-        const headers = ["Tanggal","Pasangan","Arah","Harga Masuk","Harga Keluar","Lot","Pips","Profit/Loss (USD)","Komisi","Swap","Net Profit","Strategi","Status","Catatan"];
-        const rows = trades.map(t => [
-            t.tanggal, t.pasangan, t.arah, t.hargaMasuk, t.hargaKeluar, t.lot,
-            t.pips, t.profitLossManual, t.komisi, t.swap, t.netProfit, t.strategi, t.status, t.catatan
-        ]);
-        let csvContent = headers.map(h => `"${h}"`).join(",") + "\n";
-        rows.forEach(row => {
-            let escapedRow = row.map(cell => {
-                if(cell === undefined || cell === null) return "";
-                let str = String(cell);
-                if(str.includes(",") || str.includes("\"")) str = str.replace(/"/g, '""');
-                return `"${str}"`;
-            }).join(",");
-            csvContent += escapedRow + "\n";
-        });
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const link = document.createElement("a");
-        const url = URL.createObjectURL(blob);
-        link.href = url;
-        link.setAttribute("download", "jurnal_trading_pip.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+    // Proses utama: kirim pesan user, tampilkan jawaban AI, dan jika ada perintah eksekusi ke HP
+    async function handleUserMessage() {
+        const message = messageInput.value.trim();
+        if (!message) return;
+
+        addMessage(message, 'user');
+        messageInput.value = '';
+
+        showTyping();
+        const aiReply = await sendMessageToAI(message);
+        removeTyping();
+
+        addMessage(aiReply, 'bot');
+
+        // Opsional: coba ekstrak apakah AI mengembalikan perintah untuk HP?
+        // Bisa juga backend langsung mengirim perintah ke HP via WebSocket.
+        // Di sini kita hanya menampilkan respons AI.
+        // Jika backend sudah terintegrasi dengan HP, tidak perlu kode tambahan.
     }
 
-    // Ambil data dari form
-    function getFormData() {
-        return {
-            tanggal: document.getElementById("tanggal").value,
-            pasangan: document.getElementById("pasangan").value,
-            arah: document.getElementById("arah").value,
-            hargaMasuk: parseFloat(document.getElementById("hargaMasuk").value) || null,
-            hargaKeluar: parseFloat(document.getElementById("hargaKeluar").value) || null,
-            lot: parseFloat(document.getElementById("lot").value) || null,
-            pips: parseFloat(document.getElementById("pips").value) || 0,
-            profitLossManual: parseFloat(document.getElementById("profitLossManual").value) || 0,
-            komisi: parseFloat(document.getElementById("komisi").value) || 0,
-            swap: parseFloat(document.getElementById("swap").value) || 0,
-            strategi: document.getElementById("strategi").value,
-            catatan: document.getElementById("catatan").value,
-        };
-    }
-
-    // Event submit form
-    document.getElementById("tradeForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const formData = getFormData();
-        if(!formData.tanggal) {
-            alert("Tanggal wajib diisi!");
-            return;
-        }
-        if(!formData.pasangan.trim()) {
-            alert("Pasangan wajib diisi!");
-            return;
-        }
-        if(formData.hargaMasuk === null || formData.hargaKeluar === null || formData.lot === null) {
-            alert("Harga Masuk, Harga Keluar, dan Lot harus diisi.");
-            return;
-        }
-        if(formData.lot < 0.01 || formData.lot > 100) {
-            alert("Lot harus antara 0.01 dan 100.");
-            return;
-        }
-        addOrUpdateTrade(formData);
+    // ========== Event Listener ==========
+    sendBtn.addEventListener('click', handleUserMessage);
+    messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleUserMessage();
     });
 
-    document.getElementById("cancelEditBtn").addEventListener("click", () => {
-        resetForm();
-    });
-    document.getElementById("exportExcelBtn").addEventListener("click", exportToCSV);
-    document.getElementById("printPdfBtn").addEventListener("click", () => {
-        window.print();
-    });
-    document.getElementById("clearAllBtn").addEventListener("click", confirmClearAll);
-
-    // Set tanggal default hari ini
-    document.getElementById("tanggal").valueAsDate = new Date();
-    bindAutoCalculations();
-    loadTrades();
+    // ========== Inisialisasi ==========
+    setInterval(checkBackendStatus, 10000);
+    setInterval(checkHPStatus, 15000);
+    checkBackendStatus();
+    checkHPStatus();
 </script>
 </body>
 </html>
