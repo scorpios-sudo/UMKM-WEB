@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Jurnal Trading - Perhitungan Pip (0.01 lot = $1/pip)</title>
+    <title>Jurnal Trading - Dengan Grafik Equity</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -156,6 +158,25 @@
             font-weight: 700;
             line-height: 1.2;
         }
+        .chart-container {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .chart-container h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        canvas {
+            max-height: 400px;
+            width: 100%;
+        }
         .table-wrapper {
             overflow-x: auto;
             border-radius: 20px;
@@ -179,6 +200,9 @@
             padding: 12px 10px;
             border-bottom: 1px solid #e9eef3;
             vertical-align: middle;
+        }
+        td.numeric, th.numeric {
+            text-align: right;
         }
         .win {
             background-color: #d1fae5;
@@ -238,6 +262,9 @@
             .stat-value {
                 font-size: 1.2rem;
             }
+            .chart-container {
+                padding: 12px;
+            }
         }
         .note {
             background: #fef9e3;
@@ -253,9 +280,9 @@
 <div class="container">
     <h1>
         📊 Jurnal Trading Pro
-        <small>Pip-based: 0.01 lot = $1/pip</small>
+        <small>Pip: 0.01 lot = $1/pip | Grafik Equity</small>
     </h1>
-    <div class="sub">💡 Perhitungan profit: (Harga Keluar - Harga Masuk) × Lot × 1.000.000 × Arah (Buy=+, Sell=-) → USD. 1 pip = 0.0001, jadi 0.01 lot = $1/pip.</div>
+    <div class="sub">💡 Perhitungan profit: (Harga Keluar - Harga Masuk) × Lot × 1.000.000 × Arah → USD. Semua nilai USD ditampilkan dengan 2 angka desimal dan simbol $.</div>
 
     <!-- Form Tambah / Edit -->
     <div class="form-panel">
@@ -294,7 +321,7 @@
                     <input type="number" step="any" id="pips" readonly style="background:#eef2ff; font-weight:bold;">
                 </div>
                 <div class="form-field">
-                    <label>💵 Profit / Loss (USD) *otomatis</label>
+                    <label>💵 Profit / Loss (USD)</label>
                     <input type="number" step="any" id="profitLossManual" readonly style="background:#eef2ff; font-weight:bold;">
                 </div>
                 <div class="form-field">
@@ -321,12 +348,18 @@
         </form>
     </div>
 
+    <!-- Grafik Equity -->
+    <div class="chart-container">
+        <h3>📈 Equity Curve (Cumulative Net Profit)</h3>
+        <canvas id="equityChart" width="800" height="400" style="max-width:100%; height:auto;"></canvas>
+    </div>
+
     <!-- Action Bar + Statistik -->
     <div class="action-bar">
         <div class="stats">
             <div class="stat-card"><div class="stat-label">Total Trades</div><div class="stat-value" id="totalTrades">0</div></div>
             <div class="stat-card"><div class="stat-label">Win Rate</div><div class="stat-value" id="winRate">0%</div></div>
-            <div class="stat-card"><div class="stat-label">Net Profit (USD)</div><div class="stat-value" id="totalNetProfit">0</div></div>
+            <div class="stat-card"><div class="stat-label">Net Profit (USD)</div><div class="stat-value" id="totalNetProfit">$0.00</div></div>
             <div class="stat-card"><div class="stat-label">Avg R/R</div><div class="stat-value" id="avgRR">-</div></div>
         </div>
         <div style="display: flex; gap: 10px;">
@@ -342,7 +375,7 @@
             <thead>
                 <tr>
                     <th>Tanggal</th><th>Pasangan</th><th>Arah</th><th>Entry</th><th>Exit</th><th>Lot</th>
-                    <th>Pips</th><th>P/L (USD)</th><th>Komisi</th><th>Swap</th><th>Net Profit</th><th>Strategi</th><th>Status</th><th>Catatan</th><th>Aksi</th>
+                    <th class="numeric">Pips</th><th class="numeric">P/L (USD)</th><th class="numeric">Komisi</th><th class="numeric">Swap</th><th class="numeric">Net Profit</th><th>Strategi</th><th>Status</th><th>Catatan</th><th>Aksi</th>
                 </tr>
             </thead>
             <tbody id="tradeTableBody">
@@ -350,29 +383,28 @@
             </tbody>
         </table>
     </div>
-    <footer>⚡ Perhitungan: Pips = (Harga Keluar - Harga Masuk) / 0.0001 (disesuaikan arah). Profit = Pips × Lot × 100 (karena 0.01 lot = $1/pip, maka 1 lot = $100/pip). Net Profit = P/L - Komisi - Swap. Data tersimpan otomatis di browser.</footer>
-    <div class="note">📌 Catatan: Rumus profit = (Harga Keluar - Harga Masuk) × Lot × 1.000.000 × Arah. 1.000.000 = 100 (pip value per lot) / 0.0001. Untuk 0.01 lot, 1 pip = $1.</div>
+    <footer>⚡ Perhitungan: Pips = (Harga Keluar - Harga Masuk) / 0.0001 (disesuaikan arah). Profit = Pips × Lot × 100. Net Profit = Profit - Komisi - Swap. Semua USD ditampilkan dengan 2 angka desimal dan simbol $.</footer>
+    <div class="note">📌 Catatan: 0.01 lot = $1/pip → 1 lot = $100/pip. Grafik equity menampilkan akumulasi net profit berdasarkan urutan tanggal.</div>
 </div>
 
 <script>
     // ---------- DATA ----------
     let trades = [];
     let editIndex = null;
+    let chart; // Chart.js instance
 
     // Fungsi hitung pips (absolut berdasarkan selisih harga)
     function calculatePips(entry, exit, arah) {
         if (entry === null || exit === null || isNaN(entry) || isNaN(exit)) return 0;
         let diff = exit - entry;
-        if (arah === "Sell") diff = entry - exit; // untuk pips, kita ingin pips positif jika profit
+        if (arah === "Sell") diff = entry - exit;
         const pips = diff / 0.0001;
         return parseFloat(pips.toFixed(2));
     }
 
-    // Hitung profit/loss berdasarkan pips dan lot (0.01 lot = $1/pip)
-    function calculateProfitFromPips(pips, lot, arah) {
+    // Hitung profit berdasarkan pips dan lot (0.01 lot = $1/pip)
+    function calculateProfitFromPips(pips, lot) {
         if (pips === null || lot === null || isNaN(pips) || isNaN(lot)) return 0;
-        // Untuk Buy, pips positif = profit; Sell, pips positif = profit (sudah dibalik di calculatePips)
-        // Profit = pips * lot * 100 (karena 1 lot = $100/pip)
         const profit = pips * lot * 100;
         return parseFloat(profit.toFixed(2));
     }
@@ -386,7 +418,7 @@
         let pips = 0, pl = 0;
         if (!isNaN(entry) && !isNaN(exit) && !isNaN(lot)) {
             pips = calculatePips(entry, exit, arah);
-            pl = calculateProfitFromPips(pips, lot, arah);
+            pl = calculateProfitFromPips(pips, lot);
         }
         document.getElementById("pips").value = pips;
         document.getElementById("profitLossManual").value = pl;
@@ -419,6 +451,7 @@
         localStorage.setItem("tradingJournalPip", JSON.stringify(trades));
         renderStats();
         renderTable();
+        updateChart(); // Update grafik setelah data berubah
     }
 
     function loadTrades() {
@@ -433,6 +466,7 @@
         }
         renderStats();
         renderTable();
+        updateChart();
     }
 
     // Tambah / Update trade
@@ -508,7 +542,12 @@
         }
     }
 
-    // Render tabel
+    // Helper format USD dengan 2 desimal dan simbol $
+    function formatUSD(value) {
+        return "$" + value.toFixed(2);
+    }
+
+    // Render tabel dengan format rapi
     function renderTable() {
         const tbody = document.getElementById("tradeTableBody");
         if(trades.length === 0) {
@@ -517,14 +556,18 @@
         }
         let html = "";
         trades.forEach((trade, idx) => {
-            const net = (trade.netProfit !== undefined ? trade.netProfit : 0).toFixed(2);
-            const plRaw = (trade.profitLossManual || 0).toFixed(2);
-            const pips = (trade.pips !== undefined ? trade.pips : 0).toFixed(1);
+            const net = trade.netProfit !== undefined ? trade.netProfit : 0;
+            const plRaw = trade.profitLossManual || 0;
+            const pips = trade.pips !== undefined ? trade.pips : 0;
+            const komisi = trade.komisi || 0;
+            const swap = trade.swap || 0;
+            
             let statusClass = "";
             let statusText = trade.status || (net>0?"Win":net<0?"Loss":"Breakeven");
             if(statusText === "Win") statusClass = "win";
             else if(statusText === "Loss") statusClass = "loss";
             else statusClass = "neutral";
+            
             html += `<tr>
                 <td>${trade.tanggal || "-"}</td>
                 <td>${trade.pasangan || "-"}</td>
@@ -532,11 +575,11 @@
                 <td>${trade.hargaMasuk ?? "-"}</td>
                 <td>${trade.hargaKeluar ?? "-"}</td>
                 <td>${trade.lot ?? "-"}</td>
-                <td>${pips}</td>
-                <td>${plRaw}</td>
-                <td>${(trade.komisi || 0).toFixed(2)}</td>
-                <td>${(trade.swap || 0).toFixed(2)}</td>
-                <td><strong>${net}</strong></td>
+                <td class="numeric">${pips.toFixed(1)}</td>
+                <td class="numeric">${formatUSD(plRaw)}</td>
+                <td class="numeric">${formatUSD(komisi)}</td>
+                <td class="numeric">${formatUSD(swap)}</td>
+                <td class="numeric"><strong>${formatUSD(net)}</strong></td>
                 <td>${trade.strategi || "-"}</td>
                 <td><span class="${statusClass}">${statusText}</span></td>
                 <td style="max-width:150px; overflow-x:auto;">${trade.catatan || "-"}</td>
@@ -549,7 +592,7 @@
         tbody.innerHTML = html;
     }
 
-    // Statistik
+    // Statistik dengan format USD
     function renderStats() {
         const total = trades.length;
         let wins = trades.filter(t => t.netProfit > 0).length;
@@ -558,14 +601,111 @@
         let totalNet = trades.reduce((sum, t) => sum + (t.netProfit || 0), 0);
         document.getElementById("totalTrades").innerText = total;
         document.getElementById("winRate").innerText = winRate.toFixed(1) + "%";
-        document.getElementById("totalNetProfit").innerText = totalNet.toFixed(2);
+        document.getElementById("totalNetProfit").innerHTML = formatUSD(totalNet);
         let avgProfit = trades.filter(t=>t.netProfit>0).reduce((a,b)=>a+(b.netProfit||0),0) / (wins||1);
         let avgLoss = trades.filter(t=>t.netProfit<0).reduce((a,b)=>a+Math.abs(b.netProfit||0),0) / (loss||1);
         let rr = (avgProfit && avgLoss) ? (avgProfit/avgLoss).toFixed(2) : "-";
         document.getElementById("avgRR").innerText = (rr !== "-" && rr !== "Infinity") ? rr : "-";
     }
 
-    // Export CSV
+    // Grafik equity curve (cumulative net profit berdasarkan tanggal)
+    function updateChart() {
+        const ctx = document.getElementById('equityChart').getContext('2d');
+        if (trades.length === 0) {
+            if (chart) {
+                chart.destroy();
+                chart = null;
+            }
+            // Tampilkan pesan tidak ada data di canvas
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.font = "14px system-ui";
+            ctx.fillStyle = "#94a3b8";
+            ctx.textAlign = "center";
+            ctx.fillText("Belum ada data transaksi", ctx.canvas.width/2, ctx.canvas.height/2);
+            return;
+        }
+
+        // Urutkan berdasarkan tanggal (string YYYY-MM-DD)
+        const sorted = [...trades].sort((a,b) => (a.tanggal || "").localeCompare(b.tanggal || ""));
+        const labels = sorted.map(t => t.tanggal || "?");
+        // Hitung cumulative net profit
+        let cumulative = 0;
+        const cumulativeData = sorted.map(t => {
+            cumulative += (t.netProfit || 0);
+            return parseFloat(cumulative.toFixed(2));
+        });
+
+        if (chart) {
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = cumulativeData;
+            chart.update();
+        } else {
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cumulative Net Profit (USD)',
+                        data: cumulativeData,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#2563eb',
+                        pointBorderColor: '#ffffff',
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Net Profit: $${context.raw.toFixed(2)}`;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toFixed(2);
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'USD',
+                                color: '#475569'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Tanggal Transaksi',
+                                color: '#475569'
+                            },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 30,
+                                autoSkip: true,
+                                maxTicksLimit: 10
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    // Export CSV (nilai mentah tanpa simbol, tapi tetap 2 desimal)
     function exportToCSV() {
         if(trades.length === 0) {
             alert("Tidak ada data untuk diexport.");
