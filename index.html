@@ -3,417 +3,1043 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>AI Bot Worker - Asisten HP</title>
+    <title>Portfolio Journal | Trader X Academy </title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #0f1422;
+            --bg-tertiary: #1a1f2e;
+            --bg-card: rgba(18, 25, 45, 0.85);
+            --text-primary: #f1f5f9;
+            --text-secondary: #8b9bb0;
+            --accent: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --accent-purple: #8b5cf6;
+            --border: rgba(59, 130, 246, 0.2);
+            --card-bg: rgba(18, 25, 45, 0.75);
+            --table-header: rgba(10, 14, 26, 0.9);
+            --hover-bg: rgba(59, 130, 246, 0.1);
+            --glow: 0 0 20px rgba(59, 130, 246, 0.15);
+        }
+
+        body.light {
+            --bg-primary: #eef2f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f0f2f5;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-primary: #1a1f2e;
+            --text-secondary: #5a6e8a;
+            --border: rgba(0, 0, 0, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --table-header: #f8fafc;
+            --hover-bg: rgba(59, 130, 246, 0.05);
+            --glow: 0 0 20px rgba(59, 130, 246, 0.08);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            transition: all 0.3s ease;
+            position: relative;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
         }
-        .container {
+
+        /* Market Background Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 800px;
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 90vh;
-            max-height: 800px;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
         }
-        .header {
-            background: #1a1a2e;
-            color: white;
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.05), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
             padding: 20px;
-            text-align: center;
+            position: relative;
+            z-index: 1;
         }
-        .header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+
+        /* Glassmorphism Effect */
+        .stat-card, .portfolio-card, .chart-card, .filter-bar, .table-wrapper, .modal-content {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            box-shadow: var(--glow);
         }
-        .header p {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-        .status-bar {
-            background: #f0f0f0;
-            padding: 8px 16px;
-            font-size: 0.8rem;
+
+        .header {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid #ddd;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(5px);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
             flex-wrap: wrap;
         }
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+
+        .theme-toggle, .btn-icon-action {
+            background: var(--bg-tertiary);
+            border: none;
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s;
         }
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #4caf50;
-            box-shadow: 0 0 5px #4caf50;
+
+        .theme-toggle:hover, .btn-icon-action:hover {
+            background: var(--accent);
+            transform: scale(1.05);
         }
-        .status-dot.off {
-            background-color: #f44336;
-            box-shadow: none;
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
         }
-        .mode-switch {
-            background: white;
-            padding: 8px 12px;
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
             border-radius: 20px;
-            font-size: 0.75rem;
+            padding: 16px 20px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .positive { color: var(--accent-green); }
+        .negative { color: var(--accent-red); }
+
+        .portfolio-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .portfolio-card {
+            border-radius: 24px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+
+        .portfolio-card h3 {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+        }
+
+        .sector-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sector-name {
+            font-weight: 600;
+        }
+
+        .sector-value {
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .charts-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .chart-card h3 {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .filter-bar {
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .filter-group {
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        .mode-switch select {
-            border: 1px solid #ccc;
-            border-radius: 16px;
-            padding: 4px 8px;
-            font-size: 0.75rem;
-            background: white;
+
+        .filter-group label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
         }
-        .chat-area {
-            flex: 1;
+
+        .filter-group select, .filter-group input {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        th {
+            background: var(--table-header);
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        td {
+            padding: 12px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: var(--hover-bg);
+        }
+
+        .numeric {
+            text-align: right;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 40px;
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge-win {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+        }
+
+        .badge-loss {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+        }
+
+        .badge-forex { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .badge-crypto { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+        .badge-stock { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: var(--bg-tertiary);
+            color: var(--accent);
+        }
+
+        .strategy-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .strategy-table th, .strategy-table td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .strategy-table th {
+            background: var(--table-header);
+            font-weight: 600;
+        }
+
+        .grand-total {
+            background: rgba(59, 130, 246, 0.15);
+            font-weight: 700;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            border-radius: 24px;
+            padding: 24px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
             overflow-y: auto;
-            padding: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .form-field {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            background: #f9f9fc;
+            gap: 6px;
         }
-        .message {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 18px;
-            word-wrap: break-word;
-            animation: fadeIn 0.2s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-        .user {
-            align-self: flex-end;
-            background: #667eea;
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-        .bot {
-            align-self: flex-start;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-bottom-left-radius: 4px;
-            color: #333;
-        }
-        .typing {
-            align-self: flex-start;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 18px;
-            padding: 10px 14px;
-            color: #888;
-            font-style: italic;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .typing span {
-            animation: blink 1.4s infinite;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
-        }
-        .input-area {
-            display: flex;
-            padding: 16px;
-            background: white;
-            border-top: 1px solid #eee;
-            gap: 10px;
-        }
-        .input-area input {
-            flex: 1;
-            border: 1px solid #ddd;
-            border-radius: 40px;
-            padding: 12px 18px;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.2s;
-        }
-        .input-area input:focus {
-            border-color: #667eea;
-        }
-        .input-area button {
-            background: #667eea;
-            border: none;
-            border-radius: 40px;
-            padding: 0 24px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .input-area button:hover {
-            background: #5a67d8;
-        }
-        .footer {
-            padding: 8px;
-            text-align: center;
+
+        .form-field label {
             font-size: 0.7rem;
-            color: #aaa;
-            background: white;
-            border-top: 1px solid #eee;
+            text-transform: uppercase;
+            color: var(--text-secondary);
         }
-        @media (max-width: 600px) {
-            .message {
-                max-width: 90%;
+
+        .form-field input, .form-field select {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .charts-row {
+                grid-template-columns: 1fr;
             }
-            .container {
-                height: 95vh;
-                border-radius: 16px;
+            .portfolio-section {
+                grid-template-columns: 1fr;
             }
-            .status-bar {
-                flex-direction: column;
-                gap: 6px;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>🤖 AI Bot Worker</h1>
-        <p>Asisten pribadi untuk Android • Bisa buka app & klik otomatis</p>
-    </div>
-    <div class="status-bar">
-        <div class="status">
-            <div class="status-dot" id="backendStatusDot"></div>
-            <span id="backendStatusText">Backend: mengecek...</span>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <h1><span class="live-indicator"></span> Trader X Academy Portfolio Journal</h1>
+                <p>Forex • Crypto • Stocks | Real-time Performance Analytics</p>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <button class="btn-secondary" id="backupBtn"><i class="fas fa-download"></i> Backup</button>
+                <button class="btn-secondary" id="restoreBtn"><i class="fas fa-upload"></i> Restore</button>
+                <button class="btn-primary" id="addTradeBtn"><i class="fas fa-plus"></i> New Trade</button>
+            </div>
         </div>
-        <div class="status">
-            <div class="status-dot" id="hpStatusDot"></div>
-            <span id="hpStatusText">HP: belum terhubung</span>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="portfolio-section">
+            <div class="portfolio-card">
+                <h3><i class="fas fa-globe" style="color: #3b82f6;"></i> Forex Portfolio</h3>
+                <div id="forexPortfolio"></div>
+            </div>
+            <div class="portfolio-card">
+                <h3><i class="fab fa-bitcoin" style="color: #8b5cf6;"></i> Crypto Portfolio</h3>
+                <div id="cryptoPortfolio"></div>
+            </div>
+            <div class="portfolio-card">
+                <h3><i class="fas fa-chart-line" style="color: #10b981;"></i> Stocks Portfolio</h3>
+                <div id="stockPortfolio"></div>
+            </div>
         </div>
-        <div class="mode-switch">
-            🔧 Mode:
-            <select id="modeSelect">
-                <option value="simulasi">Simulasi (tanpa backend)</option>
-                <option value="produksi">Produksi (backend real)</option>
-            </select>
+
+        <div class="charts-row">
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-line"></i> Portfolio Equity Curve</h3>
+                <canvas id="equityChart" height="200"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-pie"></i> Portfolio Allocation by Sector</h3>
+                <canvas id="sectorChart" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card" style="margin-bottom: 24px;">
+            <h3><i class="fas fa-calendar-alt"></i> Monthly P&L Heatmap (USD)</h3>
+            <div id="heatmapContainer" style="overflow-x: auto;"></div>
+        </div>
+
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label><i class="fas fa-filter"></i> Sector:</label>
+                <select id="filterSector">
+                    <option value="all">All Sectors</option>
+                    <option value="forex">Forex</option>
+                    <option value="crypto">Crypto</option>
+                    <option value="stock">Stocks</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Instrument:</label>
+                <select id="filterInstrument">
+                    <option value="all">All</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Strategy:</label>
+                <select id="filterStrategy">
+                    <option value="all">All</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Period:</label>
+                <select id="filterPeriod">
+                    <option value="all">All Time</option>
+                    <option value="30">Last 30 Days</option>
+                    <option value="90">Last 90 Days</option>
+                    <option value="365">Last Year</option>
+                </select>
+            </div>
+            <div style="flex:1"></div>
+            <div class="filter-group">
+                <span id="filterStats" style="font-size:0.75rem;"></span>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th><th>Sector</th><th>Instrument</th><th>Side</th><th>Entry</th><th>Exit</th><th>Lot</th>
+                        <th class="numeric">Points</th><th class="numeric">P/L</th><th class="numeric">Net P/L</th><th>Strategy</th><th>Status</th><th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tradesTableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="chart-card">
+            <h3><i class="fas fa-chart-bar"></i> Strategy Performance by Sector</h3>
+            <div style="overflow-x: auto;">
+                <table class="strategy-table" id="strategyPerfTable">
+                    <thead>
+                        <tr>
+                            <th>Strategy</th>
+                            <th class="numeric">Forex (USD)</th>
+                            <th class="numeric">Crypto (USD)</th>
+                            <th class="numeric">Stocks (USD)</th>
+                            <th class="numeric">Total (USD)</th>
+                            <th class="numeric">Win Rate</th>
+                            <th class="numeric">Total Trades</th>
+                        </tr>
+                    </thead>
+                    <tbody id="strategyPerfBody"></tbody>
+                    <tfoot id="strategyPerfFooter"></tfoot>
+                </table>
+            </div>
         </div>
     </div>
-    <div class="chat-area" id="chatArea">
-        <div class="message bot">
-            Halo! Saya asisten AI yang bisa mengontrol HP Android kamu. <br>
-            Contoh perintah:<br>
-            • "Buka WhatsApp"<br>
-            • "Klik teks 'Login'"<br>
-            • "Ketik 'Halo' di kolom chat"<br>
-            • "Back" atau "Home"
+
+    <div id="tradeModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle"><i class="fas fa-plus"></i> Add New Trade</h3>
+            <form id="tradeForm">
+                <div class="form-grid">
+                    <div class="form-field"><label>Date</label><input type="date" id="tanggal" required></div>
+                    <div class="form-field"><label>Sector</label>
+                        <select id="sektor" onchange="updateInstrumenPlaceholder()">
+                            <option value="forex">Forex</option>
+                            <option value="crypto">Crypto</option>
+                            <option value="stock">Stocks</option>
+                        </select>
+                    </div>
+                    <div class="form-field"><label>Instrument</label><input type="text" id="pasangan" placeholder="EUR/USD, BTC/USD, AAPL" required></div>
+                    <div class="form-field"><label>Side</label><select id="arah"><option>Buy</option><option>Sell</option></select></div>
+                    <div class="form-field"><label>Entry Price</label><input type="text" id="hargaMasuk" placeholder="1.0850 or 4,615,194"></div>
+                    <div class="form-field"><label>Exit Price</label><input type="text" id="hargaKeluar" placeholder="1.0875 or 4,625,194"></div>
+                    <div class="form-field"><label>Lot / Contract (0.01-100)</label><input type="number" step="0.01" id="lot"></div>
+                    <div class="form-field"><label>Points</label><input type="text" id="points" readonly style="background:var(--bg-tertiary)"></div>
+                    <div class="form-field"><label>P/L (USD)</label><input type="text" id="profitLossManual" readonly style="background:var(--bg-tertiary)"></div>
+                    <div class="form-field"><label>Commission</label><input type="number" id="komisi" value="0"></div>
+                    <div class="form-field"><label>Swap</label><input type="number" id="swap" value="0"></div>
+                    <div class="form-field"><label>Strategy</label><input type="text" id="strategi" placeholder="Scalping, Breakout, Swing"></div>
+                    <div class="form-field"><label>Notes</label><input type="text" id="catatan" placeholder="Trading notes..."></div>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+                    <button type="button" class="btn-secondary" id="closeModalBtn">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Trade</button>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="input-area">
-        <input type="text" id="messageInput" placeholder="Ketik perintah untuk AI..." autofocus>
-        <button id="sendBtn">Kirim</button>
-    </div>
-    <div class="footer">
-        Mode Simulasi: backend tidak perlu. Mode Produksi: pastikan backend berjalan dan URL diatur.
-    </div>
-</div>
 
-<script>
-    // ========== KONFIGURASI ==========
-    // Ganti dengan URL backend kamu jika mode produksi
-    const BACKEND_URL_PRODUKSI = 'https://ai-bot-backend.onrender.com'; // <-- GANTI
+    <script>
+        let trades = [];
+        let editIndex = null;
+        let equityChart, sectorChart;
 
-    // ========== DOM Elements ==========
-    const chatArea = document.getElementById('chatArea');
-    const messageInput = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const backendStatusDot = document.getElementById('backendStatusDot');
-    const backendStatusText = document.getElementById('backendStatusText');
-    const hpStatusDot = document.getElementById('hpStatusDot');
-    const hpStatusText = document.getElementById('hpStatusText');
-    const modeSelect = document.getElementById('modeSelect');
-
-    let currentMode = 'simulasi'; // simulasi / produksi
-
-    // ========== Helper Functions ==========
-    function addMessage(text, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', sender);
-        messageDiv.innerText = text;
-        chatArea.appendChild(messageDiv);
-        chatArea.scrollTop = chatArea.scrollHeight;
-    }
-
-    function showTyping() {
-        const typingDiv = document.createElement('div');
-        typingDiv.classList.add('typing');
-        typingDiv.id = 'typingIndicator';
-        typingDiv.innerHTML = 'AI sedang mengetik<span>.</span><span>.</span><span>.</span>';
-        chatArea.appendChild(typingDiv);
-        chatArea.scrollTop = chatArea.scrollHeight;
-    }
-
-    function removeTyping() {
-        const typing = document.getElementById('typingIndicator');
-        if (typing) typing.remove();
-    }
-
-    // ========== Status Backend (Produksi) ==========
-    async function checkBackendStatus() {
-        if (currentMode !== 'produksi') {
-            backendStatusDot.classList.add('off');
-            backendStatusText.innerText = 'Backend: mode simulasi';
-            return;
+        function parsePrice(str) {
+            if (!str) return null;
+            return parseFloat(String(str).replace(/,/g, '').trim());
         }
-        try {
-            const response = await fetch(`${BACKEND_URL_PRODUKSI}/health`, { method: 'GET', signal: AbortSignal.timeout(5000) });
-            if (response.ok) {
-                backendStatusDot.classList.remove('off');
-                backendStatusText.innerText = 'Backend: online';
-            } else {
-                throw new Error();
+
+        function formatPrice(price, decimals = 2) {
+            if (price === null || isNaN(price)) return "-";
+            return price.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+        }
+
+        function formatUSD(value) {
+            return "$" + value.toFixed(2);
+        }
+
+        function getInstrumentDecimals(instrument, sector) {
+            if (sector === 'forex') return 5;
+            return 2;
+        }
+
+        function calculatePoints(entry, exit, side) {
+            if (!entry || !exit) return 0;
+            let diff = exit - entry;
+            if (side === "Sell") diff = entry - exit;
+            return parseFloat(diff.toFixed(2));
+        }
+
+        function calculateProfit(points, lot) {
+            return parseFloat((points * lot * 100).toFixed(2));
+        }
+
+        function updatePreview() {
+            const entry = parsePrice(document.getElementById("hargaMasuk").value);
+            const exit = parsePrice(document.getElementById("hargaKeluar").value);
+            const lot = parseFloat(document.getElementById("lot").value);
+            const side = document.getElementById("arah").value;
+            let points = 0, pl = 0;
+            if (entry && exit && !isNaN(lot)) {
+                points = calculatePoints(entry, exit, side);
+                pl = calculateProfit(points, lot);
             }
-        } catch (e) {
-            backendStatusDot.classList.add('off');
-            backendStatusText.innerText = 'Backend: offline';
+            document.getElementById("points").value = points;
+            document.getElementById("profitLossManual").value = pl;
         }
-    }
 
-    async function checkHPStatus() {
-        if (currentMode !== 'produksi') {
-            hpStatusDot.classList.add('off');
-            hpStatusText.innerText = 'HP: mode simulasi';
-            return;
+        function updateInstrumenPlaceholder() {
+            const sector = document.getElementById("sektor").value;
+            const input = document.getElementById("pasangan");
+            if (sector === 'forex') input.placeholder = "EUR/USD, GBP/USD, USD/JPY";
+            else if (sector === 'crypto') input.placeholder = "BTC/USD, ETH/USD, SOL/USD";
+            else input.placeholder = "AAPL, TSLA, GOOGL, BBRI.JK";
         }
-        try {
-            const response = await fetch(`${BACKEND_URL_PRODUKSI}/hp-status`, { signal: AbortSignal.timeout(5000) });
-            const data = await response.json();
-            if (data.connected) {
-                hpStatusDot.classList.remove('off');
-                hpStatusText.innerText = `HP: terhubung`;
-            } else {
-                hpStatusDot.classList.add('off');
-                hpStatusText.innerText = 'HP: tidak terhubung';
+
+        function saveTrades() {
+            localStorage.setItem("portfolio_trading_journal", JSON.stringify(trades));
+            renderAll();
+        }
+
+        function loadTrades() {
+            const stored = localStorage.getItem("portfolio_trading_journal");
+            if (stored) {
+                try {
+                    trades = JSON.parse(stored);
+                    trades = trades.map(t => ({ ...t, netProfit: (t.profitLossManual - (t.komisi||0) - (t.swap||0)) }));
+                } catch(e) { trades = []; }
             }
-        } catch (e) {
-            hpStatusDot.classList.add('off');
-            hpStatusText.innerText = 'HP: status tidak diketahui';
+            if (trades.length === 0) {
+                trades = [
+                    { tanggal: "2026-03-15", sektor: "forex", pasangan: "EUR/USD", arah: "Buy", hargaMasuk: 1.0850, hargaKeluar: 1.0875, lot: 0.1, points: 25, profitLossManual: 250, komisi: 0, swap: 0, netProfit: 250, strategi: "Scalping", catatan: "London session" },
+                    { tanggal: "2026-03-16", sektor: "forex", pasangan: "GBP/USD", arah: "Sell", hargaMasuk: 1.3120, hargaKeluar: 1.3080, lot: 0.2, points: 40, profitLossManual: 800, komisi: 0, swap: 0, netProfit: 800, strategi: "Breakout", catatan: "" },
+                    { tanggal: "2026-03-20", sektor: "crypto", pasangan: "BTC/USD", arah: "Buy", hargaMasuk: 68500, hargaKeluar: 69500, lot: 0.05, points: 1000, profitLossManual: 5000, komisi: 5, swap: 0, netProfit: 4995, strategi: "Breakout", catatan: "" },
+                    { tanggal: "2026-03-22", sektor: "crypto", pasangan: "ETH/USD", arah: "Buy", hargaMasuk: 3200, hargaKeluar: 3350, lot: 0.1, points: 150, profitLossManual: 1500, komisi: 2, swap: 0, netProfit: 1498, strategi: "Swing", catatan: "" },
+                    { tanggal: "2026-03-25", sektor: "stock", pasangan: "AAPL", arah: "Buy", hargaMasuk: 175.50, hargaKeluar: 178.20, lot: 10, points: 2.7, profitLossManual: 2700, komisi: 2, swap: 0, netProfit: 2698, strategi: "Swing", catatan: "" },
+                    { tanggal: "2026-03-26", sektor: "stock", pasangan: "TSLA", arah: "Sell", hargaMasuk: 245.30, hargaKeluar: 240.10, lot: 5, points: 5.2, profitLossManual: 2600, komisi: 1, swap: 0, netProfit: 2599, strategi: "Scalping", catatan: "" },
+                    { tanggal: "2026-03-28", sektor: "forex", pasangan: "USD/JPY", arah: "Buy", hargaMasuk: 149.50, hargaKeluar: 150.20, lot: 0.15, points: 70, profitLossManual: 1050, komisi: 0, swap: 0, netProfit: 1050, strategi: "Swing", catatan: "" }
+                ].map(t => ({ ...t, status: t.netProfit > 0 ? "Win" : "Loss" }));
+                saveTrades();
+            }
+            renderAll();
         }
-    }
 
-    // ========== Simulasi AI (tanpa backend) ==========
-    function simulateAI(message) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const lower = message.toLowerCase();
-                // Deteksi perintah sederhana
-                if (lower.includes('buka') || lower.includes('open')) {
-                    let app = message.match(/(?:buka|open)\s+(\w+)/i);
-                    let appName = app ? app[1] : 'aplikasi';
-                    resolve(`✅ Simulasi: perintah "buka ${appName}" dikirim ke HP. (Mode simulasi)`);
-                } else if (lower.includes('klik teks')) {
-                    let text = message.match(/klik teks\s+(.+)/i);
-                    let txt = text ? text[1] : 'teks';
-                    resolve(`✅ Simulasi: perintah "klik teks ${txt}" dikirim ke HP.`);
-                } else if (lower.includes('ketik')) {
-                    let txt = message.match(/ketik\s+(.+)/i);
-                    let teks = txt ? txt[1] : 'pesan';
-                    resolve(`✅ Simulasi: perintah "ketik ${teks}" dikirim ke HP.`);
-                } else if (lower.includes('back')) {
-                    resolve(`✅ Simulasi: perintah "back" dikirim ke HP.`);
-                } else if (lower.includes('home')) {
-                    resolve(`✅ Simulasi: perintah "home" dikirim ke HP.`);
-                } else {
-                    resolve(`🤖 Saya dalam mode simulasi. Saya tidak mengerti perintah: "${message}". Coba: "buka WhatsApp", "klik teks Login", "ketik halo", "back", "home".`);
-                }
-            }, 800);
-        });
-    }
+        function addOrUpdateTrade(data) {
+            if (editIndex !== null) {
+                trades[editIndex] = data;
+                editIndex = null;
+            } else {
+                trades.push(data);
+            }
+            saveTrades();
+            closeModal();
+        }
 
-    // ========== Kirim ke Backend (Produksi) ==========
-    async function sendToBackend(message) {
-        try {
-            const response = await fetch(`${BACKEND_URL_PRODUKSI}/chat`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message })
+        function deleteTrade(idx) {
+            if (confirm("Delete this trade?")) {
+                trades.splice(idx, 1);
+                saveTrades();
+            }
+        }
+
+        function editTrade(idx) {
+            const t = trades[idx];
+            document.getElementById("tanggal").value = t.tanggal;
+            document.getElementById("sektor").value = t.sektor;
+            document.getElementById("pasangan").value = t.pasangan;
+            document.getElementById("arah").value = t.arah;
+            const decimals = getInstrumentDecimals(t.pasangan, t.sektor);
+            document.getElementById("hargaMasuk").value = formatPrice(t.hargaMasuk, decimals);
+            document.getElementById("hargaKeluar").value = formatPrice(t.hargaKeluar, decimals);
+            document.getElementById("lot").value = t.lot;
+            document.getElementById("komisi").value = t.komisi || 0;
+            document.getElementById("swap").value = t.swap || 0;
+            document.getElementById("strategi").value = t.strategi || "";
+            document.getElementById("catatan").value = t.catatan || "";
+            editIndex = idx;
+            document.getElementById("modalTitle").innerHTML = "<i class='fas fa-edit'></i> Edit Trade";
+            document.getElementById("tradeModal").style.display = "flex";
+            updatePreview();
+        }
+
+        function getFormData() {
+            const entry = parsePrice(document.getElementById("hargaMasuk").value);
+            const exit = parsePrice(document.getElementById("hargaKeluar").value);
+            const lot = parseFloat(document.getElementById("lot").value);
+            const side = document.getElementById("arah").value;
+            const points = calculatePoints(entry, exit, side);
+            const pl = calculateProfit(points, lot);
+            const komisi = parseFloat(document.getElementById("komisi").value) || 0;
+            const swap = parseFloat(document.getElementById("swap").value) || 0;
+            return {
+                tanggal: document.getElementById("tanggal").value,
+                sektor: document.getElementById("sektor").value,
+                pasangan: document.getElementById("pasangan").value,
+                arah: side,
+                hargaMasuk: entry,
+                hargaKeluar: exit,
+                lot: lot,
+                points: points,
+                profitLossManual: pl,
+                komisi: komisi,
+                swap: swap,
+                netProfit: pl - komisi - swap,
+                strategi: document.getElementById("strategi").value,
+                catatan: document.getElementById("catatan").value,
+                status: pl - komisi - swap > 0 ? "Win" : (pl - komisi - swap < 0 ? "Loss" : "BE")
+            };
+        }
+
+        let currentFilter = { sector: "all", instrument: "all", strategy: "all", period: "all" };
+
+        function getFilteredTrades() {
+            let filtered = [...trades];
+            if (currentFilter.sector !== "all") filtered = filtered.filter(t => t.sektor === currentFilter.sector);
+            if (currentFilter.instrument !== "all") filtered = filtered.filter(t => t.pasangan === currentFilter.instrument);
+            if (currentFilter.strategy !== "all") filtered = filtered.filter(t => t.strategi === currentFilter.strategy);
+            if (currentFilter.period !== "all") {
+                const days = parseInt(currentFilter.period);
+                const cutoff = new Date();
+                cutoff.setDate(cutoff.getDate() - days);
+                filtered = filtered.filter(t => new Date(t.tanggal) >= cutoff);
+            }
+            return filtered;
+        }
+
+        function renderStats() {
+            const filtered = getFilteredTrades();
+            const total = filtered.length;
+            const wins = filtered.filter(t => t.netProfit > 0).length;
+            const winRate = total ? (wins/total*100) : 0;
+            const totalNet = filtered.reduce((s,t) => s + t.netProfit, 0);
+            const avgProfit = wins ? filtered.filter(t=>t.netProfit>0).reduce((s,t)=>s+t.netProfit,0)/wins : 0;
+            const avgLoss = (total-wins) ? Math.abs(filtered.filter(t=>t.netProfit<0).reduce((s,t)=>s+t.netProfit,0)/(total-wins)) : 0;
+            const profitFactor = avgLoss ? avgProfit/avgLoss : 0;
+            
+            let cumulative = 0, maxDrawdown = 0, peak = 0;
+            filtered.sort((a,b) => a.tanggal.localeCompare(b.tanggal)).forEach(t => {
+                cumulative += t.netProfit;
+                if (cumulative > peak) peak = cumulative;
+                const dd = peak - cumulative;
+                if (dd > maxDrawdown) maxDrawdown = dd;
             });
-            if (!response.ok) throw new Error('HTTP error');
-            const data = await response.json();
-            return data.reply;
-        } catch (error) {
-            console.error('Error:', error);
-            return 'Maaf, terjadi kesalahan saat menghubungi backend. Cek URL atau koneksi.';
-        }
-    }
-
-    // ========== Proses Utama ==========
-    async function handleUserMessage() {
-        const message = messageInput.value.trim();
-        if (!message) return;
-
-        addMessage(message, 'user');
-        messageInput.value = '';
-
-        showTyping();
-
-        let reply;
-        if (currentMode === 'simulasi') {
-            reply = await simulateAI(message);
-        } else {
-            reply = await sendToBackend(message);
+            
+            document.getElementById("statsGrid").innerHTML = `
+                <div class="stat-card"><div class="stat-label">Total Trades</div><div class="stat-value">${total}</div></div>
+                <div class="stat-card"><div class="stat-label">Win Rate</div><div class="stat-value ${winRate>=50?'positive':'negative'}">${winRate.toFixed(1)}%</div></div>
+                <div class="stat-card"><div class="stat-label">Total P&L</div><div class="stat-value ${totalNet>=0?'positive':'negative'}">${formatUSD(totalNet)}</div></div>
+                <div class="stat-card"><div class="stat-label">Profit Factor</div><div class="stat-value">${profitFactor.toFixed(2)}</div></div>
+                <div class="stat-card"><div class="stat-label">Max Drawdown</div><div class="stat-value negative">${formatUSD(maxDrawdown)}</div></div>
+                <div class="stat-card"><div class="stat-label">Avg Win/Loss</div><div class="stat-value">${formatUSD(avgProfit)} / ${formatUSD(avgLoss)}</div></div>
+            `;
         }
 
-        removeTyping();
-        addMessage(reply, 'bot');
-    }
-
-    // ========== Ganti Mode ==========
-    function changeMode() {
-        currentMode = modeSelect.value;
-        // Reset status
-        if (currentMode === 'simulasi') {
-            backendStatusDot.classList.add('off');
-            backendStatusText.innerText = 'Backend: mode simulasi';
-            hpStatusDot.classList.add('off');
-            hpStatusText.innerText = 'HP: mode simulasi';
-        } else {
-            checkBackendStatus();
-            checkHPStatus();
-            // Mulai interval jika belum
-            if (!window.backendInterval) {
-                window.backendInterval = setInterval(checkBackendStatus, 10000);
-                window.hpInterval = setInterval(checkHPStatus, 15000);
+        function renderPortfolioBySector() {
+            const sectors = { forex: { total: 0, wins: 0, trades: 0 }, crypto: { total: 0, wins: 0, trades: 0 }, stock: { total: 0, wins: 0, trades: 0 } };
+            trades.forEach(t => {
+                if (sectors[t.sektor]) {
+                    sectors[t.sektor].total += t.netProfit;
+                    sectors[t.sektor].trades++;
+                    if (t.netProfit > 0) sectors[t.sektor].wins++;
+                }
+            });
+            
+            const maxTotal = Math.max(...Object.values(sectors).map(s => Math.abs(s.total)), 1);
+            
+            for (const [sector, data] of Object.entries(sectors)) {
+                const percent = (data.total / maxTotal * 100);
+                const fillColor = data.total >= 0 ? '#10b981' : '#ef4444';
+                const winRate = data.trades ? (data.wins/data.trades*100).toFixed(1) : 0;
+                document.getElementById(`${sector}Portfolio`).innerHTML = `
+                    <div class="sector-item">
+                        <span class="sector-name">Total P&L</span>
+                        <span class="sector-value ${data.total>=0?'positive':'negative'}">${formatUSD(data.total)}</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(100, Math.abs(percent))}%; background: ${fillColor};"></div></div>
+                    <div class="sector-item">
+                        <span class="sector-name">Win Rate</span>
+                        <span class="sector-value ${winRate>=50?'positive':'negative'}">${winRate}%</span>
+                    </div>
+                    <div class="sector-item">
+                        <span class="sector-name">Total Trades</span>
+                        <span class="sector-value">${data.trades}</span>
+                    </div>
+                `;
             }
         }
-    }
 
-    // ========== Event Listener ==========
-    sendBtn.addEventListener('click', handleUserMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleUserMessage();
-    });
-    modeSelect.addEventListener('change', changeMode);
+        function renderCharts() {
+            const filtered = getFilteredTrades();
+            const sorted = [...filtered].sort((a,b) => a.tanggal.localeCompare(b.tanggal));
+            let cumulative = 0;
+            const equityData = sorted.map(t => { cumulative += t.netProfit; return cumulative; });
+            const labels = sorted.map(t => t.tanggal);
+            
+            if (equityChart) equityChart.destroy();
+            const ctx = document.getElementById('equityChart').getContext('2d');
+            equityChart = new Chart(ctx, {
+                type: 'line', data: { labels, datasets: [{ label: 'Portfolio Equity', data: equityData, borderColor: '#3b82f6', fill: true, backgroundColor: 'rgba(59,130,246,0.1)', tension: 0.2 }] },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { tooltip: { callbacks: { label: (ctx) => formatUSD(ctx.raw) } } }, scales: { y: { ticks: { callback: (v) => formatUSD(v) } } } }
+            });
+            
+            const sectorProfit = { forex: 0, crypto: 0, stock: 0 };
+            trades.forEach(t => { if (sectorProfit[t.sektor] !== undefined) sectorProfit[t.sektor] += t.netProfit; });
+            if (sectorChart) sectorChart.destroy();
+            const sectorCtx = document.getElementById('sectorChart').getContext('2d');
+            sectorChart = new Chart(sectorCtx, {
+                type: 'doughnut', data: { labels: ['Forex', 'Crypto', 'Stocks'], datasets: [{ data: [sectorProfit.forex, sectorProfit.crypto, sectorProfit.stock], backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981'], borderWidth: 0 }] },
+                options: { responsive: true, plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${formatUSD(ctx.raw)}` } } } }
+            });
+        }
 
-    // ========== Inisialisasi ==========
-    changeMode(); // set awal
-</script>
+        function renderHeatmap() {
+            const filtered = getFilteredTrades();
+            const monthly = {};
+            filtered.forEach(t => {
+                const date = new Date(t.tanggal);
+                const key = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+                monthly[key] = (monthly[key] || 0) + t.netProfit;
+            });
+            const sortedMonths = Object.keys(monthly).sort();
+            let html = '<table style="width:100%; font-size:0.7rem;"></tr>';
+            sortedMonths.forEach(m => { html += `<th style="padding:8px">${m}</th>`; });
+            html += '</tr><tr>';
+            sortedMonths.forEach(m => {
+                const val = monthly[m];
+                const intensity = Math.min(0.8, Math.abs(val)/2000);
+                const color = val > 0 ? `rgba(16,185,129,${intensity})` : `rgba(239,68,68,${intensity})`;
+                html += `<td style="padding:8px; background:${color}; text-align:center; border-radius:8px;">${formatUSD(val)}</td>`;
+            });
+            html += '</tr></table>';
+            document.getElementById("heatmapContainer").innerHTML = html || "<p>No data</p>";
+        }
+
+        function renderTable() {
+            const filtered = getFilteredTrades();
+            const tbody = document.getElementById("tradesTableBody");
+            if (!filtered.length) {
+                tbody.innerHTML = '<tr><td colspan="13" style="text-align:center">No trades found</td></tr>';
+                return;
+            }
+            let html = "";
+            filtered.forEach((t, idx) => {
+                const originalIdx = trades.findIndex(ot => ot.tanggal === t.tanggal && ot.pasangan === t.pasangan);
+                const sectorClass = t.sektor === 'forex' ? 'badge-forex' : (t.sektor === 'crypto' ? 'badge-crypto' : 'badge-stock');
+                const decimals = getInstrumentDecimals(t.pasangan, t.sektor);
+                html += `<tr>
+                    <td>${t.tanggal}</td>
+                    <td><span class="badge ${sectorClass}">${t.sektor.toUpperCase()}</span></td>
+                    <td>${t.pasangan}</td>
+                    <td>${t.arah}</td>
+                    <td class="numeric">${formatPrice(t.hargaMasuk, decimals)}</td>
+                    <td class="numeric">${formatPrice(t.hargaKeluar, decimals)}</td>
+                    <td class="numeric">${t.lot}</td>
+                    <td class="numeric">${t.points.toFixed(2)}</td>
+                    <td class="numeric">${formatUSD(t.profitLossManual)}</td>
+                    <td class="numeric"><strong>${formatUSD(t.netProfit)}</strong></td>
+                    <td>${t.strategi || "-"}</td>
+                    <td><span class="badge ${t.netProfit>0?'badge-win':'badge-loss'}">${t.status}</span></td>
+                    <td><button class="btn-icon" onclick="editTrade(${originalIdx})"><i class="fas fa-edit"></i></button>
+                    <button class="btn-icon" onclick="deleteTrade(${originalIdx})"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function renderStrategyPerformance() {
+            const strategyData = {};
+            trades.forEach(t => {
+                const strat = t.strategi || "No Strategy";
+                if (!strategyData[strat]) {
+                    strategyData[strat] = { forex: 0, crypto: 0, stock: 0, total: 0, wins: 0, trades: 0 };
+                }
+                strategyData[strat][t.sektor] = (strategyData[strat][t.sektor] || 0) + t.netProfit;
+                strategyData[strat].total += t.netProfit;
+                strategyData[strat].trades++;
+                if (t.netProfit > 0) strategyData[strat].wins++;
+            });
+            
+            const strategies = Object.keys(strategyData).sort();
+            let tbodyHtml = '';
+            let grandTotal = { forex: 0, crypto: 0, stock: 0, total: 0, wins: 0, trades: 0 };
+            
+            strategies.forEach(strat => {
+                const data = strategyData[strat];
+                const winRate = data.trades ? (data.wins / data.trades * 100).toFixed(1) : 0;
+                tbodyHtml += `<tr>
+                    <td><strong>${strat}</strong></td>
+                    <td class="numeric ${data.forex >= 0 ? 'positive' : 'negative'}">${formatUSD(data.forex)}</td>
+                    <td class="numeric ${data.crypto >= 0 ? 'positive' : 'negative'}">${formatUSD(data.crypto)}</td>
+                    <td class="numeric ${data.stock >= 0 ? 'positive' : 'negative'}">${formatUSD(data.stock)}</td>
+                    <td class="numeric ${data.total >= 0 ? 'positive' : 'negative'}"><strong>${formatUSD(data.total)}</strong></td>
+                    <td class="numeric ${winRate >= 50 ? 'positive' : 'negative'}">${winRate}%</td>
+                    <td class="numeric">${data.trades}</td>
+                </tr>`;
+                grandTotal.forex += data.forex;
+                grandTotal.crypto += data.crypto;
+                grandTotal.stock += data.stock;
+                grandTotal.total += data.total;
+                grandTotal.wins += data.wins;
+                grandTotal.trades += data.trades;
+            });
+            
+            const grandWinRate = grandTotal.trades ? (grandTotal.wins / grandTotal.trades * 100).toFixed(1) : 0;
+            document.getElementById("strategyPerfBody").innerHTML = tbodyHtml;
+            document.getElementById("strategyPerfFooter").innerHTML = `<tr class="grand-total">
+                <td><strong>GRAND TOTAL</strong></td>
+                <td class="numeric ${grandTotal.forex >= 0 ? 'positive' : 'negative'}"><strong>${formatUSD(grandTotal.forex)}</strong></td>
+                <td class="numeric ${grandTotal.crypto >= 0 ? 'positive' : 'negative'}"><strong>${formatUSD(grandTotal.crypto)}</strong></td>
+                <td class="numeric ${grandTotal.stock >= 0 ? 'positive' : 'negative'}"><strong>${formatUSD(grandTotal.stock)}</strong></td>
+                <td class="numeric ${grandTotal.total >= 0 ? 'positive' : 'negative'}"><strong>${formatUSD(grandTotal.total)}</strong></td>
+                <td class="numeric ${grandWinRate >= 50 ? 'positive' : 'negative'}"><strong>${grandWinRate}%</strong></td>
+                <td class="numeric"><strong>${grandTotal.trades}</strong></td>
+            </tr>`;
+        }
+
+        function updateFilters() {
+            const instruments = [...new Set(trades.map(t => t.pasangan))];
+            const strategies = [...new Set(trades.map(t => t.strategi).filter(s => s))];
+            document.getElementById("filterInstrument").innerHTML = '<option value="all">All</option>' + instruments.map(i => `<option value="${i}">${i}</option>`).join('');
+            document.getElementById("filterStrategy").innerHTML = '<option value="all">All</option>' + strategies.map(s => `<option value="${s}">${s}</option>`).join('');
+        }
+
+        function renderAll() {
+            updateFilters();
+            renderStats();
+            renderPortfolioBySector();
+            renderCharts();
+            renderHeatmap();
+            renderTable();
+            renderStrategyPerformance();
+            document.getElementById("filterStats").innerHTML = `${getFilteredTrades().length} trades displayed`;
+        }
+
+        document.getElementById("filterSector").addEventListener("change", (e) => { currentFilter.sector = e.target.value; currentFilter.instrument = "all"; renderAll(); });
+        document.getElementById("filterInstrument").addEventListener("change", (e) => { currentFilter.instrument = e.target.value; renderAll(); });
+        document.getElementById("filterStrategy").addEventListener("change", (e) => { currentFilter.strategy = e.target.value; renderAll(); });
+        document.getElementById("filterPeriod").addEventListener("change", (e) => { currentFilter.period = e.target.value; renderAll(); });
+        
+        document.getElementById("addTradeBtn").onclick = () => { editIndex = null; document.getElementById("modalTitle").innerHTML = "<i class='fas fa-plus'></i> Add New Trade"; document.getElementById("tradeForm").reset(); document.getElementById("tanggal").valueAsDate = new Date(); document.getElementById("tradeModal").style.display = "flex"; updatePreview(); };
+        document.getElementById("closeModalBtn").onclick = closeModal;
+        document.getElementById("tradeForm").onsubmit = (e) => { e.preventDefault(); addOrUpdateTrade(getFormData()); };
+        document.getElementById("themeToggle").onclick = () => document.body.classList.toggle("light");
+        document.getElementById("backupBtn").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(trades)], {type:"application/json"})); a.download = "portfolio_backup.json"; a.click(); };
+        document.getElementById("restoreBtn").onclick = () => { const input = document.createElement("input"); input.type = "file"; input.accept = "application/json"; input.onchange = e => { const file = e.target.files[0]; const reader = new FileReader(); reader.onload = ev => { trades = JSON.parse(ev.target.result); saveTrades(); }; reader.readAsText(file); }; input.click(); };
+        
+        document.getElementById("hargaMasuk").addEventListener("input", updatePreview);
+        document.getElementById("hargaKeluar").addEventListener("input", updatePreview);
+        document.getElementById("lot").addEventListener("input", updatePreview);
+        document.getElementById("arah").addEventListener("change", updatePreview);
+        
+        function closeModal() { document.getElementById("tradeModal").style.display = "none"; editIndex = null; }
+        window.onclick = (e) => { if (e.target === document.getElementById("tradeModal")) closeModal(); };
+        
+        loadTrades();
+    </script>
 </body>
 </html>
