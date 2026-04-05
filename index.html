@@ -1,110 +1,803 @@
-Buatkan saya 1 file aplikasi web lengkap dalam satu file index.html (gabungan HTML, CSS, dan JavaScript) dengan kode yang sangat panjang (minimal 100.000 karakter), kompleks, dan terlihat seperti aplikasi premium mobile.
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="theme-color" content="#0A1128">
+    <title>Trader X Academy | Premium Trading Signals & Education</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-Nama aplikasi: "Trader X Academy"
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: #0A1128;
+            color: #E2E8F0;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
 
-KONSEP UTAMA:
-Aplikasi edukasi dan signal trading (Forex, Crypto, Saham) dengan tampilan seperti aplikasi mobile modern (mirip mobile banking seperti BRIMO), memiliki dashboard utama dengan menu navigasi berbentuk grid/icon.
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1E293B;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3B82F6;
+            border-radius: 10px;
+        }
 
-FITUR WAJIB:
+        /* App container - seperti layar mobile */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 20%, #0F172A, #0A1128);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
 
-1. AUTH SYSTEM:
+        /* Page transition */
+        .page {
+            animation: fadeSlide 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-- Register & Login
-- Session login
-- Simpan data user di localStorage
-- Role: free & premium
+        /* Container */
+        .container {
+            padding: 20px 18px 30px;
+        }
 
-2. DASHBOARD UTAMA (WAJIB SEPERTI BRIMO):
+        /* Header dashboard seperti BRIMO */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 16px 18px;
+            border-radius: 32px;
+            border: 1px solid rgba(59,130,246,0.3);
+        }
+        .user-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .user-info p {
+            font-size: 12px;
+            color: #94A3B8;
+        }
+        .avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 60px;
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            object-fit: cover;
+            overflow: hidden;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-- Tampilan utama seperti aplikasi mobile banking
-- Ada header:
-  - Nama user
-  - Foto profil
-- Ada menu grid (icon menu) seperti:
-  - 📊 Signal
-  - 📘 Materi
-  - 📓 Jurnal Trading
-  - 🧠 Tools
-  - 👑 Membership
-  - ⚙️ Settings
-- Desain clean, modern, dan premium
-- Ada animasi klik menu
+        /* Grid menu seperti BRIMO */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .menu-item {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 16px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(59,130,246,0.2);
+        }
+        .menu-item:hover {
+            transform: translateY(-4px);
+            background: rgba(59,130,246,0.2);
+            border-color: #3B82F6;
+        }
+        .menu-item span:first-child {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .menu-item span:last-child {
+            font-size: 13px;
+            font-weight: 500;
+        }
 
-3. USER PROFILE / SETTINGS:
+        /* Card style */
+        .card {
+            background: rgba(18, 26, 40, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            border: 1px solid rgba(59,130,246,0.25);
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            transition: all 0.2s;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
 
-- User bisa:
-  - Ganti nama
-  - Ganti email
-  - Ganti password
-  - Upload foto profil (base64)
-- Simpan ke localStorage
-- Tampilkan di dashboard
+        /* Badge & buttons */
+        .badge {
+            display: inline-flex;
+            background: #1E293B;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-premium {
+            background: linear-gradient(135deg, #F59E0B, #EAB308);
+            color: #0A0E1A;
+        }
+        .btn {
+            border: none;
+            border-radius: 44px;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            background: #1E293B;
+            color: white;
+            transition: 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(95deg, #3B82F6, #2563EB);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #3B82F6;
+            color: #3B82F6;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0F1422;
+            border: 1px solid #29344B;
+            border-radius: 24px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 14px;
+            outline: none;
+        }
+        input:focus, select:focus {
+            border-color: #3B82F6;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .progress-bar {
+            background: #1E293B;
+            border-radius: 20px;
+            height: 6px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .progress-fill {
+            background: #3B82F6;
+            width: 0%;
+            height: 100%;
+        }
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 12px 20px;
+            border-top: 1px solid rgba(59,130,246,0.3);
+            z-index: 1000;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            color: #7E8AA8;
+            font-size: 11px;
+            gap: 4px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 30px;
+        }
+        .nav-item.active {
+            color: #3B82F6;
+            background: rgba(59,130,246,0.15);
+        }
+        .nav-item span:first-child {
+            font-size: 22px;
+        }
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background: #111827;
+            border-radius: 36px;
+            max-width: 90%;
+            width: 380px;
+            padding: 24px;
+            border: 1px solid #3B82F6;
+        }
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            right: 20px;
+            background: #1E293B;
+            border-left: 4px solid #3B82F6;
+            padding: 14px;
+            border-radius: 28px;
+            z-index: 1500;
+            animation: slideUp 0.3s;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .stat-number {
+            font-size: 26px;
+            font-weight: 800;
+            color: #3B82F6;
+        }
+        hr {
+            border-color: #29344B;
+            margin: 12px 0;
+        }
+        .filter-chip {
+            display: inline-block;
+            background: #111827;
+            padding: 6px 16px;
+            border-radius: 40px;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid #29344B;
+        }
+        .filter-chip.active {
+            background: #3B82F6;
+            color: white;
+        }
+        @media (max-width: 480px) {
+            .container { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container" id="appRoot"></div>
 
-4. SIGNAL SYSTEM (ADVANCED):
+<script>
+    // ======================== STORAGE KEYS ========================
+    const STORAGE = {
+        USERS: "traderx_users_v2",
+        CURRENT_USER: "traderx_current_v2",
+        SIGNALS: "traderx_signals_v2",
+        MATERI: "traderx_materi_v2",
+        JOURNALS: "traderx_journals_v2",
+        NOTES: "traderx_notes_v2",
+        WATCHLIST: "traderx_watchlist_v2",
+        ACTIVITIES: "traderx_activities_v2"
+    };
 
-- Tambah / edit / hapus signal
-- Status: RUNNING, TP HIT, SL HIT
-- Kategori: Forex, Crypto, Saham
-- Filter & sorting
-- Premium lock
-- UI seperti aplikasi trading profesional
+    // ======================== DUMMY DATA ========================
+    const defaultMateri = [
+        { id: "m1", title: "📘 Dasar Forex & Crypto", level: "Pemula", premium: false, content: "Forex adalah pasar terbesar di dunia. Pelajari pips, lot, leverage, dan cara membaca quote. Crypto: Bitcoin, Ethereum, altcoin.", duration: "25 menit", progress: 0 },
+        { id: "m2", title: "🔥 Smart Money Concept", level: "Lanjutan", premium: true, content: "SMC mengikuti pergerakan bank sentral. Order Block, Fair Value Gap, Liquidity Grab. Teknik pro trader.", duration: "50 menit", progress: 0 },
+        { id: "m3", title: "📈 Analisis Teknikal Lengkap", level: "Menengah", premium: false, content: "Candlestick, Support Resistance, Trendline, Indikator RSI, MACD, Moving Average.", duration: "40 menit", progress: 0 },
+        { id: "m4", title: "🛡️ Risk Management Pro", level: "Expert", premium: true, content: "Manajemen risiko: 1-2% risk per trade, rasio risk reward 1:3, psikologi trading, jurnal trading.", duration: "35 menit", progress: 0 },
+        { id: "m5", title: "💎 Scalping & Day Trading", level: "Advanced", premium: true, content: "Strategi scalping timeframe M1-M5, order flow, volume profile.", duration: "55 menit", progress: 0 },
+        { id: "m6", title: "🏦 Analisa Fundamental", level: "Pemula", premium: false, content: "Berita ekonomi: NFP, Interest Rate, CPI, dampaknya ke forex dan crypto.", duration: "30 menit", progress: 0 }
+    ];
 
-5. MATERI:
+    const defaultSignals = [
+        { id: "sig1", pair: "EUR/USD", type: "Forex", entry: "1.0850", tp: "1.0920", sl: "1.0800", status: "RUNNING", premium: false, createdAt: Date.now() - 86400000, analyst: "Alpha Trader" },
+        { id: "sig2", pair: "BTC/USD", type: "Crypto", entry: "43500", tp: "45000", sl: "42500", status: "TP HIT", premium: true, createdAt: Date.now() - 172800000, analyst: "CryptoKing" },
+        { id: "sig3", pair: "AAPL", type: "Saham", entry: "175.50", tp: "182.00", sl: "172.00", status: "RUNNING", premium: false, createdAt: Date.now() - 43200000, analyst: "StockHunter" },
+        { id: "sig4", pair: "GBP/JPY", type: "Forex", entry: "186.20", tp: "188.50", sl: "185.00", status: "SL HIT", premium: true, createdAt: Date.now() - 259200000, analyst: "ForexMaster" },
+        { id: "sig5", pair: "ETH/USD", type: "Crypto", entry: "2280", tp: "2450", sl: "2200", status: "RUNNING", premium: true, createdAt: Date.now() - 7200000, analyst: "DeFiWhale" },
+        { id: "sig6", pair: "TSLA", type: "Saham", entry: "245.30", tp: "260.00", sl: "238.00", status: "RUNNING", premium: false, createdAt: Date.now() - 10800000, analyst: "ElonTrader" }
+    ];
 
-- List materi
-- Detail materi
-- Progress belajar
-- Lock premium
+    function initStorage() {
+        if (!localStorage.getItem(STORAGE.USERS)) {
+            localStorage.setItem(STORAGE.USERS, JSON.stringify([
+                { email: "demo@traderx.com", password: "demo123", name: "Demo User", role: "free", points: 120, avatar: "", joined: Date.now() },
+                { email: "premium@traderx.com", password: "premium", name: "Premium Trader", role: "premium", points: 450, avatar: "", joined: Date.now() }
+            ]));
+        }
+        if (!localStorage.getItem(STORAGE.SIGNALS)) localStorage.setItem(STORAGE.SIGNALS, JSON.stringify(defaultSignals));
+        if (!localStorage.getItem(STORAGE.MATERI)) localStorage.setItem(STORAGE.MATERI, JSON.stringify(defaultMateri));
+        if (!localStorage.getItem(STORAGE.JOURNALS)) localStorage.setItem(STORAGE.JOURNALS, JSON.stringify([]));
+        if (!localStorage.getItem(STORAGE.NOTES)) localStorage.setItem(STORAGE.NOTES, JSON.stringify([]));
+        if (!localStorage.getItem(STORAGE.WATCHLIST)) localStorage.setItem(STORAGE.WATCHLIST, JSON.stringify([]));
+        if (!localStorage.getItem(STORAGE.ACTIVITIES)) localStorage.setItem(STORAGE.ACTIVITIES, JSON.stringify([]));
+    }
+    initStorage();
 
-6. JURNAL TRADING (FITUR PENTING):
+    let currentUser = JSON.parse(localStorage.getItem(STORAGE.CURRENT_USER));
+    let currentPage = "dashboard";
 
-- User bisa mencatat:
-  - Pair
-  - Entry
-  - Exit
-  - Profit/Loss
-  - Catatan
-- Riwayat jurnal tersimpan
-- Tampilan seperti aplikasi trading journal profesional
+    // Helper functions
+    function getUsers() { return JSON.parse(localStorage.getItem(STORAGE.USERS)); }
+    function saveUser(user) {
+        let users = getUsers();
+        const idx = users.findIndex(u => u.email === user.email);
+        if (idx !== -1) users[idx] = user;
+        localStorage.setItem(STORAGE.USERS, JSON.stringify(users));
+        localStorage.setItem(STORAGE.CURRENT_USER, JSON.stringify(user));
+        currentUser = user;
+    }
+    function addActivity(action) {
+        let acts = JSON.parse(localStorage.getItem(STORAGE.ACTIVITIES));
+        acts.unshift({ id: Date.now(), userEmail: currentUser.email, action, timestamp: Date.now() });
+        if (acts.length > 50) acts.pop();
+        localStorage.setItem(STORAGE.ACTIVITIES, JSON.stringify(acts));
+    }
+    function showToast(msg, isError = false) {
+        let toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `${isError ? '⚠️ ' : '✅ '}${msg}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+    }
 
-7. TOOLS:
+    // ======================== RENDER ENGINE ========================
+    function render() {
+        if (!currentUser) { renderAuth(); return; }
+        const app = document.getElementById('appRoot');
+        let content = '';
+        switch (currentPage) {
+            case 'dashboard': content = renderDashboard(); break;
+            case 'signals': content = renderSignalsPage(); break;
+            case 'materi': content = renderMateriPage(); break;
+            case 'journal': content = renderJournalPage(); break;
+            case 'tools': content = renderToolsPage(); break;
+            case 'membership': content = renderMembershipPage(); break;
+            case 'settings': content = renderSettingsPage(); break;
+            case 'admin': content = renderAdminPanel(); break;
+            default: content = renderDashboard();
+        }
+        app.innerHTML = content + renderBottomNav();
+        attachNavEvents();
+        attachPageEvents();
+    }
 
-- Notes trading
-- Watchlist market
+    // AUTH
+    function renderAuth() {
+        document.getElementById('appRoot').innerHTML = `
+            <div class="container" style="padding: 40px 20px;">
+                <div class="card text-center" style="text-align:center;">
+                    <h1 style="font-size: 32px; background:linear-gradient(135deg,#3B82F6,#60A5FA); -webkit-background-clip:text; background-clip:text; color:transparent;">Trader X Academy</h1>
+                    <p class="mt-2">Premium Trading Signals & Education</p>
+                </div>
+                <div class="card" id="authBox">
+                    <h3 id="authTitle">Login</h3>
+                    <input type="text" id="authName" placeholder="Nama" style="display:none;">
+                    <input type="email" id="authEmail" placeholder="Email">
+                    <input type="password" id="authPass" placeholder="Password">
+                    <button class="btn btn-primary" id="authBtn">Login</button>
+                    <p class="text-center mt-2"><a href="#" id="switchAuth" style="color:#3B82F6;">Belum punya akun? Daftar</a></p>
+                    <p class="small text-center mt-2">Demo: demo@traderx.com / demo123 | premium@traderx.com / premium</p>
+                </div>
+            </div>
+        `;
+        let isLogin = true;
+        const title = document.getElementById('authTitle');
+        const btn = document.getElementById('authBtn');
+        const switchLink = document.getElementById('switchAuth');
+        const nameField = document.getElementById('authName');
+        const emailInp = document.getElementById('authEmail');
+        const passInp = document.getElementById('authPass');
 
-8. MEMBERSHIP:
+        function handleAuth() {
+            const email = emailInp.value.trim();
+            const pass = passInp.value.trim();
+            if (!email || !pass) return showToast("Isi semua field", true);
+            const users = getUsers();
+            if (isLogin) {
+                const user = users.find(u => u.email === email && u.password === pass);
+                if (user) {
+                    localStorage.setItem(STORAGE.CURRENT_USER, JSON.stringify(user));
+                    currentUser = user;
+                    addActivity("Login ke akun");
+                    showToast(`Selamat datang ${user.name || email}`);
+                    render();
+                } else showToast("Email atau password salah", true);
+            } else {
+                if (users.find(u => u.email === email)) return showToast("Email sudah terdaftar", true);
+                const name = nameField.value.trim() || email.split('@')[0];
+                const newUser = { email, password: pass, name, role: "free", points: 0, avatar: "", joined: Date.now() };
+                users.push(newUser);
+                localStorage.setItem(STORAGE.USERS, JSON.stringify(users));
+                showToast("Registrasi berhasil, silakan login");
+                isLogin = true;
+                title.innerText = "Login";
+                btn.innerText = "Login";
+                switchLink.innerText = "Belum punya akun? Daftar";
+                nameField.style.display = "none";
+                emailInp.value = email;
+                passInp.value = "";
+            }
+        }
+        btn.onclick = handleAuth;
+        switchLink.onclick = (e) => {
+            e.preventDefault();
+            isLogin = !isLogin;
+            title.innerText = isLogin ? "Login" : "Register";
+            btn.innerText = isLogin ? "Login" : "Daftar";
+            switchLink.innerText = isLogin ? "Belum punya akun? Daftar" : "Sudah punya akun? Login";
+            nameField.style.display = isLogin ? "none" : "block";
+        };
+    }
 
-- Free vs Premium
-- Upgrade system (simulasi)
-- UI premium
+    // DASHBOARD seperti BRIMO
+    function renderDashboard() {
+        const journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
+        const totalProfit = journals.reduce((s, j) => s + (j.profit || 0), 0);
+        const winRate = journals.length ? (journals.filter(j => j.profit > 0).length / journals.length * 100).toFixed(0) : 0;
+        const avatarHtml = currentUser.avatar ? `<img src="${currentUser.avatar}" alt="avatar">` : `<span>${(currentUser.name || currentUser.email).charAt(0).toUpperCase()}</span>`;
+        return `
+            <div class="container page">
+                <div class="dashboard-header">
+                    <div class="user-info">
+                        <h3>${currentUser.name || currentUser.email.split('@')[0]}</h3>
+                        <p>${currentUser.role === 'premium' ? '💎 Premium Member' : '🆓 Free Member'}</p>
+                    </div>
+                    <div class="avatar" id="avatarClick">${avatarHtml}</div>
+                </div>
+                <div class="card" style="background:linear-gradient(135deg,#1E2A47,#0F172A);">
+                    <div class="flex-between"><span>💰 Total Profit</span><span class="stat-number">$${totalProfit}</span></div>
+                    <div class="flex-between"><span>📈 Win Rate</span><span>${winRate}%</span></div>
+                    <div class="flex-between"><span>⭐ Poin Edukasi</span><span>${currentUser.points || 0}</span></div>
+                </div>
+                <div class="menu-grid">
+                    <div class="menu-item" data-page="signals"><span>📊</span><span>Signal</span></div>
+                    <div class="menu-item" data-page="materi"><span>📘</span><span>Materi</span></div>
+                    <div class="menu-item" data-page="journal"><span>📓</span><span>Jurnal</span></div>
+                    <div class="menu-item" data-page="tools"><span>🧠</span><span>Tools</span></div>
+                    <div class="menu-item" data-page="membership"><span>👑</span><span>Membership</span></div>
+                    <div class="menu-item" data-page="settings"><span>⚙️</span><span>Settings</span></div>
+                </div>
+                <div class="card"><div class="card-header">📢 Aktivitas Terbaru</div><div id="recentActivities">${getRecentActivities()}</div></div>
+            </div>
+        `;
+    }
+    function getRecentActivities() {
+        let acts = JSON.parse(localStorage.getItem(STORAGE.ACTIVITIES)).filter(a => a.userEmail === currentUser.email).slice(0, 3);
+        if (!acts.length) return "<p class='small'>Belum ada aktivitas</p>";
+        return acts.map(a => `<div class="small">• ${new Date(a.timestamp).toLocaleTimeString()} - ${a.action}</div>`).join('');
+    }
 
-9. ADMIN MODE:
+    // SIGNALS
+    function renderSignalsPage() {
+        return `<div class="container page"><div class="flex-between"><h2>📡 Signal Trading</h2><button class="btn btn-primary" id="addSignalBtn" style="width:auto;">+</button></div><div id="filterChips">${["Semua","Forex","Crypto","Saham"].map(c => `<span class="filter-chip" data-filter="${c}">${c}</span>`).join('')}</div><div id="signalList"></div></div>`;
+    }
+    function refreshSignalList(filter = "Semua") {
+        let signals = JSON.parse(localStorage.getItem(STORAGE.SIGNALS));
+        if (filter !== "Semua") signals = signals.filter(s => s.type === filter);
+        signals.sort((a,b) => b.createdAt - a.createdAt);
+        const container = document.getElementById("signalList");
+        if (!container) return;
+        container.innerHTML = signals.map(sig => {
+            const locked = sig.premium && currentUser.role !== "premium";
+            return `<div class="card ${locked ? 'premium-locked' : ''}" data-id="${sig.id}"><div class="flex-between"><b>${sig.pair} (${sig.type})</b><span class="badge" style="background:${sig.status==='RUNNING'?'#22C55E':sig.status==='TP HIT'?'#F59E0B':'#EF4444'}">${sig.status}</span></div><div>Entry: ${sig.entry} | TP: ${sig.tp} | SL: ${sig.sl}</div><div class="small">${sig.analyst} · ${new Date(sig.createdAt).toLocaleDateString()}</div>${!locked ? `<div class="flex-between mt-2"><button class="editSignal btn-outline" data-id="${sig.id}" style="width:45%;">✏️</button><button class="delSignal btn-outline" data-id="${sig.id}" style="width:45%;">🗑</button></div>` : '<span class="badge-premium">🔒 Premium</span>'}</div>`;
+        }).join('');
+        attachSignalEvents();
+    }
+    function attachSignalEvents() {
+        document.querySelectorAll('.editSignal').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); openEditSignal(btn.dataset.id); }));
+        document.querySelectorAll('.delSignal').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); deleteSignalById(btn.dataset.id); }));
+    }
+    function openAddSignalModal() {
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><h3>Tambah Signal</h3><input id="pair" placeholder="Pair"><select id="type"><option>Forex</option><option>Crypto</option><option>Saham</option></select><input id="entry" placeholder="Entry"><input id="tp" placeholder="TP"><input id="sl" placeholder="SL"><select id="status"><option>RUNNING</option><option>TP HIT</option><option>SL HIT</option></select><label><input type="checkbox" id="premiumCheck"> Premium</label><button id="saveSignalBtn" class="btn-primary mt-2">Simpan</button><button id="closeModal" class="btn-outline mt-2">Batal</button></div>`;
+        document.body.appendChild(modal);
+        document.getElementById('saveSignalBtn').onclick = () => {
+            let signals = JSON.parse(localStorage.getItem(STORAGE.SIGNALS));
+            signals.push({ id: Date.now().toString(), pair: document.getElementById('pair').value, type: document.getElementById('type').value, entry: document.getElementById('entry').value, tp: document.getElementById('tp').value, sl: document.getElementById('sl').value, status: document.getElementById('status').value, premium: document.getElementById('premiumCheck').checked, createdAt: Date.now(), analyst: currentUser.name });
+            localStorage.setItem(STORAGE.SIGNALS, JSON.stringify(signals));
+            addActivity("Menambahkan signal baru");
+            showToast("Signal ditambahkan");
+            modal.remove();
+            if (currentPage === 'signals') render();
+        };
+        document.getElementById('closeModal').onclick = () => modal.remove();
+    }
+    function openEditSignal(id) {
+        let signals = JSON.parse(localStorage.getItem(STORAGE.SIGNALS));
+        let sig = signals.find(s => s.id === id);
+        if (!sig) return;
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><h3>Edit Signal</h3><input id="epair" value="${sig.pair}"><select id="etype"><option ${sig.type==='Forex'?'selected':''}>Forex</option><option ${sig.type==='Crypto'?'selected':''}>Crypto</option><option ${sig.type==='Saham'?'selected':''}>Saham</option></select><input id="eentry" value="${sig.entry}"><input id="etp" value="${sig.tp}"><input id="esl" value="${sig.sl}"><select id="estatus"><option ${sig.status==='RUNNING'?'selected':''}>RUNNING</option><option ${sig.status==='TP HIT'?'selected':''}>TP HIT</option><option ${sig.status==='SL HIT'?'selected':''}>SL HIT</option></select><button id="updateSignalBtn" class="btn-primary">Update</button><button id="closeModalEdit">Batal</button></div>`;
+        document.body.appendChild(modal);
+        document.getElementById('updateSignalBtn').onclick = () => {
+            sig.pair = document.getElementById('epair').value;
+            sig.type = document.getElementById('etype').value;
+            sig.entry = document.getElementById('eentry').value;
+            sig.tp = document.getElementById('etp').value;
+            sig.sl = document.getElementById('esl').value;
+            sig.status = document.getElementById('estatus').value;
+            localStorage.setItem(STORAGE.SIGNALS, JSON.stringify(signals));
+            addActivity("Mengedit signal");
+            showToast("Signal diupdate");
+            modal.remove();
+            if (currentPage === 'signals') render();
+        };
+        document.getElementById('closeModalEdit').onclick = () => modal.remove();
+    }
+    function deleteSignalById(id) {
+        let signals = JSON.parse(localStorage.getItem(STORAGE.SIGNALS));
+        signals = signals.filter(s => s.id !== id);
+        localStorage.setItem(STORAGE.SIGNALS, JSON.stringify(signals));
+        addActivity("Menghapus signal");
+        showToast("Signal dihapus");
+        if (currentPage === 'signals') render();
+    }
 
-- Tambah signal
-- Tambah materi
+    // MATERI
+    function renderMateriPage() {
+        const materi = JSON.parse(localStorage.getItem(STORAGE.MATERI));
+        const progressData = JSON.parse(localStorage.getItem(STORAGE.USER_PROGRESS)) || {};
+        const userProg = progressData[currentUser.email] || { completed: [] };
+        return `<div class="container page"><h2>📘 Materi</h2>${materi.map(m => `<div class="card materi-card" data-id="${m.id}"><div class="flex-between"><b>${m.title}</b>${m.premium && currentUser.role!=='premium'?'<span class="badge-premium">PREMIUM</span>':(userProg.completed.includes(m.id)?'✅':'📖')}</div><p class="small">${m.duration} • ${m.level}</p><div class="progress-bar"><div class="progress-fill" style="width:${userProg.completed.includes(m.id)?100:0}%"></div></div></div>`).join('')}</div>`;
+    }
+    function attachMateriDetail() {
+        const materi = JSON.parse(localStorage.getItem(STORAGE.MATERI));
+        let progressData = JSON.parse(localStorage.getItem(STORAGE.USER_PROGRESS)) || {};
+        document.querySelectorAll('.materi-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const id = card.dataset.id;
+                const mat = materi.find(m => m.id === id);
+                if (mat.premium && currentUser.role !== 'premium') return showToast("Upgrade ke premium untuk akses", true);
+                const completed = (progressData[currentUser.email]?.completed || []).includes(id);
+                const modal = document.createElement('div'); modal.className = 'modal';
+                modal.innerHTML = `<div class="modal-content"><h3>${mat.title}</h3><p>${mat.content}</p><button id="completeMateriBtn" class="btn-primary">${completed ? 'Sudah Selesai' : 'Tandai Selesai +10 Poin'}</button><button id="closeMateriModal" class="btn-outline">Tutup</button></div>`;
+                document.body.appendChild(modal);
+                document.getElementById('completeMateriBtn').onclick = () => {
+                    if (!completed) {
+                        let prog = progressData[currentUser.email] || { completed: [] };
+                        prog.completed.push(id);
+                        progressData[currentUser.email] = prog;
+                        localStorage.setItem(STORAGE.USER_PROGRESS, JSON.stringify(progressData));
+                        currentUser.points = (currentUser.points || 0) + 10;
+                        saveUser(currentUser);
+                        addActivity(`Menyelesaikan materi ${mat.title}`);
+                        showToast("+10 poin");
+                        modal.remove();
+                        render();
+                    } else modal.remove();
+                };
+                document.getElementById('closeMateriModal').onclick = () => modal.remove();
+            });
+        });
+    }
 
-10. UI/UX:
+    // JURNAL TRADING
+    function renderJournalPage() {
+        let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
+        let total = journals.reduce((s,j)=>s+j.profit,0);
+        return `<div class="container page"><h2>📓 Jurnal Trading</h2><div class="card"><div class="flex-between"><span>💰 Total P/L</span><span class="${total>=0?'stat-number':'stat-number'}" style="color:${total>=0?'#22C55E':'#EF4444'}">$${total}</span></div><button id="addJournalBtn" class="btn-primary">+ Catat Transaksi</button></div><div id="journalList">${journals.slice().reverse().map(j => `<div class="card"><div class="flex-between"><b>${j.pair}</b><span class="${j.profit>=0?'profit':'loss'}">$${j.profit}</span></div><div>Entry: ${j.entry} | Exit: ${j.exit}</div><div class="small">${j.note || '-'}</div><button class="delJournal btn-outline" data-id="${j.id}">Hapus</button></div>`).join('')}</div></div>`;
+    }
+    function attachJournalEvents() {
+        document.getElementById('addJournalBtn')?.addEventListener('click', () => {
+            const modal = document.createElement('div'); modal.className = 'modal';
+            modal.innerHTML = `<div class="modal-content"><h3>Tambah Jurnal</h3><input id="jPair" placeholder="Pair"><input id="jEntry" placeholder="Entry Price"><input id="jExit" placeholder="Exit Price"><input id="jLot" placeholder="Lot"><input id="jNote" placeholder="Catatan"><button id="saveJournal" class="btn-primary">Simpan</button><button id="closeJournal">Batal</button></div>`;
+            document.body.appendChild(modal);
+            document.getElementById('saveJournal').onclick = () => {
+                let entry = parseFloat(document.getElementById('jEntry').value);
+                let exit = parseFloat(document.getElementById('jExit').value);
+                let lot = parseFloat(document.getElementById('jLot').value);
+                let profit = (exit - entry) * lot;
+                let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS));
+                journals.push({ id: Date.now(), userEmail: currentUser.email, pair: document.getElementById('jPair').value, entry, exit, lot, profit: profit.toFixed(2), note: document.getElementById('jNote').value, date: Date.now() });
+                localStorage.setItem(STORAGE.JOURNALS, JSON.stringify(journals));
+                addActivity("Menambahkan jurnal trading");
+                showToast("Jurnal tersimpan");
+                modal.remove();
+                render();
+            };
+            document.getElementById('closeJournal').onclick = () => modal.remove();
+        });
+        document.querySelectorAll('.delJournal').forEach(btn => btn.onclick = () => {
+            let id = btn.dataset.id;
+            let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS));
+            journals = journals.filter(j => j.id != id);
+            localStorage.setItem(STORAGE.JOURNALS, JSON.stringify(journals));
+            render();
+        });
+    }
 
-- Tampilan seperti aplikasi mobile (SPA)
-- Dashboard grid icon seperti BRIMO
-- Dark mode + warna biru/neon
-- Card UI modern
-- Animasi transisi
-- Responsive mobile
+    // TOOLS (Notes & Watchlist)
+    function renderToolsPage() {
+        let notes = JSON.parse(localStorage.getItem(STORAGE.NOTES)).filter(n => n.userEmail === currentUser.email);
+        let watchlist = JSON.parse(localStorage.getItem(STORAGE.WATCHLIST)).filter(w => w.userEmail === currentUser.email);
+        return `<div class="container page"><h2>🧠 Tools</h2><div class="card"><h3>📝 Catatan Trading</h3><textarea id="newNote" rows="2"></textarea><button id="addNote" class="btn-primary">Simpan</button><div id="notesList">${notes.map(n => `<div class="flex-between"><span>${n.text}</span><button class="delNote" data-id="${n.id}">Hapus</button></div>`).join('')}</div></div><div class="card"><h3>⭐ Watchlist</h3><div class="flex-between"><input id="newWatch" placeholder="Pair"><button id="addWatch" class="btn-primary">Tambah</button></div><div id="watchlist">${watchlist.map(w => `<div class="flex-between"><span>${w.pair}</span><button class="delWatch" data-id="${w.id}">Hapus</button></div>`).join('')}</div></div></div>`;
+    }
+    function attachToolsEvents() {
+        document.getElementById('addNote')?.addEventListener('click', () => {
+            let text = document.getElementById('newNote').value;
+            if (!text) return;
+            let notes = JSON.parse(localStorage.getItem(STORAGE.NOTES));
+            notes.push({ id: Date.now(), userEmail: currentUser.email, text });
+            localStorage.setItem(STORAGE.NOTES, JSON.stringify(notes));
+            render();
+        });
+        document.querySelectorAll('.delNote').forEach(btn => btn.onclick = () => {
+            let id = btn.dataset.id;
+            let notes = JSON.parse(localStorage.getItem(STORAGE.NOTES));
+            notes = notes.filter(n => n.id != id);
+            localStorage.setItem(STORAGE.NOTES, JSON.stringify(notes));
+            render();
+        });
+        document.getElementById('addWatch')?.addEventListener('click', () => {
+            let pair = document.getElementById('newWatch').value;
+            if (!pair) return;
+            let watch = JSON.parse(localStorage.getItem(STORAGE.WATCHLIST));
+            watch.push({ id: Date.now(), userEmail: currentUser.email, pair });
+            localStorage.setItem(STORAGE.WATCHLIST, JSON.stringify(watch));
+            render();
+        });
+        document.querySelectorAll('.delWatch').forEach(btn => btn.onclick = () => {
+            let id = btn.dataset.id;
+            let watch = JSON.parse(localStorage.getItem(STORAGE.WATCHLIST));
+            watch = watch.filter(w => w.id != id);
+            localStorage.setItem(STORAGE.WATCHLIST, JSON.stringify(watch));
+            render();
+        });
+    }
 
-11. TEKNIS:
+    // MEMBERSHIP
+    function renderMembershipPage() {
+        return `<div class="container page"><h2>👑 Membership</h2><div class="card text-center"><h3>Trader X Premium</h3><p>Akses semua signal premium, materi expert, dan fitur exclusive.</p><div class="stat-number">$29.99 <span style="font-size:14px;">/ bulan</span></div><button id="upgradeBtn" class="btn-primary mt-2">Upgrade Sekarang</button></div></div>`;
+    }
 
-- Semua dalam 1 file HTML
-- HTML + CSS + JavaScript tanpa framework
-- Gunakan localStorage sebagai database
-- Struktur modular dan panjang
-- Tambahkan banyak dummy data
+    // SETTINGS (Profile)
+    function renderSettingsPage() {
+        return `<div class="container page"><h2>⚙️ Settings</h2><div class="card"><div class="flex-between"><div class="avatar" id="avatarPreview" style="width:70px;height:70px;">${currentUser.avatar ? `<img src="${currentUser.avatar}">` : `<span>${(currentUser.name||'U').charAt(0)}</span>`}</div><button id="uploadAvatarBtn" class="btn-outline">Upload Foto</button></div><input id="nameInput" placeholder="Nama" value="${currentUser.name || ''}"><input id="emailInput" placeholder="Email" value="${currentUser.email}"><input id="passInput" placeholder="Password Baru" type="password"><button id="saveProfileBtn" class="btn-primary">Simpan Perubahan</button><button id="logoutBtn" class="btn-outline mt-2">Logout</button></div></div>`;
+    }
+    function attachSettingsEvents() {
+        document.getElementById('saveProfileBtn')?.addEventListener('click', () => {
+            currentUser.name = document.getElementById('nameInput').value;
+            currentUser.email = document.getElementById('emailInput').value;
+            let newPass = document.getElementById('passInput').value;
+            if (newPass) currentUser.password = newPass;
+            saveUser(currentUser);
+            addActivity("Memperbarui profil");
+            showToast("Profil tersimpan");
+            render();
+        });
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+            localStorage.removeItem(STORAGE.CURRENT_USER);
+            currentUser = null;
+            render();
+        });
+        document.getElementById('uploadAvatarBtn')?.addEventListener('click', () => {
+            let input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                reader.onload = (ev) => {
+                    currentUser.avatar = ev.target.result;
+                    saveUser(currentUser);
+                    render();
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        });
+    }
 
-TUJUAN:
-Aplikasi harus terlihat seperti produk premium (bukan demo), dengan banyak fitur, tampilan profesional, dan pengalaman seperti aplikasi mobile banking.
+    // ADMIN
+    function renderAdminPanel() {
+        if (currentUser.email !== "admin@traderx.com") return `<div class="container"><h3>Akses ditolak</h3></div>`;
+        return `<div class="container page"><h2>🛡️ Admin Panel</h2><button id="addAdminSignal" class="btn-primary">Tambah Signal (Admin)</button><button id="addAdminMateri" class="btn-outline mt-2">Tambah Materi</button><button id="resetData" class="btn-outline mt-2">Reset Database</button></div>`;
+    }
+    function attachAdminEvents() {
+        document.getElementById('addAdminSignal')?.addEventListener('click', openAddSignalModal);
+        document.getElementById('addAdminMateri')?.addEventListener('click', () => {
+            let title = prompt("Judul materi:");
+            if (title) {
+                let materi = JSON.parse(localStorage.getItem(STORAGE.MATERI));
+                materi.push({ id: Date.now().toString(), title, level: "Baru", premium: false, content: "Konten materi", duration: "20 menit", progress: 0 });
+                localStorage.setItem(STORAGE.MATERI, JSON.stringify(materi));
+                showToast("Materi ditambahkan");
+                render();
+            }
+        });
+        document.getElementById('resetData')?.addEventListener('click', () => {
+            localStorage.clear();
+            initStorage();
+            window.location.reload();
+        });
+    }
 
-Tambahkan fitur tambahan jika perlu agar kode semakin panjang dan kompleks seperti:
+    // BOTTOM NAVIGATION
+    function renderBottomNav() {
+        const pages = [
+            { id: 'dashboard', icon: '🏠', label: 'Home' },
+            { id: 'signals', icon: '📊', label: 'Signal' },
+            { id: 'journal', icon: '📓', label: 'Jurnal' },
+            { id: 'membership', icon: '👑', label: 'Pro' },
+            { id: 'settings', icon: '⚙️', label: 'Akun' }
+        ];
+        if (currentUser && currentUser.email === "admin@traderx.com") pages.push({ id: 'admin', icon: '🛡️', label: 'Admin' });
+        return `<div class="navbar">${pages.map(p => `<button class="nav-item ${currentPage === p.id ? 'active' : ''}" data-page="${p.id}"><span>${p.icon}</span><span>${p.label}</span></button>`).join('')}</div>`;
+    }
 
-- Notifikasi
-- Riwayat aktivitas
-- Statistik trading
+    function attachNavEvents() {
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', () => { currentPage = btn.dataset.page; render(); });
+        });
+        document.querySelectorAll('.menu-item').forEach(menu => {
+            menu.addEventListener('click', () => { currentPage = menu.dataset.page; render(); });
+        });
+        document.getElementById('avatarClick')?.addEventListener('click', () => { currentPage = 'settings'; render(); });
+        const filterChips = document.querySelectorAll('.filter-chip');
+        if (filterChips.length) filterChips.forEach(chip => chip.addEventListener('click', (e) => { refreshSignalList(e.target.innerText); }));
+        if (currentPage === 'signals') {
+            refreshSignalList("Semua");
+            document.getElementById('addSignalBtn')?.addEventListener('click', openAddSignalModal);
+        }
+        if (currentPage === 'materi') attachMateriDetail();
+        if (currentPage === 'journal') attachJournalEvents();
+        if (currentPage === 'tools') attachToolsEvents();
+        if (currentPage === 'membership') document.getElementById('upgradeBtn')?.addEventListener('click', () => { if (currentUser.role !== 'premium') { currentUser.role = 'premium'; saveUser(currentUser); addActivity("Upgrade ke Premium"); showToast("Selamat! Anda sekarang Premium"); render(); } else showToast("Sudah premium"); });
+        if (currentPage === 'settings') attachSettingsEvents();
+        if (currentPage === 'admin') attachAdminEvents();
+    }
+
+    render();
+</script>
+</body>
+</html>
