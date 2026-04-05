@@ -13,7 +13,6 @@ body{
   color:white;
 }
 .container{padding:20px;padding-bottom:80px}
-h2{margin-top:0}
 .card{
   background:#14182a;
   padding:15px;
@@ -33,23 +32,22 @@ h2{margin-top:0}
   border:none;
   background:none;
   color:white;
-  font-size:16px;
 }
-.lock{opacity:0.4}
+input,select{
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border-radius:10px;
+  border:none;
+}
 .btn{
   background:#1f6fff;
   color:white;
   padding:10px;
   border:none;
   border-radius:10px;
-  margin-top:10px;
 }
-.select{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:10px;
-}
+.lock{opacity:0.4}
 </style>
 </head>
 
@@ -59,15 +57,18 @@ h2{margin-top:0}
 
 <script>
 
-// ================= INIT =================
-if(!localStorage.getItem("role")){
-  localStorage.setItem("role","free");
-}
+// ================= DATABASE =================
+let users = JSON.parse(localStorage.getItem("users")||"[]");
+let currentUser = JSON.parse(localStorage.getItem("currentUser")||"null");
+
 if(!localStorage.getItem("signals")){
-  localStorage.setItem("signals", JSON.stringify([
-    {type:"forex",pair:"XAUUSD BUY",entry:2350,tp:2380,sl:2330,premium:false},
-    {type:"crypto",pair:"BTC BUY",entry:60000,tp:65000,sl:58000,premium:true},
-    {type:"saham",pair:"BBCA BUY",entry:9000,tp:9500,sl:8800,premium:true}
+  localStorage.setItem("signals", JSON.stringify([]));
+}
+if(!localStorage.getItem("materi")){
+  localStorage.setItem("materi", JSON.stringify([
+    {title:"Dasar Trading",premium:false},
+    {title:"Smart Money Concept",premium:true},
+    {title:"Risk Management",premium:true}
   ]));
 }
 
@@ -82,134 +83,177 @@ return `
 </div>`;
 }
 
+// ================= AUTH =================
+function showLogin(){
+app.innerHTML=`
+<div class="container">
+<h2>Login</h2>
+<input id="email" placeholder="Email">
+<input id="pass" placeholder="Password" type="password">
+<button class="btn" onclick="login()">Login</button>
+<p onclick="showRegister()">Belum punya akun?</p>
+</div>`;
+}
+
+function showRegister(){
+app.innerHTML=`
+<div class="container">
+<h2>Register</h2>
+<input id="email" placeholder="Email">
+<input id="pass" placeholder="Password">
+<button class="btn" onclick="register()">Daftar</button>
+<p onclick="showLogin()">Sudah punya akun?</p>
+</div>`;
+}
+
+function register(){
+let email=document.getElementById("email").value;
+let pass=document.getElementById("pass").value;
+
+users.push({email,pass,role:"free"});
+localStorage.setItem("users",JSON.stringify(users));
+alert("Akun dibuat!");
+showLogin();
+}
+
+function login(){
+let email=document.getElementById("email").value;
+let pass=document.getElementById("pass").value;
+
+let user = users.find(u=>u.email==email && u.pass==pass);
+if(user){
+  localStorage.setItem("currentUser",JSON.stringify(user));
+  dashboard();
+}else{
+  alert("Login gagal");
+}
+}
+
 // ================= DASHBOARD =================
 function dashboard(){
-app.innerHTML = `
+currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if(!currentUser){return showLogin();}
+
+app.innerHTML=`
 <div class="container">
 <h2>Trader X Academy</h2>
 
 <div class="card">
-🔥 Status: ${localStorage.getItem("role")}
+User: ${currentUser.email}
 </div>
 
 <div class="card">
-📊 Fokus: Forex / Crypto / Saham
+Status: ${currentUser.role}
 </div>
 
 <div class="card">
-💰 Target: Profit Konsisten
+🔥 Target: Profit Konsisten
 </div>
+
+<button class="btn" onclick="logout()">Logout</button>
 
 </div>
 ${nav()}
 `;
+}
+
+function logout(){
+localStorage.removeItem("currentUser");
+showLogin();
 }
 
 // ================= SIGNAL =================
 function signal(){
 let data = JSON.parse(localStorage.getItem("signals"));
-let html = `<div class="container">
+let html=`<div class="container">
 <h2>Signal</h2>
 
-<select class="select" onchange="filterSignal(this.value)">
-<option value="all">Semua</option>
-<option value="forex">Forex</option>
-<option value="crypto">Crypto</option>
-<option value="saham">Saham</option>
+<input id="pair" placeholder="Pair">
+<input id="entry" placeholder="Entry">
+<input id="tp" placeholder="TP">
+<input id="sl" placeholder="SL">
+<select id="status">
+<option>RUNNING</option>
+<option>TP HIT</option>
+<option>SL HIT</option>
 </select>
-
-<div id="signalList"></div>
-
-<h3>Tambah Signal</h3>
-<input id="pair" placeholder="Pair" class="select">
-<input id="entry" placeholder="Entry" class="select">
-<input id="tp" placeholder="TP" class="select">
-<input id="sl" placeholder="SL" class="select">
-<select id="type" class="select">
-<option value="forex">Forex</option>
-<option value="crypto">Crypto</option>
-<option value="saham">Saham</option>
-</select>
-<label><input type="checkbox" id="premium"> Premium</label><br>
+<label><input type="checkbox" id="premium"> Premium</label>
 <button class="btn" onclick="addSignal()">Tambah</button>
 
-</div>
-${nav()}`;
+<div id="list"></div>
 
-app.innerHTML = html;
+</div>`+nav();
+
+app.innerHTML=html;
 renderSignal(data);
 }
 
 function renderSignal(data){
-let list = document.getElementById("signalList");
+let list=document.getElementById("list");
 list.innerHTML="";
 
-data.slice().reverse().forEach(s=>{
-let lock = s.premium && localStorage.getItem("role")=="free";
-list.innerHTML += `
+data.slice().reverse().forEach((s,i)=>{
+let lock = s.premium && currentUser.role=="free";
+
+list.innerHTML+=`
 <div class="card ${lock?'lock':''}">
 <b>${lock?'🔒 Premium':s.pair}</b><br>
-${lock?'':
-`Entry: ${s.entry}<br>TP: ${s.tp}<br>SL: ${s.sl}`}
+${lock?'':`Entry:${s.entry}<br>TP:${s.tp}<br>SL:${s.sl}<br>Status:${s.status}`}
+<br>
+<button onclick="deleteSignal(${i})">Hapus</button>
 </div>`;
 });
 }
 
-function filterSignal(type){
-let data = JSON.parse(localStorage.getItem("signals"));
-if(type!="all"){
-  data = data.filter(s=>s.type==type);
-}
-renderSignal(data);
+function addSignal(){
+let data=JSON.parse(localStorage.getItem("signals"));
+
+data.push({
+pair:pair.value,
+entry:entry.value,
+tp:tp.value,
+sl:sl.value,
+status:status.value,
+premium:premium.checked
+});
+
+localStorage.setItem("signals",JSON.stringify(data));
+signal();
 }
 
-function addSignal(){
-let data = JSON.parse(localStorage.getItem("signals"));
-let newSignal = {
-  pair:document.getElementById("pair").value,
-  entry:document.getElementById("entry").value,
-  tp:document.getElementById("tp").value,
-  sl:document.getElementById("sl").value,
-  type:document.getElementById("type").value,
-  premium:document.getElementById("premium").checked
-};
-data.push(newSignal);
-localStorage.setItem("signals", JSON.stringify(data));
-alert("Signal ditambah!");
+function deleteSignal(i){
+let data=JSON.parse(localStorage.getItem("signals"));
+data.splice(i,1);
+localStorage.setItem("signals",JSON.stringify(data));
 signal();
 }
 
 // ================= MATERI =================
 function materi(){
-app.innerHTML = `
-<div class="container">
-<h2>Materi</h2>
+let data=JSON.parse(localStorage.getItem("materi"));
+let html=`<div class="container"><h2>Materi</h2>`;
 
-<div class="card">
-📘 Dasar Trading
-</div>
+data.forEach(m=>{
+let lock = m.premium && currentUser.role=="free";
 
-<div class="card lock">
-🔒 Smart Money Concept
-</div>
+html+=`
+<div class="card ${lock?'lock':''}">
+${lock?'🔒 '+m.title:m.title}
+</div>`;
+});
 
-<div class="card lock">
-🔒 Risk Management Pro
-</div>
-
-</div>
-${nav()}
-`;
+html+=`</div>`+nav();
+app.innerHTML=html;
 }
 
 // ================= MEMBER =================
 function member(){
-app.innerHTML = `
+app.innerHTML=`
 <div class="container">
 <h2>Membership</h2>
 
 <div class="card">
-Status: ${localStorage.getItem("role")}
+Status: ${currentUser.role}
 </div>
 
 <button class="btn" onclick="upgrade()">Upgrade Premium</button>
@@ -220,13 +264,23 @@ ${nav()}
 }
 
 function upgrade(){
-localStorage.setItem("role","premium");
-alert("Sekarang lu Premium 😈");
+currentUser.role="premium";
+localStorage.setItem("currentUser",JSON.stringify(currentUser));
+
+let users=JSON.parse(localStorage.getItem("users"));
+users=users.map(u=>u.email==currentUser.email?currentUser:u);
+localStorage.setItem("users",JSON.stringify(users));
+
+alert("Sekarang Premium 😈");
 member();
 }
 
 // ================= START =================
+if(currentUser){
 dashboard();
+}else{
+showLogin();
+}
 
 </script>
 
