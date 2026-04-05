@@ -6,209 +6,165 @@
 <title>Trader X Academy</title>
 
 <style>
-body {
-    margin:0;
-    font-family: Arial;
-    background:#0f172a;
-    color:white;
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#0c0f1a;
+  color:white;
 }
-
-.container { padding:20px; }
-.hidden { display:none; }
-
-.card {
-    background:#1e293b;
-    padding:15px;
-    border-radius:12px;
-    margin-bottom:10px;
+.container{padding:20px}
+input,button{
+  padding:10px;
+  margin:5px 0;
+  width:100%;
+  border:none;
+  border-radius:8px;
 }
-
-button {
-    padding:10px;
-    border:none;
-    border-radius:8px;
-    background:#3b82f6;
-    color:white;
-    cursor:pointer;
-    width:100%;
+button{
+  background:#00ffcc;
+  font-weight:bold;
 }
-
-input {
-    padding:10px;
-    width:100%;
-    margin-bottom:10px;
-    border-radius:8px;
-    border:none;
+.card{
+  background:#14182a;
+  padding:15px;
+  border-radius:12px;
+  margin:10px 0;
 }
-
-.nav {
-    display:flex;
-    justify-content:space-around;
-    background:#020617;
-    padding:10px;
-    position:fixed;
-    bottom:0;
-    width:100%;
+.nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  display:flex;
+  background:#111;
 }
-
-.nav button {
-    background:none;
-    color:white;
+.nav button{
+  flex:1;
+  background:none;
+  color:white;
 }
-
-.header {
-    font-size:18px;
-    margin-bottom:10px;
-}
+.hidden{display:none}
+.premium{color:gold}
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginPage" class="container">
-    <h2>Trader X Academy 🚀</h2>
-    <input type="text" id="name" placeholder="Nama">
-    <input type="email" id="email" placeholder="Email">
-    <button onclick="login()">Masuk</button>
-</div>
-
-<!-- APP -->
-<div id="app" class="hidden">
-
-    <div class="container" id="home">
-        <div class="header">Welcome <span id="userName"></span></div>
-        <div class="card">Status: <span id="status"></span></div>
-        <button onclick="upgrade()">Upgrade Premium 💎</button>
-    </div>
-
-    <div class="container hidden" id="materiPage">
-        <h3>📚 Materi</h3>
-        <div id="materi"></div>
-    </div>
-
-    <div class="container hidden" id="signalPage">
-        <h3>📊 Signal</h3>
-        <div id="signal"></div>
-    </div>
-
-    <div class="container hidden" id="profilePage">
-        <h3>👤 Profile</h3>
-        <div class="card" id="profile"></div>
-        <button onclick="logout()">Logout</button>
-    </div>
-
-    <!-- NAV -->
-    <div class="nav">
-        <button onclick="showPage('home')">Home</button>
-        <button onclick="showPage('materiPage')">Materi</button>
-        <button onclick="showPage('signalPage')">Signal</button>
-        <button onclick="showPage('profilePage')">Profile</button>
-    </div>
-
-</div>
+<div id="app"></div>
 
 <script>
-// ===== USER =====
-let user = JSON.parse(localStorage.getItem("user")) || null;
 
-// ===== SIGNAL DATA =====
+// ================= LOGIN =================
+function showLogin(){
+  app.innerHTML = `
+  <div class="container">
+    <h2>Trader X Academy</h2>
+    <input id="email" placeholder="Email">
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>`;
+}
+
+function login(){
+  let email = document.getElementById("email").value;
+  localStorage.setItem("user", email);
+  localStorage.setItem("role","free");
+  showDashboard();
+}
+
+// ================= DASHBOARD =================
+function showDashboard(){
+  app.innerHTML = `
+  <div class="container">
+    <h3>Dashboard</h3>
+    <p>Welcome ${localStorage.getItem("user")}</p>
+    <p>Status: <span class="${localStorage.getItem("role")}">${localStorage.getItem("role")}</span></p>
+  </div>
+  ${nav()}
+  `;
+}
+
+// ================= SIGNAL =================
 let signals = [
-    {pair:"XAUUSD", type:"BUY", tp:"2000", sl:"1980", date:"2026-04-06 21:00"},
-    {pair:"BTCUSD", type:"SELL", tp:"60000", sl:"62000", date:"2026-04-05 18:00"}
+  {type:"forex",pair:"XAUUSD BUY",entry:2350,tp:2380,sl:2330},
+  {type:"crypto",pair:"BTC BUY",entry:60000,tp:65000,sl:58000},
+  {type:"saham",pair:"BBCA BUY",entry:9000,tp:9500,sl:8800}
 ];
 
-// ===== LOGIN =====
-function login(){
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
+function showSignal(){
+  let html = `<div class="container"><h3>Signal</h3>`;
+  
+  signals.reverse().forEach(s=>{
+    html+=`
+    <div class="card">
+      <b>${s.pair}</b><br>
+      Entry: ${s.entry}<br>
+      TP: ${s.tp}<br>
+      SL: ${s.sl}
+    </div>`;
+  });
 
-    if(!name || !email) return alert("Isi dulu bro!");
-
-    user = {name, email, status:"free"};
-    localStorage.setItem("user", JSON.stringify(user));
-
-    loadApp();
+  html+=`</div>`+nav();
+  app.innerHTML = html;
 }
 
-// ===== LOAD APP =====
-function loadApp(){
-    document.getElementById("loginPage").classList.add("hidden");
-    document.getElementById("app").classList.remove("hidden");
+// ================= MATERI =================
+function showMateri(){
+  app.innerHTML = `
+  <div class="container">
+    <h3>Materi</h3>
 
-    document.getElementById("userName").innerText = user.name;
-    document.getElementById("status").innerText = user.status;
+    <div class="card">
+      <b>Basic Trading</b>
+      <p>Belajar support resistance</p>
+    </div>
 
-    document.getElementById("profile").innerHTML = `
-        Nama: ${user.name}<br>
-        Email: ${user.email}<br>
-        Status: ${user.status}
-    `;
+    <div class="card">
+      <b>Advanced</b>
+      <p>Smart Money Concept</p>
+    </div>
 
-    loadMateri();
-    loadSignal();
+  </div>
+  ${nav()}
+  `;
 }
 
-// ===== MATERI =====
-function loadMateri(){
-    let materiDiv = document.getElementById("materi");
-    materiDiv.innerHTML = "";
+// ================= MEMBER =================
+function showMember(){
+  app.innerHTML = `
+  <div class="container">
+    <h3>Membership</h3>
+    <p>Status: ${localStorage.getItem("role")}</p>
 
-    let materi = ["Basic Trading","Support Resistance","Risk Management","Advanced Strategy"];
-
-    materi.forEach((m,i)=>{
-        if(user.status==="free" && i>1){
-            materiDiv.innerHTML += `<div class="card">🔒 ${m}</div>`;
-        } else {
-            materiDiv.innerHTML += `<div class="card">✅ ${m}</div>`;
-        }
-    });
+    <button onclick="upgrade()">Upgrade Premium</button>
+  </div>
+  ${nav()}
+  `;
 }
 
-// ===== SIGNAL =====
-function loadSignal(){
-    let signalDiv = document.getElementById("signal");
-    signalDiv.innerHTML = "";
-
-    let sorted = signals.sort((a,b)=> new Date(b.date)-new Date(a.date));
-
-    sorted.forEach((s,i)=>{
-        if(user.status==="free" && i>1){
-            signalDiv.innerHTML += `<div class="card">🔒 Premium</div>`;
-        } else {
-            signalDiv.innerHTML += `
-            <div class="card">
-                <b>${s.pair}</b> - ${s.type}<br>
-                TP: ${s.tp} | SL: ${s.sl}<br>
-                <small>${s.date}</small>
-            </div>`;
-        }
-    });
-}
-
-// ===== NAVIGATION =====
-function showPage(page){
-    document.querySelectorAll(".container").forEach(p=>p.classList.add("hidden"));
-    document.getElementById(page).classList.remove("hidden");
-}
-
-// ===== UPGRADE =====
 function upgrade(){
-    user.status = "premium";
-    localStorage.setItem("user", JSON.stringify(user));
-    loadApp();
+  localStorage.setItem("role","premium");
+  alert("Anda sekarang Premium!");
+  showMember();
 }
 
-// ===== LOGOUT =====
-function logout(){
-    localStorage.removeItem("user");
-    location.reload();
+// ================= NAV =================
+function nav(){
+  return `
+  <div class="nav">
+    <button onclick="showDashboard()">Home</button>
+    <button onclick="showSignal()">Signal</button>
+    <button onclick="showMateri()">Materi</button>
+    <button onclick="showMember()">Member</button>
+  </div>`;
 }
 
-// ===== AUTO LOAD =====
-if(user){
-    loadApp();
+// INIT
+if(localStorage.getItem("user")){
+  showDashboard();
+}else{
+  showLogin();
 }
+
 </script>
 
 </body>
