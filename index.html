@@ -7,152 +7,207 @@
 
 <style>
 body {
-    margin: 0;
+    margin:0;
     font-family: Arial;
-    background: #0f172a;
-    color: white;
+    background:#0f172a;
+    color:white;
 }
-.container {
-    padding: 20px;
-}
-.hidden { display: none; }
+
+.container { padding:20px; }
+.hidden { display:none; }
+
 .card {
-    background: #1e293b;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    background:#1e293b;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:10px;
 }
+
 button {
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    background: #3b82f6;
-    color: white;
-    cursor: pointer;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#3b82f6;
+    color:white;
+    cursor:pointer;
+    width:100%;
+}
+
+input {
+    padding:10px;
+    width:100%;
+    margin-bottom:10px;
+    border-radius:8px;
+    border:none;
+}
+
+.nav {
+    display:flex;
+    justify-content:space-around;
+    background:#020617;
+    padding:10px;
+    position:fixed;
+    bottom:0;
+    width:100%;
+}
+
+.nav button {
+    background:none;
+    color:white;
+}
+
+.header {
+    font-size:18px;
+    margin-bottom:10px;
 }
 </style>
-
 </head>
+
 <body>
 
 <!-- LOGIN -->
 <div id="loginPage" class="container">
-    <h2>Trader X Academy</h2>
-    <button onclick="loginGoogle()">Login dengan Google</button>
+    <h2>Trader X Academy 🚀</h2>
+    <input type="text" id="name" placeholder="Nama">
+    <input type="email" id="email" placeholder="Email">
+    <button onclick="login()">Masuk</button>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="container hidden">
-    <h2>Welcome <span id="userName"></span></h2>
-    <p>Status: <span id="status"></span></p>
+<!-- APP -->
+<div id="app" class="hidden">
 
-    <button onclick="upgrade()">Upgrade Premium 💎</button>
+    <div class="container" id="home">
+        <div class="header">Welcome <span id="userName"></span></div>
+        <div class="card">Status: <span id="status"></span></div>
+        <button onclick="upgrade()">Upgrade Premium 💎</button>
+    </div>
 
-    <h3>📚 Materi</h3>
-    <div id="materi"></div>
+    <div class="container hidden" id="materiPage">
+        <h3>📚 Materi</h3>
+        <div id="materi"></div>
+    </div>
 
-    <h3>📊 Signal</h3>
-    <div id="signal"></div>
+    <div class="container hidden" id="signalPage">
+        <h3>📊 Signal</h3>
+        <div id="signal"></div>
+    </div>
 
-    <br>
-    <button onclick="logout()">Logout</button>
+    <div class="container hidden" id="profilePage">
+        <h3>👤 Profile</h3>
+        <div class="card" id="profile"></div>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <!-- NAV -->
+    <div class="nav">
+        <button onclick="showPage('home')">Home</button>
+        <button onclick="showPage('materiPage')">Materi</button>
+        <button onclick="showPage('signalPage')">Signal</button>
+        <button onclick="showPage('profilePage')">Profile</button>
+    </div>
+
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<script>
+// ===== USER =====
+let user = JSON.parse(localStorage.getItem("user")) || null;
 
-// 🔥 GANTI DENGAN CONFIG LU
-const firebaseConfig = {
-  apiKey: "ISI_API_KEY",
-  authDomain: "ISI_PROJECT.firebaseapp.com",
-  projectId: "ISI_PROJECT_ID",
-  storageBucket: "ISI.appspot.com",
-  messagingSenderId: "ISI",
-  appId: "ISI"
-};
+// ===== SIGNAL DATA =====
+let signals = [
+    {pair:"XAUUSD", type:"BUY", tp:"2000", sl:"1980", date:"2026-04-06 21:00"},
+    {pair:"BTCUSD", type:"SELL", tp:"60000", sl:"62000", date:"2026-04-05 18:00"}
+];
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore();
+// ===== LOGIN =====
+function login(){
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
 
-let currentUser = null;
+    if(!name || !email) return alert("Isi dulu bro!");
 
-window.loginGoogle = async function() {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
+    user = {name, email, status:"free"};
+    localStorage.setItem("user", JSON.stringify(user));
 
-    currentUser = user;
-
-    // cek database
-    const userRef = doc(db, "users", user.uid);
-    const snap = await getDoc(userRef);
-
-    if(!snap.exists()){
-        await setDoc(userRef, {
-            name: user.displayName,
-            email: user.email,
-            status: "free"
-        });
-    }
-
-    loadDashboard();
+    loadApp();
 }
 
-async function loadDashboard(){
+// ===== LOAD APP =====
+function loadApp(){
     document.getElementById("loginPage").classList.add("hidden");
-    document.getElementById("dashboard").classList.remove("hidden");
+    document.getElementById("app").classList.remove("hidden");
 
-    const userRef = doc(db, "users", currentUser.uid);
-    const snap = await getDoc(userRef);
-    const data = snap.data();
+    document.getElementById("userName").innerText = user.name;
+    document.getElementById("status").innerText = user.status;
 
-    document.getElementById("userName").innerText = data.name;
-    document.getElementById("status").innerText = data.status;
+    document.getElementById("profile").innerHTML = `
+        Nama: ${user.name}<br>
+        Email: ${user.email}<br>
+        Status: ${user.status}
+    `;
 
-    loadContent(data.status);
+    loadMateri();
+    loadSignal();
 }
 
-function loadContent(status){
+// ===== MATERI =====
+function loadMateri(){
     let materiDiv = document.getElementById("materi");
-    let signalDiv = document.getElementById("signal");
-
     materiDiv.innerHTML = "";
-    signalDiv.innerHTML = "";
 
-    let materi = ["Basic Trading","Support & Resistance","Risk Management","Advanced Strategy"];
+    let materi = ["Basic Trading","Support Resistance","Risk Management","Advanced Strategy"];
 
-    materi.forEach((m, i) => {
-        if(status === "free" && i > 1){
+    materi.forEach((m,i)=>{
+        if(user.status==="free" && i>1){
             materiDiv.innerHTML += `<div class="card">🔒 ${m}</div>`;
         } else {
             materiDiv.innerHTML += `<div class="card">✅ ${m}</div>`;
         }
     });
+}
 
-    let signals = ["XAUUSD BUY TP 2000 SL 1980","BTC SELL TP 60000 SL 62000"];
+// ===== SIGNAL =====
+function loadSignal(){
+    let signalDiv = document.getElementById("signal");
+    signalDiv.innerHTML = "";
 
-    signals.forEach((s, i) => {
-        if(status === "free" && i > 0){
+    let sorted = signals.sort((a,b)=> new Date(b.date)-new Date(a.date));
+
+    sorted.forEach((s,i)=>{
+        if(user.status==="free" && i>1){
             signalDiv.innerHTML += `<div class="card">🔒 Premium</div>`;
         } else {
-            signalDiv.innerHTML += `<div class="card">${s}</div>`;
+            signalDiv.innerHTML += `
+            <div class="card">
+                <b>${s.pair}</b> - ${s.type}<br>
+                TP: ${s.tp} | SL: ${s.sl}<br>
+                <small>${s.date}</small>
+            </div>`;
         }
     });
 }
 
-window.upgrade = async function(){
-    const userRef = doc(db, "users", currentUser.uid);
-    await setDoc(userRef, { status: "premium" }, { merge: true });
-
-    loadDashboard();
+// ===== NAVIGATION =====
+function showPage(page){
+    document.querySelectorAll(".container").forEach(p=>p.classList.add("hidden"));
+    document.getElementById(page).classList.remove("hidden");
 }
 
-window.logout = function(){
-    signOut(auth);
+// ===== UPGRADE =====
+function upgrade(){
+    user.status = "premium";
+    localStorage.setItem("user", JSON.stringify(user));
+    loadApp();
+}
+
+// ===== LOGOUT =====
+function logout(){
+    localStorage.removeItem("user");
     location.reload();
+}
+
+// ===== AUTO LOAD =====
+if(user){
+    loadApp();
 }
 </script>
 
