@@ -1,1297 +1,158 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Trader X Academy | Portfolio Journal Pro</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trader X Academy</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+}
+
+.container {
+    padding: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #3b82f6;
+    color: white;
+    cursor: pointer;
+}
+
+input {
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: none;
+}
+</style>
 
-        :root {
-            --bg-primary: #0a0e1a;
-            --bg-secondary: #0f1422;
-            --bg-tertiary: #1a1f2e;
-            --bg-card: rgba(18, 25, 45, 0.85);
-            --text-primary: #f1f5f9;
-            --text-secondary: #8b9bb0;
-            --accent: #3b82f6;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-yellow: #f59e0b;
-            --accent-purple: #8b5cf6;
-            --border: rgba(59, 130, 246, 0.2);
-            --card-bg: rgba(18, 25, 45, 0.75);
-            --table-header: rgba(10, 14, 26, 0.9);
-            --hover-bg: rgba(59, 130, 246, 0.1);
-            --glow: 0 0 20px rgba(59, 130, 246, 0.15);
-        }
-
-        body.light {
-            --bg-primary: #eef2f5;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #f0f2f5;
-            --bg-card: rgba(255, 255, 255, 0.95);
-            --text-primary: #1a1f2e;
-            --text-secondary: #5a6e8a;
-            --border: rgba(0, 0, 0, 0.1);
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --table-header: #f8fafc;
-            --hover-bg: rgba(59, 130, 246, 0.05);
-            --glow: 0 0 20px rgba(59, 130, 246, 0.08);
-        }
-
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-            transition: all 0.3s ease;
-            position: relative;
-            min-height: 100vh;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.05), transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 16px;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        @media (min-width: 768px) {
-            .header {
-                margin-bottom: 24px;
-                padding-bottom: 16px;
-                gap: 16px;
-            }
-        }
-
-        .logo h1 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        @media (min-width: 768px) {
-            .logo h1 {
-                font-size: 1.5rem;
-            }
-        }
-
-        .logo p {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-        }
-
-        @media (min-width: 768px) {
-            .logo p {
-                font-size: 0.8rem;
-            }
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .theme-toggle, .btn-icon-action {
-            background: var(--bg-tertiary);
-            border: none;
-            color: var(--text-primary);
-            width: 36px;
-            height: 36px;
-            border-radius: 36px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        @media (min-width: 768px) {
-            .theme-toggle, .btn-icon-action {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 36px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.75rem;
-            transition: all 0.2s;
-        }
-
-        @media (min-width: 768px) {
-            .btn-primary {
-                padding: 8px 20px;
-                font-size: 0.85rem;
-            }
-        }
-
-        .btn-secondary {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 6px 12px;
-            border-radius: 36px;
-            cursor: pointer;
-            font-size: 0.7rem;
-            transition: all 0.2s;
-        }
-
-        @media (min-width: 768px) {
-            .btn-secondary {
-                padding: 8px 16px;
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Tab Navigation */
-        .tab-nav {
-            display: flex;
-            gap: 4px;
-            background: var(--bg-tertiary);
-            border-radius: 48px;
-            padding: 4px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        @media (min-width: 768px) {
-            .tab-nav {
-                gap: 8px;
-                margin-bottom: 24px;
-                overflow-x: visible;
-            }
-        }
-
-        .tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            padding: 10px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            white-space: nowrap;
-            flex: 1;
-            text-align: center;
-        }
-
-        @media (min-width: 768px) {
-            .tab-btn {
-                padding: 12px 28px;
-                font-size: 0.9rem;
-                flex: none;
-            }
-        }
-
-        .tab-btn i {
-            margin-right: 8px;
-        }
-
-        .tab-btn.active {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-        }
-
-        /* Tab Content */
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        @media (min-width: 480px) {
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (min-width: 768px) {
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-                gap: 16px;
-                margin-bottom: 24px;
-            }
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 12px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-        }
-
-        @media (min-width: 768px) {
-            .stat-card {
-                padding: 16px 20px;
-                border-radius: 20px;
-            }
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-        }
-
-        @media (min-width: 768px) {
-            .stat-label {
-                font-size: 0.7rem;
-                letter-spacing: 0.5px;
-                margin-bottom: 8px;
-            }
-        }
-
-        .stat-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        @media (min-width: 768px) {
-            .stat-value {
-                font-size: 1.6rem;
-            }
-        }
-
-        .positive { color: var(--accent-green); }
-        .negative { color: var(--accent-red); }
-
-        /* Portfolio Section */
-        .portfolio-section {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        @media (min-width: 640px) {
-            .portfolio-section {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 16px;
-                margin-bottom: 24px;
-            }
-        }
-
-        .portfolio-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 16px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-        }
-
-        @media (min-width: 768px) {
-            .portfolio-card {
-                padding: 20px;
-                border-radius: 24px;
-            }
-        }
-
-        .portfolio-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
-        }
-
-        .portfolio-card h3 {
-            font-size: 0.9rem;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-        }
-
-        @media (min-width: 768px) {
-            .portfolio-card h3 {
-                font-size: 1rem;
-                margin-bottom: 16px;
-            }
-        }
-
-        .sector-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.75rem;
-        }
-
-        @media (min-width: 768px) {
-            .sector-item {
-                padding: 8px 0;
-                font-size: 0.85rem;
-            }
-        }
-
-        .progress-bar {
-            height: 3px;
-            background: var(--bg-tertiary);
-            border-radius: 3px;
-            margin-top: 4px;
-            overflow: hidden;
-        }
-
-        @media (min-width: 768px) {
-            .progress-bar {
-                height: 4px;
-            }
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 0.3s;
-        }
-
-        /* Charts Row */
-        .charts-row {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .charts-row {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-                margin-bottom: 24px;
-            }
-        }
-
-        .chart-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 16px;
-            backdrop-filter: blur(10px);
-        }
-
-        @media (min-width: 768px) {
-            .chart-card {
-                padding: 20px;
-                border-radius: 20px;
-            }
-        }
-
-        .chart-card h3 {
-            font-size: 0.85rem;
-            margin-bottom: 12px;
-            color: var(--text-secondary);
-        }
-
-        @media (min-width: 768px) {
-            .chart-card h3 {
-                font-size: 1rem;
-                margin-bottom: 16px;
-            }
-        }
-
-        canvas {
-            max-height: 180px;
-            width: 100%;
-        }
-
-        @media (min-width: 768px) {
-            canvas {
-                max-height: 250px;
-            }
-        }
-
-        /* Filter Bar */
-        .filter-bar {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            backdrop-filter: blur(10px);
-        }
-
-        @media (min-width: 768px) {
-            .filter-bar {
-                padding: 16px 20px;
-                margin-bottom: 24px;
-                gap: 16px;
-            }
-        }
-
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-
-        .filter-group label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-        }
-
-        .filter-group select {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 5px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-        }
-
-        @media (min-width: 768px) {
-            .filter-group label {
-                font-size: 0.8rem;
-            }
-            .filter-group select {
-                padding: 6px 12px;
-                font-size: 0.85rem;
-            }
-        }
-
-        /* Table */
-        .table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-        }
-
-        table {
-            width: 100%;
-            min-width: 700px;
-            border-collapse: collapse;
-            font-size: 0.7rem;
-        }
-
-        @media (min-width: 768px) {
-            table {
-                min-width: auto;
-                font-size: 0.8rem;
-            }
-        }
-
-        th {
-            background: var(--table-header);
-            padding: 10px 8px;
-            text-align: left;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        td {
-            padding: 10px 8px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        @media (min-width: 768px) {
-            th, td {
-                padding: 12px;
-            }
-        }
-
-        tr:hover {
-            background: var(--hover-bg);
-        }
-
-        .numeric {
-            text-align: right;
-        }
-
-        /* Badge */
-        .badge {
-            padding: 3px 8px;
-            border-radius: 20px;
-            display: inline-block;
-            font-size: 0.6rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        @media (min-width: 768px) {
-            .badge {
-                padding: 4px 10px;
-                font-size: 0.7rem;
-            }
-        }
-
-        .badge-win { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-        .badge-loss { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-        .badge-forex { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
-        .badge-crypto { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
-        .badge-stock { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-
-        .btn-icon {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-        }
-
-        @media (min-width: 768px) {
-            .btn-icon {
-                padding: 6px 10px;
-            }
-        }
-
-        .btn-icon:hover {
-            background: var(--bg-tertiary);
-            color: var(--accent);
-        }
-
-        /* Strategy Table */
-        .strategy-table {
-            width: 100%;
-            min-width: 500px;
-            border-collapse: collapse;
-            font-size: 0.7rem;
-        }
-
-        @media (min-width: 768px) {
-            .strategy-table {
-                min-width: auto;
-                font-size: 0.8rem;
-            }
-        }
-
-        .strategy-table th, .strategy-table td {
-            padding: 8px 6px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        @media (min-width: 768px) {
-            .strategy-table th, .strategy-table td {
-                padding: 10px 8px;
-            }
-        }
-
-        .grand-total {
-            background: rgba(59, 130, 246, 0.15);
-            font-weight: 700;
-        }
-
-        /* Heatmap */
-        #heatmapContainer {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        #heatmapContainer table {
-            min-width: 400px;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px;
-            max-width: 650px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        @media (min-width: 768px) {
-            .modal-content {
-                border-radius: 24px;
-                padding: 24px;
-            }
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        @media (min-width: 480px) {
-            .form-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .form-field {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .form-field label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-        }
-
-        .form-field input, .form-field select {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 8px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-        }
-
-        @media (min-width: 768px) {
-            .form-field input, .form-field select {
-                padding: 10px;
-            }
-        }
-
-        .live-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            margin-right: 6px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        .filter-stats {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <h1><span class="live-indicator"></span> Trader X Academy</h1>
-                <p>Portfolio Journal Pro | Forex • Crypto • Stocks</p>
-            </div>
-            <div class="header-actions">
-                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
-                <button class="btn-secondary" id="backupBtn"><i class="fas fa-download"></i> Backup</button>
-                <button class="btn-primary" id="addTradeBtn"><i class="fas fa-plus"></i> New Trade</button>
-            </div>
-        </div>
 
-        <!-- Tab Navigation -->
-        <div class="tab-nav">
-            <button class="tab-btn active" data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</button>
-            <button class="tab-btn" data-tab="portfolio"><i class="fas fa-briefcase"></i> Portfolio</button>
-            <button class="tab-btn" data-tab="journal"><i class="fas fa-book"></i> Journal</button>
-        </div>
+<!-- LOGIN -->
+<div id="loginPage" class="container">
+    <h2>Trader X Academy</h2>
+    <p>Login dulu bro 🔐</p>
 
-        <!-- Tab 1: Dashboard -->
-        <div id="dashboard" class="tab-content active">
-            <div class="stats-grid" id="statsGrid"></div>
-            <div class="charts-row">
-                <div class="chart-card">
-                    <h3><i class="fas fa-chart-line"></i> Portfolio Equity Curve</h3>
-                    <canvas id="equityChart" height="200"></canvas>
-                </div>
-                <div class="chart-card">
-                    <h3><i class="fas fa-chart-pie"></i> Allocation by Sector</h3>
-                    <canvas id="sectorChart" height="200"></canvas>
-                </div>
-            </div>
-            <div class="chart-card">
-                <h3><i class="fas fa-chart-bar"></i> Strategy Performance Summary</h3>
-                <div style="overflow-x: auto;">
-                    <table class="strategy-table">
-                        <thead>
-                            <tr><th>Strategy</th><th class="numeric">Forex</th><th class="numeric">Crypto</th><th class="numeric">Stocks</th><th class="numeric">Total</th><th class="numeric">Win Rate</th><th class="numeric">Trades</th></tr>
-                        </thead>
-                        <tbody id="strategyPerfBody"></tbody>
-                        <tfoot id="strategyPerfFooter"></tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <input type="text" id="name" placeholder="Nama">
+    <input type="email" id="email" placeholder="Email">
 
-        <!-- Tab 2: Portfolio -->
-        <div id="portfolio" class="tab-content">
-            <div class="portfolio-section">
-                <div class="portfolio-card">
-                    <h3><i class="fas fa-globe" style="color: #3b82f6;"></i> Forex Portfolio</h3>
-                    <div id="forexPortfolio"></div>
-                </div>
-                <div class="portfolio-card">
-                    <h3><i class="fab fa-bitcoin" style="color: #8b5cf6;"></i> Crypto Portfolio</h3>
-                    <div id="cryptoPortfolio"></div>
-                </div>
-                <div class="portfolio-card">
-                    <h3><i class="fas fa-chart-line" style="color: #10b981;"></i> Stocks Portfolio</h3>
-                    <div id="stockPortfolio"></div>
-                </div>
-            </div>
-            <div class="chart-card">
-                <h3><i class="fas fa-calendar-alt"></i> Monthly P&L Heatmap (USD)</h3>
-                <div id="heatmapContainer" style="overflow-x: auto;"></div>
-            </div>
-        </div>
+    <button onclick="login()">Login</button>
+</div>
 
-        <!-- Tab 3: Journal -->
-        <div id="journal" class="tab-content">
-            <div class="filter-bar">
-                <div class="filter-group">
-                    <label><i class="fas fa-filter"></i> Sector:</label>
-                    <select id="filterSector">
-                        <option value="all">All</option>
-                        <option value="forex">Forex</option>
-                        <option value="crypto">Crypto</option>
-                        <option value="stock">Stocks</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Instrument:</label>
-                    <select id="filterInstrument"><option value="all">All</option></select>
-                </div>
-                <div class="filter-group">
-                    <label>Strategy:</label>
-                    <select id="filterStrategy"><option value="all">All</option></select>
-                </div>
-                <div class="filter-group">
-                    <label>Period:</label>
-                    <select id="filterPeriod">
-                        <option value="all">All Time</option>
-                        <option value="30">Last 30 Days</option>
-                        <option value="90">Last 90 Days</option>
-                        <option value="365">Last Year</option>
-                    </select>
-                </div>
-                <div style="flex:1"></div>
-                <div class="filter-stats" id="filterStats"></div>
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th><th>Sector</th><th>Instrument</th><th>Side</th><th>Entry</th><th>Exit</th><th>Lot</th>
-                            <th class="numeric">Points</th><th class="numeric">P/L</th><th class="numeric">Net</th><th>Strategy</th><th>Status</th><th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tradesTableBody"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="container hidden">
+    <h2>Welcome <span id="userName"></span> 🚀</h2>
+    <p>Status: <span id="status"></span></p>
 
-    <!-- Modal -->
-    <div id="tradeModal" class="modal">
-        <div class="modal-content">
-            <h3 id="modalTitle"><i class="fas fa-plus"></i> Add New Trade</h3>
-            <form id="tradeForm">
-                <div class="form-grid">
-                    <div class="form-field"><label>Date</label><input type="date" id="tanggal" required></div>
-                    <div class="form-field"><label>Sector</label><select id="sektor"><option value="forex">Forex</option><option value="crypto">Crypto</option><option value="stock">Stocks</option></select></div>
-                    <div class="form-field"><label>Instrument</label><input type="text" id="pasangan" placeholder="EUR/USD, BTC/USD, AAPL" required></div>
-                    <div class="form-field"><label>Side</label><select id="arah"><option>Buy</option><option>Sell</option></select></div>
-                    <div class="form-field"><label>Entry Price</label><input type="text" id="hargaMasuk" placeholder="1.0850 or 68500"></div>
-                    <div class="form-field"><label>Exit Price</label><input type="text" id="hargaKeluar" placeholder="1.0875 or 69500"></div>
-                    <div class="form-field"><label>Lot (0.01-100)</label><input type="number" step="0.01" id="lot" placeholder="0.1"></div>
-                    <div class="form-field"><label>Points</label><input type="text" id="points" readonly style="background:var(--bg-tertiary)"></div>
-                    <div class="form-field"><label>P/L (USD)</label><input type="text" id="profitLossManual" readonly style="background:var(--bg-tertiary)"></div>
-                    <div class="form-field"><label>Commission</label><input type="number" id="komisi" value="0"></div>
-                    <div class="form-field"><label>Swap</label><input type="number" id="swap" value="0"></div>
-                    <div class="form-field"><label>Strategy</label><input type="text" id="strategi" placeholder="Scalping, Breakout, Swing"></div>
-                    <div class="form-field"><label>Notes</label><input type="text" id="catatan" placeholder="Trading notes..."></div>
-                </div>
-                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px">
-                    <button type="button" class="btn-secondary" id="closeModalBtn">Cancel</button>
-                    <button type="submit" class="btn-primary">Save Trade</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <button onclick="upgrade()">Upgrade Premium 💎</button>
 
-    <script>
-        // Data
-        let trades = [];
-        let editIndex = null;
-        let equityChart, sectorChart;
-        let currentFilter = { sector: "all", instrument: "all", strategy: "all", period: "all" };
+    <h3>📚 Materi</h3>
+    <div id="materi"></div>
 
-        // Helper Functions
-        function parsePrice(str) {
-            if (!str) return null;
-            return parseFloat(String(str).replace(/,/g, '').trim());
+    <h3>📊 Signal</h3>
+    <div id="signal"></div>
+
+    <br>
+    <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+let user = {
+    name: "",
+    email: "",
+    status: "free"
+};
+
+function login(){
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+
+    if(name === "" || email === ""){
+        alert("Isi dulu bro!");
+        return;
+    }
+
+    user.name = name;
+    user.email = email;
+
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+
+    document.getElementById("userName").innerText = user.name;
+    document.getElementById("status").innerText = user.status;
+
+    loadContent();
+}
+
+function loadContent(){
+    let materiDiv = document.getElementById("materi");
+    let signalDiv = document.getElementById("signal");
+
+    materiDiv.innerHTML = "";
+    signalDiv.innerHTML = "";
+
+    // Materi
+    let materi = [
+        "Basic Trading",
+        "Support & Resistance",
+        "Risk Management",
+        "Advanced Strategy"
+    ];
+
+    materi.forEach((m, i) => {
+        if(user.status === "free" && i > 1){
+            materiDiv.innerHTML += `<div class="card">🔒 ${m} (Premium)</div>`;
+        } else {
+            materiDiv.innerHTML += `<div class="card">✅ ${m}</div>`;
         }
+    });
 
-        function formatPrice(price, decimals = 2) {
-            if (price === null || isNaN(price)) return "-";
-            return price.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+    // Signal
+    let signals = [
+        "XAUUSD BUY TP 2000 SL 1980",
+        "BTC SELL TP 60000 SL 62000"
+    ];
+
+    signals.forEach((s, i) => {
+        if(user.status === "free" && i > 0){
+            signalDiv.innerHTML += `<div class="card">🔒 Premium Only</div>`;
+        } else {
+            signalDiv.innerHTML += `<div class="card">${s}</div>`;
         }
+    });
+}
 
-        function formatUSD(value) {
-            return "$" + value.toFixed(2);
-        }
+function upgrade(){
+    user.status = "premium";
+    document.getElementById("status").innerText = user.status;
+    loadContent();
+}
 
-        function getInstrumentDecimals(instrument, sector) {
-            if (sector === 'forex') return 5;
-            return 2;
-        }
+function logout(){
+    location.reload();
+}
+</script>
 
-        function calculatePoints(entry, exit, side) {
-            if (!entry || !exit) return 0;
-            let diff = exit - entry;
-            if (side === "Sell") diff = entry - exit;
-            return parseFloat(diff.toFixed(2));
-        }
-
-        function calculateProfit(points, lot) {
-            return parseFloat((points * lot * 100).toFixed(2));
-        }
-
-        function updatePreview() {
-            const entry = parsePrice(document.getElementById("hargaMasuk").value);
-            const exit = parsePrice(document.getElementById("hargaKeluar").value);
-            const lot = parseFloat(document.getElementById("lot").value);
-            const side = document.getElementById("arah").value;
-            let points = 0, pl = 0;
-            if (entry && exit && !isNaN(lot)) {
-                points = calculatePoints(entry, exit, side);
-                pl = calculateProfit(points, lot);
-            }
-            document.getElementById("points").value = points;
-            document.getElementById("profitLossManual").value = pl;
-        }
-
-        // Save/Load
-        function saveTrades() {
-            localStorage.setItem("traderx_journal", JSON.stringify(trades));
-            renderAll();
-        }
-
-        function loadTrades() {
-            const stored = localStorage.getItem("traderx_journal");
-            if (stored) {
-                try {
-                    trades = JSON.parse(stored);
-                    trades = trades.map(t => ({ ...t, netProfit: (t.profitLossManual - (t.komisi||0) - (t.swap||0)) }));
-                } catch(e) { trades = []; }
-            }
-            if (trades.length === 0) {
-                trades = [
-                    { id: 1, tanggal: "2026-03-15", sektor: "forex", pasangan: "EUR/USD", arah: "Buy", hargaMasuk: 1.0850, hargaKeluar: 1.0875, lot: 0.1, points: 25, profitLossManual: 250, komisi: 0, swap: 0, netProfit: 250, strategi: "Scalping", catatan: "London session", status: "Win" },
-                    { id: 2, tanggal: "2026-03-16", sektor: "forex", pasangan: "GBP/USD", arah: "Sell", hargaMasuk: 1.3120, hargaKeluar: 1.3080, lot: 0.2, points: 40, profitLossManual: 800, komisi: 0, swap: 0, netProfit: 800, strategi: "Breakout", catatan: "", status: "Win" },
-                    { id: 3, tanggal: "2026-03-20", sektor: "crypto", pasangan: "BTC/USD", arah: "Buy", hargaMasuk: 68500, hargaKeluar: 69500, lot: 0.05, points: 1000, profitLossManual: 5000, komisi: 5, swap: 0, netProfit: 4995, strategi: "Breakout", catatan: "", status: "Win" },
-                    { id: 4, tanggal: "2026-03-22", sektor: "crypto", pasangan: "ETH/USD", arah: "Buy", hargaMasuk: 3200, hargaKeluar: 3350, lot: 0.1, points: 150, profitLossManual: 1500, komisi: 2, swap: 0, netProfit: 1498, strategi: "Swing", catatan: "", status: "Win" },
-                    { id: 5, tanggal: "2026-03-25", sektor: "stock", pasangan: "AAPL", arah: "Buy", hargaMasuk: 175.50, hargaKeluar: 178.20, lot: 10, points: 2.7, profitLossManual: 2700, komisi: 2, swap: 0, netProfit: 2698, strategi: "Swing", catatan: "", status: "Win" },
-                    { id: 6, tanggal: "2026-03-26", sektor: "stock", pasangan: "TSLA", arah: "Sell", hargaMasuk: 245.30, hargaKeluar: 240.10, lot: 5, points: 5.2, profitLossManual: 2600, komisi: 1, swap: 0, netProfit: 2599, strategi: "Scalping", catatan: "", status: "Win" },
-                    { id: 7, tanggal: "2026-03-28", sektor: "forex", pasangan: "USD/JPY", arah: "Buy", hargaMasuk: 149.50, hargaKeluar: 150.20, lot: 0.15, points: 70, profitLossManual: 1050, komisi: 0, swap: 0, netProfit: 1050, strategi: "Swing", catatan: "", status: "Win" }
-                ];
-                saveTrades();
-            }
-            renderAll();
-        }
-
-        function addOrUpdateTrade(data) {
-            if (editIndex !== null) {
-                trades[editIndex] = { ...data, id: trades[editIndex].id };
-                editIndex = null;
-            } else {
-                data.id = Date.now();
-                trades.push(data);
-            }
-            saveTrades();
-            closeModal();
-        }
-
-        function deleteTrade(idx) {
-            if (confirm("Delete this trade?")) {
-                trades.splice(idx, 1);
-                saveTrades();
-            }
-        }
-
-        function editTrade(idx) {
-            const t = trades[idx];
-            document.getElementById("tanggal").value = t.tanggal;
-            document.getElementById("sektor").value = t.sektor;
-            document.getElementById("pasangan").value = t.pasangan;
-            document.getElementById("arah").value = t.arah;
-            const decimals = getInstrumentDecimals(t.pasangan, t.sektor);
-            document.getElementById("hargaMasuk").value = formatPrice(t.hargaMasuk, decimals);
-            document.getElementById("hargaKeluar").value = formatPrice(t.hargaKeluar, decimals);
-            document.getElementById("lot").value = t.lot;
-            document.getElementById("komisi").value = t.komisi || 0;
-            document.getElementById("swap").value = t.swap || 0;
-            document.getElementById("strategi").value = t.strategi || "";
-            document.getElementById("catatan").value = t.catatan || "";
-            editIndex = idx;
-            document.getElementById("modalTitle").innerHTML = "<i class='fas fa-edit'></i> Edit Trade";
-            document.getElementById("tradeModal").style.display = "flex";
-            updatePreview();
-        }
-
-        function getFormData() {
-            const entry = parsePrice(document.getElementById("hargaMasuk").value);
-            const exit = parsePrice(document.getElementById("hargaKeluar").value);
-            const lot = parseFloat(document.getElementById("lot").value);
-            const side = document.getElementById("arah").value;
-            const points = calculatePoints(entry, exit, side);
-            const pl = calculateProfit(points, lot);
-            const komisi = parseFloat(document.getElementById("komisi").value) || 0;
-            const swap = parseFloat(document.getElementById("swap").value) || 0;
-            return {
-                tanggal: document.getElementById("tanggal").value,
-                sektor: document.getElementById("sektor").value,
-                pasangan: document.getElementById("pasangan").value,
-                arah: side,
-                hargaMasuk: entry,
-                hargaKeluar: exit,
-                lot: lot,
-                points: points,
-                profitLossManual: pl,
-                komisi: komisi,
-                swap: swap,
-                netProfit: pl - komisi - swap,
-                strategi: document.getElementById("strategi").value,
-                catatan: document.getElementById("catatan").value,
-                status: pl - komisi - swap > 0 ? "Win" : (pl - komisi - swap < 0 ? "Loss" : "BE")
-            };
-        }
-
-        function getFilteredTrades() {
-            let filtered = [...trades];
-            if (currentFilter.sector !== "all") filtered = filtered.filter(t => t.sektor === currentFilter.sector);
-            if (currentFilter.instrument !== "all") filtered = filtered.filter(t => t.pasangan === currentFilter.instrument);
-            if (currentFilter.strategy !== "all") filtered = filtered.filter(t => t.strategi === currentFilter.strategy);
-            if (currentFilter.period !== "all") {
-                const days = parseInt(currentFilter.period);
-                const cutoff = new Date();
-                cutoff.setDate(cutoff.getDate() - days);
-                filtered = filtered.filter(t => new Date(t.tanggal) >= cutoff);
-            }
-            return filtered;
-        }
-
-        function renderStats() {
-            const filtered = getFilteredTrades();
-            const total = filtered.length;
-            const wins = filtered.filter(t => t.netProfit > 0).length;
-            const winRate = total ? (wins/total*100) : 0;
-            const totalNet = filtered.reduce((s,t) => s + t.netProfit, 0);
-            const avgProfit = wins ? filtered.filter(t=>t.netProfit>0).reduce((s,t)=>s+t.netProfit,0)/wins : 0;
-            const avgLoss = (total-wins) ? Math.abs(filtered.filter(t=>t.netProfit<0).reduce((s,t)=>s+t.netProfit,0)/(total-wins)) : 0;
-            let cumulative = 0, maxDrawdown = 0, peak = 0;
-            [...filtered].sort((a,b) => a.tanggal.localeCompare(b.tanggal)).forEach(t => {
-                cumulative += t.netProfit;
-                if (cumulative > peak) peak = cumulative;
-                maxDrawdown = Math.max(maxDrawdown, peak - cumulative);
-            });
-            document.getElementById("statsGrid").innerHTML = `
-                <div class="stat-card"><div class="stat-label">Total Trades</div><div class="stat-value">${total}</div></div>
-                <div class="stat-card"><div class="stat-label">Win Rate</div><div class="stat-value ${winRate>=50?'positive':'negative'}">${winRate.toFixed(1)}%</div></div>
-                <div class="stat-card"><div class="stat-label">Total P&L</div><div class="stat-value ${totalNet>=0?'positive':'negative'}">${formatUSD(totalNet)}</div></div>
-                <div class="stat-card"><div class="stat-label">Avg Win</div><div class="stat-value positive">${formatUSD(avgProfit)}</div></div>
-                <div class="stat-card"><div class="stat-label">Avg Loss</div><div class="stat-value negative">${formatUSD(avgLoss)}</div></div>
-                <div class="stat-card"><div class="stat-label">Max DD</div><div class="stat-value negative">${formatUSD(maxDrawdown)}</div></div>
-            `;
-        }
-
-        function renderPortfolioBySector() {
-            const sectors = { forex: { total: 0, wins: 0, trades: 0 }, crypto: { total: 0, wins: 0, trades: 0 }, stock: { total: 0, wins: 0, trades: 0 } };
-            trades.forEach(t => {
-                if (sectors[t.sektor]) {
-                    sectors[t.sektor].total += t.netProfit;
-                    sectors[t.sektor].trades++;
-                    if (t.netProfit > 0) sectors[t.sektor].wins++;
-                }
-            });
-            const maxTotal = Math.max(...Object.values(sectors).map(s => Math.abs(s.total)), 1);
-            for (const [sector, data] of Object.entries(sectors)) {
-                const percent = (data.total / maxTotal * 100);
-                const fillColor = data.total >= 0 ? '#10b981' : '#ef4444';
-                const winRate = data.trades ? (data.wins/data.trades*100).toFixed(1) : 0;
-                document.getElementById(`${sector}Portfolio`).innerHTML = `
-                    <div class="sector-item"><span>Total P&L</span><span class="${data.total>=0?'positive':'negative'}">${formatUSD(data.total)}</span></div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(100, Math.abs(percent))}%; background: ${fillColor};"></div></div>
-                    <div class="sector-item"><span>Win Rate</span><span class="${winRate>=50?'positive':'negative'}">${winRate}%</span></div>
-                    <div class="sector-item"><span>Total Trades</span><span>${data.trades}</span></div>
-                `;
-            }
-        }
-
-        function renderCharts() {
-            const filtered = getFilteredTrades();
-            const sorted = [...filtered].sort((a,b) => a.tanggal.localeCompare(b.tanggal));
-            let cumulative = 0;
-            const equityData = sorted.map(t => { cumulative += t.netProfit; return cumulative; });
-            const labels = sorted.map(t => t.tanggal);
-            if (equityChart) equityChart.destroy();
-            equityChart = new Chart(document.getElementById('equityChart'), {
-                type: 'line', data: { labels, datasets: [{ label: 'Equity', data: equityData, borderColor: '#3b82f6', fill: true, backgroundColor: 'rgba(59,130,246,0.1)', tension: 0.2 }] },
-                options: { responsive: true, maintainAspectRatio: true, plugins: { tooltip: { callbacks: { label: (ctx) => formatUSD(ctx.raw) } } }, scales: { y: { ticks: { callback: (v) => formatUSD(v) } } } }
-            });
-            const sectorProfit = { forex: 0, crypto: 0, stock: 0 };
-            trades.forEach(t => { if (sectorProfit[t.sektor] !== undefined) sectorProfit[t.sektor] += t.netProfit; });
-            if (sectorChart) sectorChart.destroy();
-            sectorChart = new Chart(document.getElementById('sectorChart'), {
-                type: 'doughnut', data: { labels: ['Forex', 'Crypto', 'Stocks'], datasets: [{ data: [sectorProfit.forex, sectorProfit.crypto, sectorProfit.stock], backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981'], borderWidth: 0 }] },
-                options: { responsive: true, plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${formatUSD(ctx.raw)}` } } } }
-            });
-        }
-
-        function renderHeatmap() {
-            const filtered = getFilteredTrades();
-            const monthly = {};
-            filtered.forEach(t => {
-                const date = new Date(t.tanggal);
-                const key = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
-                monthly[key] = (monthly[key] || 0) + t.netProfit;
-            });
-            let html = '<table style="width:100%"><tr>';
-            Object.keys(monthly).sort().forEach(m => { html += `<th style="padding:6px">${m}</th>`; });
-            html += '<tr> etxek';
-            Object.values(monthly).forEach(v => {
-                const intensity = Math.min(0.8, Math.abs(v)/2000);
-                const color = v > 0 ? `rgba(16,185,129,${intensity})` : `rgba(239,68,68,${intensity})`;
-                html += `<td style="background:${color}; text-align:center; padding:6px; border-radius:6px;">${formatUSD(v)}</td>`;
-            });
-            html += '<tr></table>';
-            document.getElementById("heatmapContainer").innerHTML = html || "<p>No data</p>";
-        }
-
-        function renderTable() {
-            const filtered = getFilteredTrades();
-            const tbody = document.getElementById("tradesTableBody");
-            if (!filtered.length) {
-                tbody.innerHTML = '<tr><td colspan="13" style="text-align:center">No trades found</td></tr>';
-                return;
-            }
-            let html = "";
-            filtered.forEach((t, idx) => {
-                const originalIdx = trades.findIndex(ot => ot.id === t.id);
-                const sectorClass = t.sektor === 'forex' ? 'badge-forex' : (t.sektor === 'crypto' ? 'badge-crypto' : 'badge-stock');
-                const decimals = getInstrumentDecimals(t.pasangan, t.sektor);
-                html += `<tr>
-                    <td>${t.tanggal}</td>
-                    <td><span class="badge ${sectorClass}">${t.sektor.toUpperCase()}</span></td>
-                    <td>${t.pasangan}</td>
-                    <td>${t.arah}</td>
-                    <td class="numeric">${formatPrice(t.hargaMasuk, decimals)}</td>
-                    <td class="numeric">${formatPrice(t.hargaKeluar, decimals)}</td>
-                    <td class="numeric">${t.lot}</td>
-                    <td class="numeric">${t.points.toFixed(2)}</td>
-                    <td class="numeric">${formatUSD(t.profitLossManual)}</td>
-                    <td class="numeric"><strong>${formatUSD(t.netProfit)}</strong></td>
-                    <td>${t.strategi || "-"}</td>
-                    <td><span class="badge ${t.netProfit>0?'badge-win':'badge-loss'}">${t.status}</span></td>
-                    <td><button class="btn-icon" onclick="editTrade(${originalIdx})"><i class="fas fa-edit"></i></button> <button class="btn-icon" onclick="deleteTrade(${originalIdx})"><i class="fas fa-trash"></i></button></td>
-                </tr>`;
-            });
-            tbody.innerHTML = html;
-        }
-
-        function renderStrategyPerformance() {
-            const strategyData = {};
-            trades.forEach(t => {
-                const strat = t.strategi || "No Strategy";
-                if (!strategyData[strat]) strategyData[strat] = { forex: 0, crypto: 0, stock: 0, total: 0, wins: 0, trades: 0 };
-                strategyData[strat][t.sektor] += t.netProfit;
-                strategyData[strat].total += t.netProfit;
-                strategyData[strat].trades++;
-                if (t.netProfit > 0) strategyData[strat].wins++;
-            });
-            let sb = '', grand = { forex: 0, crypto: 0, stock: 0, total: 0, wins: 0, trades: 0 };
-            Object.keys(strategyData).sort().forEach(s => {
-                const d = strategyData[s];
-                const wr = d.trades ? (d.wins/d.trades*100).toFixed(1) : 0;
-                sb += `<tr>
-                    <td><strong>${s}</strong></td>
-                    <td class="numeric ${d.forex>=0?'positive':'negative'}">${formatUSD(d.forex)}</td>
-                    <td class="numeric ${d.crypto>=0?'positive':'negative'}">${formatUSD(d.crypto)}</td>
-                    <td class="numeric ${d.stock>=0?'positive':'negative'}">${formatUSD(d.stock)}</td>
-                    <td class="numeric ${d.total>=0?'positive':'negative'}"><strong>${formatUSD(d.total)}</strong></td>
-                    <td class="numeric ${wr>=50?'positive':'negative'}">${wr}%</td>
-                    <td class="numeric">${d.trades}</td>
-                </tr>`;
-                grand.forex += d.forex; grand.crypto += d.crypto; grand.stock += d.stock;
-                grand.total += d.total; grand.wins += d.wins; grand.trades += d.trades;
-            });
-            const gwr = grand.trades ? (grand.wins/grand.trades*100).toFixed(1) : 0;
-            document.getElementById("strategyPerfBody").innerHTML = sb;
-            document.getElementById("strategyPerfFooter").innerHTML = `<tr class="grand-total">
-                <td><strong>GRAND TOTAL</strong></td>
-                <td class="numeric ${grand.forex>=0?'positive':'negative'}"><strong>${formatUSD(grand.forex)}</strong></td>
-                <td class="numeric ${grand.crypto>=0?'positive':'negative'}"><strong>${formatUSD(grand.crypto)}</strong></td>
-                <td class="numeric ${grand.stock>=0?'positive':'negative'}"><strong>${formatUSD(grand.stock)}</strong></td>
-                <td class="numeric ${grand.total>=0?'positive':'negative'}"><strong>${formatUSD(grand.total)}</strong></td>
-                <td class="numeric ${gwr>=50?'positive':'negative'}"><strong>${gwr}%</strong></td>
-                <td class="numeric"><strong>${grand.trades}</strong></td>
-            </tr>`;
-        }
-
-        function updateFilters() {
-            const instruments = [...new Set(trades.map(t => t.pasangan))];
-            const strategies = [...new Set(trades.map(t => t.strategi).filter(s => s))];
-            document.getElementById("filterInstrument").innerHTML = '<option value="all">All</option>' + instruments.map(i => `<option value="${i}">${i}</option>`).join('');
-            document.getElementById("filterStrategy").innerHTML = '<option value="all">All</option>' + strategies.map(s => `<option value="${s}">${s}</option>`).join('');
-        }
-
-        function renderAll() {
-            updateFilters();
-            renderStats();
-            renderPortfolioBySector();
-            renderCharts();
-            renderHeatmap();
-            renderTable();
-            renderStrategyPerformance();
-            document.getElementById("filterStats").innerHTML = `${getFilteredTrades().length} trades`;
-        }
-
-        // Tab Navigation
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(btn.dataset.tab).classList.add('active');
-            });
-        });
-
-        // Event Listeners
-        document.getElementById("filterSector").addEventListener("change", (e) => { currentFilter.sector = e.target.value; currentFilter.instrument = "all"; renderAll(); });
-        document.getElementById("filterInstrument").addEventListener("change", (e) => { currentFilter.instrument = e.target.value; renderAll(); });
-        document.getElementById("filterStrategy").addEventListener("change", (e) => { currentFilter.strategy = e.target.value; renderAll(); });
-        document.getElementById("filterPeriod").addEventListener("change", (e) => { currentFilter.period = e.target.value; renderAll(); });
-        
-        document.getElementById("addTradeBtn").onclick = () => { editIndex = null; document.getElementById("modalTitle").innerHTML = "<i class='fas fa-plus'></i> Add Trade"; document.getElementById("tradeForm").reset(); document.getElementById("tanggal").valueAsDate = new Date(); document.getElementById("tradeModal").style.display = "flex"; updatePreview(); };
-        document.getElementById("closeModalBtn").onclick = closeModal;
-        document.getElementById("tradeForm").onsubmit = (e) => { e.preventDefault(); addOrUpdateTrade(getFormData()); closeModal(); };
-        document.getElementById("themeToggle").onclick = () => document.body.classList.toggle("light");
-        document.getElementById("backupBtn").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(trades)], {type:"application/json"})); a.download = `traderx_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); };
-        document.getElementById("restoreBtn").onclick = () => { const input = document.createElement("input"); input.type = "file"; input.accept = "application/json"; input.onchange = e => { const file = e.target.files[0]; const reader = new FileReader(); reader.onload = ev => { trades = JSON.parse(ev.target.result); saveTrades(); }; reader.readAsText(file); }; input.click(); };
-        
-        document.getElementById("hargaMasuk").addEventListener("input", updatePreview);
-        document.getElementById("hargaKeluar").addEventListener("input", updatePreview);
-        document.getElementById("lot").addEventListener("input", updatePreview);
-        document.getElementById("arah").addEventListener("change", updatePreview);
-        
-        function closeModal() { document.getElementById("tradeModal").style.display = "none"; editIndex = null; }
-        window.onclick = (e) => { if (e.target === document.getElementById("tradeModal")) closeModal(); };
-        
-        loadTrades();
-    </script>
 </body>
 </html>
