@@ -1,467 +1,168 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Akademi Crypto</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trader X Academy</title>
 
-        body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            background: #0B0F1C;
-            color: #E0E4F0;
-            padding: 20px 16px 40px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#0B0F1C;
+  color:white;
+}
+.container{padding:20px; padding-bottom:80px}
+.hidden{display:none}
 
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #F7931A, #FFD166);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .badge {
-            background: #1E2A3A;
-            padding: 6px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 500;
-            color: #F7931A;
-        }
+.nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  display:flex;
+  background:#111;
+}
+.nav button{
+  flex:1;
+  background:none;
+  color:white;
+  border:none;
+  padding:15px;
+}
 
-        /* Stats progress */
-        .stats {
-            background: #131A2C;
-            border-radius: 24px;
-            padding: 14px 18px;
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #2A3548;
-        }
-        .stats span:first-child {
-            font-size: 14px;
-            color: #9AA8BB;
-        }
-        .stats span:last-child {
-            font-weight: bold;
-            font-size: 22px;
-            color: #F7931A;
-        }
-        .progress-bar {
-            background: #2A3548;
-            border-radius: 10px;
-            height: 6px;
-            width: 60%;
-            overflow: hidden;
-        }
-        .progress-fill {
-            background: #F7931A;
-            width: 0%;
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.2s;
-        }
+.card{
+  background:#14182a;
+  padding:15px;
+  border-radius:12px;
+  margin:10px 0;
+}
 
-        /* Daftar modul */
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 20px 0 12px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .module-card {
-            background: #131A2C;
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid #2A3548;
-            transition: 0.1s;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .module-card.completed {
-            border-left: 4px solid #F7931A;
-            background: #101624;
-            opacity: 0.85;
-        }
-        .module-info h3 {
-            font-size: 17px;
-            margin-bottom: 6px;
-        }
-        .module-info p {
-            font-size: 13px;
-            color: #9AA8BB;
-        }
-        .status-icon {
-            font-size: 24px;
-        }
-        .lock-icon {
-            opacity: 0.4;
-        }
+.premium-lock{
+  opacity:0.5;
+}
 
-        /* Panel belajar & kuis */
-        .learning-panel {
-            background: #0E1424;
-            border-radius: 28px;
-            padding: 20px;
-            margin-top: 24px;
-            border: 1px solid #2A3548;
-        }
-        .learning-panel h2 {
-            font-size: 20px;
-            margin-bottom: 12px;
-        }
-        .material {
-            background: #1A2236;
-            padding: 16px;
-            border-radius: 18px;
-            margin: 16px 0;
-            line-height: 1.5;
-            font-size: 14px;
-        }
-        .quiz-area {
-            margin-top: 20px;
-            border-top: 1px solid #2A3548;
-            padding-top: 16px;
-        }
-        .quiz-question {
-            margin-bottom: 16px;
-        }
-        .quiz-question p {
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-        .quiz-option {
-            background: #1A2236;
-            padding: 12px;
-            border-radius: 14px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-        .quiz-option:hover {
-            background: #2A3548;
-        }
-        button {
-            background: #F7931A;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 40px;
-            font-weight: bold;
-            color: #0B0F1C;
-            font-size: 15px;
-            width: 100%;
-            margin-top: 12px;
-            cursor: pointer;
-        }
-        .feedback {
-            margin-top: 12px;
-            font-size: 13px;
-            padding: 8px;
-            border-radius: 12px;
-            text-align: center;
-        }
-        .correct-feedback {
-            background: #1E3A2F;
-            color: #8BEF9A;
-        }
-        .wrong-feedback {
-            background: #3A1E2A;
-            color: #FF9A8B;
-        }
-        .btn-secondary {
-            background: #2A3548;
-            color: white;
-            margin-top: 8px;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+/* button */
+button{
+  padding:10px;
+  border:none;
+  border-radius:10px;
+}
+</style>
 </head>
+
 <body>
 
-<div class="header">
-    <h1>AKADEMI CRYPTO</h1>
-    <div class="badge">Edukasi & Kuis</div>
-</div>
-
-<div class="stats">
-    <span>📊 Total Modul Selesai</span>
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <span id="completedCount">0</span><span>/3</span>
-    </div>
-</div>
-
-<div class="section-title">
-    🧠 Modul Belajar
-</div>
-
-<div id="moduleList">
-    <!-- module cards akan diisi js -->
-</div>
-
-<!-- Panel belajar & kuis -->
-<div id="learningPanel" class="learning-panel hidden">
-    <h2 id="panelTitle"></h2>
-    <div id="materialContent" class="material"></div>
-    <div id="quizContainer" class="quiz-area"></div>
-    <button id="markCompleteBtn" class="hidden">✅ Tandai Selesai & Lanjut</button>
-    <button id="closePanelBtn" class="btn-secondary">✖️ Tutup</button>
-</div>
+<div id="app"></div>
 
 <script>
-    // Data modul
-    const modules = [
-        {
-            id: 0,
-            title: "🔰 Dasar Blockchain",
-            desc: "Apa itu Bitcoin, cara kerja blockchain",
-            material: "Blockchain adalah buku besar digital yang terdesentralisasi. Setiap transaksi dicatat dalam 'blok' yang saling terhubung. Bitcoin adalah mata uang kripto pertama yang menggunakan teknologi ini.\n\nKeunggulan: transparan, aman, tidak bisa diubah (immutable).",
-            quiz: {
-                question: "Apa fungsi utama dari blockchain?",
-                options: ["Mencetak uang kertas", "Menyimpan data secara terpusat", "Mencatat transaksi secara desentralisasi dan transparan", "Mengirim email"],
-                correct: 2
-            }
-        },
-        {
-            id: 1,
-            title: "📈 Analisis Teknikal",
-            desc: "Candlestick, support & resistance",
-            material: "Analisis teknikal digunakan untuk memprediksi pergerakan harga berdasarkan data historis. Pola candlestick seperti 'hammer' atau 'doji' bisa memberi sinyal.\n\nSupport adalah level harga bawah yang sulit ditembus, sedangkan resistance adalah level atas yang jadi hambatan.",
-            quiz: {
-                question: "Apa yang dimaksud dengan 'support' dalam trading kripto?",
-                options: ["Harga tertinggi sepanjang masa", "Level harga di mana aset cenderung berhenti turun", "Platform untuk membeli kripto", "Perintah jual otomatis"],
-                correct: 1
-            }
-        },
-        {
-            id: 2,
-            title: "🔐 Keamanan & Wallet",
-            desc: "Private key, cold wallet, 2FA",
-            material: "Jangan pernah membagikan private key! Gunakan hardware wallet (cold wallet) untuk penyimpanan jangka panjang. Aktifkan 2FA di akun exchange. Waspada phishing.\n\nHot wallet = online, lebih praktis tapi rentan. Cold wallet = offline, lebih aman.",
-            quiz: {
-                question: "Manakah praktik keamanan paling penting untuk menyimpan crypto dalam jumlah besar?",
-                options: ["Simpan di exchange favorit", "Gunakan cold wallet dan simpan seed phrase offline", "Screenshot private key di cloud", "Pakai password '123456'"],
-                correct: 1
-            }
-        }
-    ];
 
-    let completedModules = []; // array of id
-    let selectedModuleId = null; // modul yang sedang dibuka
-    let quizAnswered = false;
-    let quizCorrect = false;
+// ================= USER =================
+if(!localStorage.getItem("role")){
+  localStorage.setItem("role","free");
+}
 
-    // Load dari localStorage
-    function loadProgress() {
-        const saved = localStorage.getItem("akademiCryptoProgress");
-        if(saved) {
-            completedModules = JSON.parse(saved);
-        } else {
-            completedModules = [];
-        }
-        updateUI();
-    }
+// ================= NAV =================
+function nav(){
+return `
+<div class="nav">
+<button onclick="showDashboard()">🏠</button>
+<button onclick="showSignal()">📊</button>
+<button onclick="showMateri()">📘</button>
+<button onclick="showMember()">👑</button>
+</div>`;
+}
 
-    function saveProgress() {
-        localStorage.setItem("akademiCryptoProgress", JSON.stringify(completedModules));
-        updateUI();
-    }
+// ================= DASHBOARD =================
+function showDashboard(){
+app.innerHTML = `
+<div class="container">
+<h2>Trader X Academy</h2>
+<p>Status: ${localStorage.getItem("role")}</p>
 
-    function updateUI() {
-        // Render daftar modul
-        const container = document.getElementById("moduleList");
-        container.innerHTML = "";
-        modules.forEach(mod => {
-            const isCompleted = completedModules.includes(mod.id);
-            const card = document.createElement("div");
-            card.className = `module-card ${isCompleted ? 'completed' : ''}`;
-            card.innerHTML = `
-                <div class="module-info">
-                    <h3>${mod.title}</h3>
-                    <p>${mod.desc}</p>
-                </div>
-                <div class="status-icon">${isCompleted ? '✅' : '📘'}</div>
-            `;
-            card.addEventListener("click", (e) => {
-                e.stopPropagation();
-                openModule(mod.id);
-            });
-            container.appendChild(card);
-        });
+<div class="card">
+🔥 Welcome bro, ini dashboard lu
+</div>
 
-        // Update progress bar dan angka
-        const completedCount = completedModules.length;
-        document.getElementById("completedCount").innerText = completedCount;
-        const percent = (completedCount / modules.length) * 100;
-        document.getElementById("progressFill").style.width = percent + "%";
+<div class="card">
+📊 Fokus: Forex / Crypto / Saham
+</div>
 
-        // Jika semua modul selesai, tampilkan ucapan
-        if(completedCount === modules.length) {
-            const statsDiv = document.querySelector(".stats");
-            if(!document.getElementById("completeMessage")) {
-                const msg = document.createElement("div");
-                msg.id = "completeMessage";
-                msg.style.marginTop = "8px";
-                msg.style.fontSize = "12px";
-                msg.style.color = "#F7931A";
-                msg.innerText = "🎉 Selamat! Kamu telah menyelesaikan semua modul Akademi Crypto! 🎉";
-                statsDiv.appendChild(msg);
-            }
-        } else {
-            const existing = document.getElementById("completeMessage");
-            if(existing) existing.remove();
-        }
-    }
+</div>
+${nav()}
+`;
+}
 
-    function openModule(moduleId) {
-        selectedModuleId = moduleId;
-        const mod = modules[moduleId];
-        const panel = document.getElementById("learningPanel");
-        const panelTitle = document.getElementById("panelTitle");
-        const materialDiv = document.getElementById("materialContent");
-        const quizContainer = document.getElementById("quizContainer");
-        const markBtn = document.getElementById("markCompleteBtn");
+// ================= SIGNAL =================
+let signals = [
+{type:"forex",pair:"XAUUSD BUY",entry:2350,tp:2380,sl:2330,premium:false},
+{type:"crypto",pair:"BTC BUY",entry:60000,tp:65000,sl:58000,premium:true},
+{type:"saham",pair:"BBCA BUY",entry:9000,tp:9500,sl:8800,premium:true}
+];
 
-        panelTitle.innerText = mod.title;
-        materialDiv.innerText = mod.material;
+function showSignal(){
+let html = `<div class="container"><h2>Signal</h2>`;
 
-        // Render kuis
-        const isCompleted = completedModules.includes(moduleId);
-        quizAnswered = false;
-        quizCorrect = false;
+signals.reverse().forEach(s=>{
 
-        // Tampilkan kuis dengan state awal
-        renderQuiz(moduleId);
+let locked = s.premium && localStorage.getItem("role")=="free";
 
-        // Tombol "Tandai Selesai" muncul hanya jika modul belum selesai
-        if(!isCompleted) {
-            markBtn.classList.remove("hidden");
-        } else {
-            markBtn.classList.add("hidden");
-        }
+html+=`
+<div class="card ${locked?'premium-lock':''}">
+<b>${locked?'🔒 Premium Only':s.pair}</b><br>
+${locked?'':
+`Entry: ${s.entry}<br>TP: ${s.tp}<br>SL: ${s.sl}`}
+</div>
+`;
+});
 
-        panel.classList.remove("hidden");
-        // scroll ke panel
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+html+=`</div>`+nav();
+app.innerHTML = html;
+}
 
-    function renderQuiz(moduleId) {
-        const mod = modules[moduleId];
-        const quiz = mod.quiz;
-        const quizContainer = document.getElementById("quizContainer");
-        if(!quiz) return;
+// ================= MATERI (AMBIL DARI CODE LU) =================
+function showMateri(){
+app.innerHTML = `
+<div class="container">
+<h2>Materi</h2>
 
-        const isCompleted = completedModules.includes(moduleId);
-        // Jika sudah selesai, tampilkan pesan bahwa modul sudah dikuasai
-        if(isCompleted) {
-            quizContainer.innerHTML = `<div style="background:#1E2A3A; border-radius:16px; padding:12px; text-align:center;">✅ Modul ini sudah selesai. Kamu bisa review materi di atas.</div>`;
-            return;
-        }
+<div class="card">
+📘 Dasar Blockchain
+</div>
 
-        let quizHtml = `<div class="quiz-question"><p>📝 Kuis: ${quiz.question}</p></div>`;
-        quiz.options.forEach((opt, idx) => {
-            quizHtml += `<div class="quiz-option" data-opt="${idx}">${opt}</div>`;
-        });
-        quizHtml += `<div id="quizFeedback" class="feedback"></div>`;
-        quizContainer.innerHTML = quizHtml;
+<div class="card premium-lock">
+🔒 Smart Money Concept (Premium)
+</div>
 
-        // Pasang event listener ke option
-        const opts = document.querySelectorAll(".quiz-option");
-        opts.forEach(opt => {
-            opt.addEventListener("click", (e) => {
-                if(quizAnswered) return;
-                const selectedIdx = parseInt(opt.dataset.opt);
-                const isCorrect = (selectedIdx === quiz.correct);
-                const feedbackDiv = document.getElementById("quizFeedback");
-                if(isCorrect) {
-                    feedbackDiv.innerHTML = "✅ Jawaban benar! Kamu bisa menandai modul selesai.";
-                    feedbackDiv.className = "feedback correct-feedback";
-                    quizCorrect = true;
-                    quizAnswered = true;
-                    // aktifkan tombol markComplete supaya bisa diselesaikan
-                    const markBtn = document.getElementById("markCompleteBtn");
-                    markBtn.disabled = false;
-                    markBtn.style.opacity = "1";
-                } else {
-                    feedbackDiv.innerHTML = "❌ Jawaban kurang tepat. Coba lagi!";
-                    feedbackDiv.className = "feedback wrong-feedback";
-                    // tidak menandai answered = true? biarkan mereka coba lagi sampai benar
-                    // tapi kita set answered false supaya bisa pilih ulang
-                    quizAnswered = false;
-                    quizCorrect = false;
-                    // nonaktifkan tombol mark
-                    const markBtn = document.getElementById("markCompleteBtn");
-                    markBtn.disabled = true;
-                    markBtn.style.opacity = "0.5";
-                }
-                // highlight jawaban benar? bisa tapi sederhana
-                if(isCorrect) {
-                    // ubah warna semua option
-                    opts.forEach(o => o.style.opacity = "0.7");
-                    opt.style.background = "#2A5A3A";
-                }
-            });
-        });
-        // reset tombol mark
-        const markBtn = document.getElementById("markCompleteBtn");
-        markBtn.disabled = true;
-        markBtn.style.opacity = "0.5";
-        markBtn.onclick = () => {
-            if(quizCorrect && !completedModules.includes(moduleId)) {
-                completedModules.push(moduleId);
-                saveProgress();
-                // setelah selesai, refresh panel
-                renderQuiz(moduleId);
-                const markBtn2 = document.getElementById("markCompleteBtn");
-                markBtn2.classList.add("hidden");
-                // update tampilan modul card
-                updateUI();
-                // Tampilkan notif
-                const feedbackDiv = document.getElementById("quizFeedback");
-                if(feedbackDiv) feedbackDiv.innerHTML = "🎉 Modul berhasil diselesaikan! 🎉";
-            } else if(!quizCorrect) {
-                alert("Jawab kuis dengan benar terlebih dahulu!");
-            }
-        };
-    }
+</div>
+${nav()}
+`;
+}
 
-    // Tutup panel
-    document.getElementById("closePanelBtn").addEventListener("click", () => {
-        document.getElementById("learningPanel").classList.add("hidden");
-        selectedModuleId = null;
-    });
+// ================= MEMBER =================
+function showMember(){
+app.innerHTML = `
+<div class="container">
+<h2>Membership</h2>
 
-    // inisialisasi
-    loadProgress();
+<p>Status: ${localStorage.getItem("role")}</p>
 
-    // Jika panel terbuka karena modul sudah selesai, tombol mark tidak muncul.
-    // tambahkan event untuk tombol mark yang dinamis? sudah di renderQuiz
+<button onclick="upgrade()">Upgrade Premium</button>
+
+</div>
+${nav()}
+`;
+}
+
+function upgrade(){
+localStorage.setItem("role","premium");
+alert("Lu sekarang premium 😈");
+showMember();
+}
+
+// INIT
+showDashboard();
+
 </script>
+
 </body>
 </html>
