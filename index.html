@@ -14,80 +14,102 @@
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
             background: #0A0E1A;
-            color: #E2E8F0;
+            color: #EDF2F8;
             overflow-x: hidden;
-            padding-bottom: 75px;
+            padding-bottom: 80px;
         }
 
-        /* Scrollbar premium */
+        /* scrollbar premium */
         ::-webkit-scrollbar {
             width: 4px;
         }
         ::-webkit-scrollbar-track {
             background: #1E293B;
+            border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
             background: #F59E0B;
             border-radius: 10px;
         }
 
-        /* Container utama */
+        /* container utama */
         .app-container {
-            max-width: 600px;
+            max-width: 560px;
             margin: 0 auto;
             position: relative;
             min-height: 100vh;
-            background: radial-gradient(circle at 10% 20%, rgba(15, 25, 45, 0.4), #0A0E1A);
+            background: radial-gradient(circle at 20% 30%, rgba(15, 25, 55, 0.6), #0A0E1A);
         }
 
-        /* Halaman transisi */
+        /* animasi halaman */
         .page {
-            animation: fadeIn 0.25s ease-out;
+            animation: fadeSlide 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px);}
-            to { opacity: 1; transform: translateY(0);}
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* Komponen UI */
+        /* container dalam */
+        .container {
+            padding: 20px 18px 30px;
+        }
+
+        /* card premium */
         .card {
-            background: rgba(18, 25, 45, 0.7);
-            backdrop-filter: blur(2px);
+            background: rgba(18, 26, 40, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
             border: 1px solid rgba(245, 158, 11, 0.2);
-            border-radius: 24px;
-            padding: 18px 16px;
-            margin-bottom: 16px;
-            transition: all 0.2s;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
         .card:hover {
-            border-color: rgba(245, 158, 11, 0.5);
+            border-color: rgba(245, 158, 11, 0.6);
             transform: translateY(-2px);
+            background: rgba(20, 30, 48, 0.85);
         }
+
+        /* glassmorphism khusus */
         .glass-card {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(12px);
-            border-radius: 28px;
-            border: 1px solid rgba(245,158,11,0.3);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 32px;
         }
+
+        /* badge */
         .badge {
-            display: inline-block;
-            background: #F59E0B;
-            color: #0A0E1A;
+            display: inline-flex;
+            align-items: center;
+            background: #1E293B;
+            color: #CBD5E1;
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 600;
             padding: 4px 12px;
-            border-radius: 30px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
         }
         .badge-premium {
-            background: linear-gradient(135deg, #F59E0B, #FFD966);
-            box-shadow: 0 0 8px #F59E0B;
+            background: linear-gradient(135deg, #F59E0B, #FFB347);
+            color: #0A0E1A;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
         }
+
+        /* tombol */
         .btn {
             border: none;
-            border-radius: 40px;
+            border-radius: 44px;
             padding: 12px 20px;
             font-weight: 600;
             font-size: 14px;
@@ -100,41 +122,53 @@
         .btn-primary {
             background: linear-gradient(95deg, #F59E0B, #EAB308);
             color: #0A0E1A;
-            box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+            box-shadow: 0 6px 14px rgba(245, 158, 11, 0.25);
+        }
+        .btn-primary:hover {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
         }
         .btn-outline {
             background: transparent;
             border: 1px solid #F59E0B;
             color: #F59E0B;
         }
+        .btn-outline:hover {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        /* input & select */
         input, select, textarea {
             width: 100%;
-            padding: 14px;
-            background: #111827;
-            border: 1px solid #1F2A3E;
-            border-radius: 20px;
+            padding: 14px 16px;
+            background: #0F1422;
+            border: 1px solid #29344B;
+            border-radius: 24px;
             color: white;
             font-size: 14px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             outline: none;
             transition: 0.2s;
         }
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             border-color: #F59E0B;
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
         }
+
+        /* navbar bawah */
         .navbar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            max-width: 600px;
+            max-width: 560px;
             margin: 0 auto;
             background: rgba(10, 14, 26, 0.95);
             backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-around;
-            padding: 8px 12px 20px;
-            border-top: 1px solid rgba(245,158,11,0.3);
+            padding: 8px 12px 22px;
+            border-top: 1px solid rgba(245, 158, 11, 0.3);
             z-index: 1000;
         }
         .nav-item {
@@ -143,61 +177,89 @@
             align-items: center;
             background: none;
             border: none;
-            color: #94A3B8;
-            font-size: 12px;
+            color: #7E8AA8;
+            font-size: 11px;
             gap: 4px;
             cursor: pointer;
-            transition: 0.1s;
-            padding: 6px 12px;
-            border-radius: 30px;
-        }
-        .nav-item.active {
-            color: #F59E0B;
-            background: rgba(245,158,11,0.1);
+            transition: 0.2s;
+            padding: 6px 14px;
+            border-radius: 40px;
         }
         .nav-item span:first-child {
             font-size: 22px;
         }
+        .nav-item.active {
+            color: #F59E0B;
+            background: rgba(245, 158, 11, 0.12);
+        }
+
+        /* flex utils */
         .flex-between {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+        .flex-start {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .gap-2 { gap: 8px; }
+        .mt-2 { margin-top: 12px; }
+        .mb-1 { margin-bottom: 6px; }
+        .text-center { text-align: center; }
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #F59E0B;
+            line-height: 1.2;
+        }
+        hr {
+            border-color: #29344B;
+            margin: 14px 0;
+        }
+
+        /* progress bar */
         .progress-bar {
             background: #1E293B;
-            border-radius: 12px;
+            border-radius: 20px;
             height: 8px;
             overflow: hidden;
-            margin: 8px 0;
+            margin: 10px 0;
         }
         .progress-fill {
-            background: #F59E0B;
+            background: linear-gradient(90deg, #F59E0B, #FFD966);
             width: 0%;
             height: 100%;
-            border-radius: 12px;
+            border-radius: 20px;
         }
-        .signal-card, .materi-card {
+
+        /* filter chips */
+        .filter-chip {
+            display: inline-block;
+            background: #111827;
+            padding: 6px 16px;
+            border-radius: 40px;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            font-size: 12px;
             cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #29344B;
         }
-        .premium-locked {
-            filter: blur(4px);
-            pointer-events: none;
-            opacity: 0.7;
-            position: relative;
-        }
-        .premium-badge {
+        .filter-chip.active, .filter-chip:hover {
             background: #F59E0B;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 30px;
-            margin-left: 8px;
+            color: #0A0E1A;
+            border-color: #F59E0B;
         }
+
+        /* modal */
         .modal {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -205,12 +267,15 @@
         }
         .modal-content {
             background: #111827;
-            border-radius: 32px;
+            border-radius: 36px;
             max-width: 90%;
-            width: 400px;
+            width: 380px;
             padding: 24px;
             border: 1px solid #F59E0B;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
         }
+
+        /* toast */
         .toast {
             position: fixed;
             bottom: 90px;
@@ -218,40 +283,36 @@
             right: 20px;
             background: #1E293B;
             border-left: 4px solid #F59E0B;
-            padding: 12px;
-            border-radius: 16px;
+            padding: 14px 18px;
+            border-radius: 28px;
             z-index: 1500;
-            animation: slideUp 0.3s;
+            animation: slideUp 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         @keyframes slideUp {
-            from { transform: translateY(40px); opacity: 0; }
+            from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        .stat-number {
-            font-size: 28px;
-            font-weight: 800;
-            color: #F59E0B;
-        }
-        hr {
-            border-color: #1F2A3E;
-            margin: 12px 0;
-        }
-        .filter-chip {
-            display: inline-block;
-            background: #1E293B;
-            padding: 6px 14px;
-            border-radius: 30px;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            font-size: 12px;
+
+        /* signal card */
+        .signal-card, .materi-card {
             cursor: pointer;
         }
-        .filter-chip.active {
-            background: #F59E0B;
-            color: #0A0E1A;
+        .premium-locked {
+            filter: blur(3px);
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .small {
+            font-size: 12px;
+            color: #94A3B8;
         }
         @media (max-width: 480px) {
             .container {
+                padding: 16px;
+            }
+            .card {
                 padding: 16px;
             }
         }
@@ -272,7 +333,7 @@
         USER_PROGRESS: "traderx_progress"
     };
 
-    // Data awal dummy yang kaya
+    // Data dummy yang kaya
     const defaultMateri = [
         { id: "m1", title: "📘 Dasar Forex & Crypto", level: "Pemula", premium: false, content: "Forex (Foreign Exchange) adalah pasar terbesar di dunia. Pelajari pips, lot, leverage, dan cara membaca quote. Crypto adalah aset digital dengan volatilitas tinggi.", duration: "20 menit", progress: 0 },
         { id: "m2", title: "🔥 Smart Money Concept (SMC)", level: "Lanjutan", premium: true, content: "SMC mengikuti pergerakan bank sentral. Pelajari Order Block, Fair Value Gap, Liquidity Grab. Teknik pro trader.", duration: "45 menit", progress: 0 },
@@ -291,7 +352,6 @@
         { id: "sig6", pair: "TSLA", type: "Saham", entry: "245.30", tp: "260.00", sl: "238.00", status: "RUNNING", premium: false, createdAt: Date.now() - 10800000, analyst: "ElonTrader" }
     ];
 
-    // Inisialisasi localStorage
     function initStorage() {
         if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
             const defaultUsers = [
@@ -300,28 +360,17 @@
             ];
             localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(defaultUsers));
         }
-        if (!localStorage.getItem(STORAGE_KEYS.SIGNALS)) {
-            localStorage.setItem(STORAGE_KEYS.SIGNALS, JSON.stringify(defaultSignals));
-        }
-        if (!localStorage.getItem(STORAGE_KEYS.MATERI)) {
-            localStorage.setItem(STORAGE_KEYS.MATERI, JSON.stringify(defaultMateri));
-        }
-        if (!localStorage.getItem(STORAGE_KEYS.NOTES)) {
-            localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify([]));
-        }
-        if (!localStorage.getItem(STORAGE_KEYS.WATCHLIST)) {
-            localStorage.setItem(STORAGE_KEYS.WATCHLIST, JSON.stringify([]));
-        }
-        if (!localStorage.getItem(STORAGE_KEYS.USER_PROGRESS)) {
-            localStorage.setItem(STORAGE_KEYS.USER_PROGRESS, JSON.stringify({}));
-        }
+        if (!localStorage.getItem(STORAGE_KEYS.SIGNALS)) localStorage.setItem(STORAGE_KEYS.SIGNALS, JSON.stringify(defaultSignals));
+        if (!localStorage.getItem(STORAGE_KEYS.MATERI)) localStorage.setItem(STORAGE_KEYS.MATERI, JSON.stringify(defaultMateri));
+        if (!localStorage.getItem(STORAGE_KEYS.NOTES)) localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify([]));
+        if (!localStorage.getItem(STORAGE_KEYS.WATCHLIST)) localStorage.setItem(STORAGE_KEYS.WATCHLIST, JSON.stringify([]));
+        if (!localStorage.getItem(STORAGE_KEYS.USER_PROGRESS)) localStorage.setItem(STORAGE_KEYS.USER_PROGRESS, JSON.stringify({}));
     }
     initStorage();
 
     let currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
     let currentPage = "dashboard";
 
-    // Helper functions
     function saveUser(user) {
         let users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS));
         const idx = users.findIndex(u => u.email === user.email);
@@ -332,13 +381,12 @@
     }
 
     function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)); }
-
     function showToast(msg, isError = false) {
         let toastDiv = document.createElement('div');
         toastDiv.className = 'toast';
         toastDiv.innerHTML = `<span>${isError ? '⚠️ ' : '✅ '}${msg}</span>`;
         document.body.appendChild(toastDiv);
-        setTimeout(() => toastDiv.remove(), 2500);
+        setTimeout(() => toastDiv.remove(), 2600);
     }
 
     // ================================ RENDER ENGINE SPA ================================
@@ -366,18 +414,18 @@
     function renderAuth() {
         const app = document.getElementById('appRoot');
         app.innerHTML = `
-            <div class="container" style="padding: 32px 20px;">
-                <div class="glass-card" style="text-align: center; padding: 32px 20px;">
-                    <h1 style="font-size: 32px; background: linear-gradient(135deg,#F59E0B,#FFD966); -webkit-background-clip:text; background-clip:text; color:transparent;">Trader X Academy</h1>
-                    <p style="margin-top: 8px;">Premium Signals & Education</p>
+            <div class="container" style="padding: 40px 20px;">
+                <div class="glass-card" style="text-align: center; padding: 32px 20px; margin-bottom: 24px;">
+                    <h1 style="font-size: 34px; background: linear-gradient(135deg,#F59E0B,#FFD966); -webkit-background-clip:text; background-clip:text; color:transparent;">Trader X Academy</h1>
+                    <p style="margin-top: 8px; color:#A0B0D0;">Premium Signals & Education</p>
                 </div>
                 <div class="card" id="authBox">
-                    <h3 id="authTitle">Login</h3>
+                    <h3 id="authTitle" style="margin-bottom: 16px;">Login</h3>
                     <input type="email" id="authEmail" placeholder="Email" autocomplete="off">
                     <input type="password" id="authPassword" placeholder="Password">
                     <button class="btn btn-primary" id="authSubmitBtn">Login</button>
-                    <p style="text-align: center; margin-top: 12px;"><a href="#" id="switchAuth">Belum punya akun? Daftar</a></p>
-                    <p style="text-align: center; font-size: 12px; margin-top: 12px;">Demo: demo@traderx.com / demo123 | premium@traderx.com / premium</p>
+                    <p class="text-center mt-2"><a href="#" id="switchAuth" style="color:#F59E0B;">Belum punya akun? Daftar</a></p>
+                    <p class="small text-center mt-2">Demo: demo@traderx.com / demo123 | premium@traderx.com / premium</p>
                 </div>
             </div>
         `;
@@ -427,7 +475,6 @@
         };
     }
 
-    // Dashboard
     function renderDashboard() {
         const signals = JSON.parse(localStorage.getItem(STORAGE_KEYS.SIGNALS));
         const materi = JSON.parse(localStorage.getItem(STORAGE_KEYS.MATERI));
@@ -437,8 +484,8 @@
         const completedMateri = progressData.completed?.length || 0;
         const latestSignals = signals.slice(-3).reverse();
         return `
-            <div class="container page" style="padding: 20px 16px;">
-                <div class="flex-between">
+            <div class="container page">
+                <div class="flex-between" style="margin-bottom: 12px;">
                     <h2>🏠 Dashboard</h2>
                     <div class="badge ${currentUser.role === 'premium' ? 'badge-premium' : ''}">${currentUser.role === 'premium' ? '💎 PREMIUM' : '🆓 FREE'}</div>
                 </div>
@@ -451,29 +498,26 @@
                     <div class="progress-bar"><div class="progress-fill" style="width: ${(completedMateri/totalMateri)*100}%"></div></div>
                 </div>
                 <div class="card">
-                    <div class="flex-between"><span>🔥 Sinyal Terbaru</span><span onclick="changePage('signals')" style="color:#F59E0B; font-size:12px;">Lihat semua →</span></div>
-                    ${latestSignals.map(s => `<div class="flex-between" style="margin-top:8px;"><span>${s.pair}</span><span class="badge" style="background:#1E293B;">${s.status}</span></div>`).join('')}
+                    <div class="flex-between"><span>🔥 Sinyal Terbaru</span><span onclick="changePage('signals')" style="color:#F59E0B; font-size:12px; cursor:pointer;">Lihat semua →</span></div>
+                    ${latestSignals.map(s => `<div class="flex-between" style="margin-top:10px;"><span>${s.pair}</span><span class="badge" style="background:#1E293B;">${s.status}</span></div>`).join('')}
                 </div>
                 <div class="card">
-                    <div class="flex-between"><span>📈 Target Harian Anda</span><span>💰 Profit target: $250</span></div>
-                    <button class="btn btn-outline" onclick="showToast('Fitur profit tracking aktif')">Set Target</button>
+                    <div class="flex-between"><span>📈 Target Harian</span><span>💰 Profit target: $250</span></div>
+                    <button class="btn btn-outline mt-2" onclick="showToast('Fitur profit tracking segera hadir')">Set Target</button>
                 </div>
-                <div class="card" style="background:linear-gradient(145deg,#1E293B,#0F172A);">
-                    <span>🎓 Rekomendasi Materi</span>
-                    <p class="small">Pelajari Smart Money Concept untuk meningkatkan akurasi sinyal.</p>
+                <div class="card" style="background:linear-gradient(135deg, #1E293B, #0F172A);">
+                    <div class="flex-start"><span>🎓</span><span>Rekomendasi Materi: Smart Money Concept</span></div>
+                    <p class="small">Pelajari teknik institutional trading untuk akurasi sinyal lebih tinggi.</p>
                 </div>
             </div>
         `;
     }
 
-    // SIGNAL PAGE (Advanced)
     function renderSignalsPage() {
-        let signals = JSON.parse(localStorage.getItem(STORAGE_KEYS.SIGNALS));
-        let filterType = "Semua";
         return `
             <div class="container page">
-                <div class="flex-between"><h2>📡 Signal Trading</h2><button class="btn btn-primary" id="openAddSignalModal" style="width:auto; padding:8px 16px;">+ Tambah</button></div>
-                <div id="filterChips" style="margin: 12px 0;">
+                <div class="flex-between"><h2>📡 Signal Trading</h2><button class="btn btn-primary" id="openAddSignalModal" style="width:auto; padding:8px 18px;">+ Tambah</button></div>
+                <div id="filterChips" style="margin: 14px 0;">
                     ${["Semua","Forex","Crypto","Saham"].map(cat => `<span class="filter-chip" data-filter="${cat}">${cat}</span>`).join('')}
                 </div>
                 <div id="signalListContainer"></div>
@@ -495,13 +539,12 @@
                         <b>${sig.pair} (${sig.type})</b>
                         <span class="badge" style="background:${sig.status === 'RUNNING' ? '#22C55E' : sig.status === 'TP HIT' ? '#F59E0B' : '#EF4444'}">${sig.status}</span>
                     </div>
-                    <div>Entry: ${sig.entry} | TP: ${sig.tp} | SL: ${sig.sl}</div>
+                    <div class="small mt-2">Entry: ${sig.entry} | TP: ${sig.tp} | SL: ${sig.sl}</div>
                     <div class="small">Analyst: ${sig.analyst} | ${new Date(sig.createdAt).toLocaleDateString()}</div>
-                    ${!isLocked ? `<div class="flex-between" style="margin-top:8px;"><button class="btn-outline edit-signal" data-id="${sig.id}" style="width:45%;">✏️ Edit</button><button class="btn-outline delete-signal" data-id="${sig.id}" style="width:45%;">🗑 Hapus</button></div>` : '<span class="badge-premium" style="font-size:10px;">🔒 Premium Signal</span>'}
+                    ${!isLocked ? `<div class="flex-between gap-2 mt-2"><button class="btn-outline edit-signal" data-id="${sig.id}" style="width:48%;">✏️ Edit</button><button class="btn-outline delete-signal" data-id="${sig.id}" style="width:48%;">🗑 Hapus</button></div>` : '<span class="badge-premium" style="margin-top:8px; display:inline-block;">🔒 Premium Signal</span>'}
                 </div>
             `;
         }).join('');
-        // attach edit delete
         document.querySelectorAll('.edit-signal').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); openEditSignal(btn.dataset.id); }));
         document.querySelectorAll('.delete-signal').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); deleteSignalById(btn.dataset.id); }));
     }
@@ -511,15 +554,15 @@
         modal.className = 'modal';
         modal.innerHTML = `
             <div class="modal-content">
-                <h3>Tambah Signal Baru</h3>
+                <h3 style="margin-bottom: 16px;">Tambah Signal Baru</h3>
                 <input id="newPair" placeholder="Pair (contoh: BTC/USD)">
                 <select id="newType"><option>Forex</option><option>Crypto</option><option>Saham</option></select>
                 <input id="newEntry" placeholder="Entry">
                 <input id="newTp" placeholder="Take Profit">
                 <input id="newSl" placeholder="Stop Loss">
                 <select id="newStatus"><option>RUNNING</option><option>TP HIT</option><option>SL HIT</option></select>
-                <label><input type="checkbox" id="newPremium"> Premium Only</label>
-                <div class="flex-between" style="margin-top:12px;"><button id="confirmAddSignal" class="btn-primary">Simpan</button><button id="closeModal" class="btn-outline">Batal</button></div>
+                <label style="display:flex; align-items:center; gap:8px; margin:10px 0;"><input type="checkbox" id="newPremium"> Premium Only</label>
+                <div class="flex-between gap-2"><button id="confirmAddSignal" class="btn-primary">Simpan</button><button id="closeModal" class="btn-outline">Batal</button></div>
             </div>
         `;
         document.body.appendChild(modal);
@@ -535,8 +578,7 @@
             localStorage.setItem(STORAGE_KEYS.SIGNALS, JSON.stringify(signals));
             showToast("Signal ditambahkan");
             modal.remove();
-            if (currentPage === 'signals') renderSignalsPage();
-            render();
+            if (currentPage === 'signals') render();
         };
         document.getElementById('closeModal').onclick = () => modal.remove();
     }
@@ -547,7 +589,7 @@
         if (!sig) return;
         const modal = document.createElement('div');
         modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3>Edit Signal</h3><input id="editPair" value="${sig.pair}"><input id="editEntry" value="${sig.entry}"><input id="editTp" value="${sig.tp}"><input id="editSl" value="${sig.sl}"><select id="editStatus"><option ${sig.status==='RUNNING'?'selected':''}>RUNNING</option><option ${sig.status==='TP HIT'?'selected':''}>TP HIT</option><option ${sig.status==='SL HIT'?'selected':''}>SL HIT</option></select><button id="saveEdit" class="btn-primary">Simpan</button><button id="closeModalEdit">Batal</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h3>Edit Signal</h3><input id="editPair" value="${sig.pair}"><input id="editEntry" value="${sig.entry}"><input id="editTp" value="${sig.tp}"><input id="editSl" value="${sig.sl}"><select id="editStatus"><option ${sig.status==='RUNNING'?'selected':''}>RUNNING</option><option ${sig.status==='TP HIT'?'selected':''}>TP HIT</option><option ${sig.status==='SL HIT'?'selected':''}>SL HIT</option></select><div class="flex-between gap-2 mt-2"><button id="saveEdit" class="btn-primary">Simpan</button><button id="closeModalEdit" class="btn-outline">Batal</button></div></div>`;
         document.body.appendChild(modal);
         document.getElementById('saveEdit').onclick = () => {
             sig.pair = document.getElementById('editPair').value;
@@ -571,7 +613,6 @@
         if (currentPage === 'signals') render();
     }
 
-    // MATERI dengan progress
     function renderMateriPage() {
         const materi = JSON.parse(localStorage.getItem(STORAGE_KEYS.MATERI));
         const progressData = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_PROGRESS))[currentUser.email] || { completed: [] };
@@ -593,7 +634,7 @@
                 const isCompleted = progressData.completed.includes(id);
                 const modal = document.createElement('div');
                 modal.className = 'modal';
-                modal.innerHTML = `<div class="modal-content"><h3>${mat.title}</h3><p>${mat.content}</p><button id="markCompleteBtn" class="btn-primary">${isCompleted ? 'Sudah Selesai' : 'Tandai Selesai'}</button><button id="closeModalMateri">Tutup</button></div>`;
+                modal.innerHTML = `<div class="modal-content"><h3>${mat.title}</h3><p class="small mt-2">${mat.content}</p><button id="markCompleteBtn" class="btn-primary mt-2">${isCompleted ? 'Sudah Selesai' : 'Tandai Selesai'}</button><button id="closeModalMateri" class="btn-outline mt-2">Tutup</button></div>`;
                 document.body.appendChild(modal);
                 document.getElementById('markCompleteBtn').onclick = () => {
                     if (!isCompleted) {
@@ -616,13 +657,12 @@
         });
     }
 
-    // TOOLS: Notes & Watchlist
     function renderToolsPage() {
         let notes = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)).filter(n => n.userEmail === currentUser.email);
         let watchlist = JSON.parse(localStorage.getItem(STORAGE_KEYS.WATCHLIST)).filter(w => w.userEmail === currentUser.email);
         return `<div class="container page"><h2>🛠️ Trading Tools</h2>
-            <div class="card"><h3>📝 Catatan Trading</h3><textarea id="newNote" rows="2" placeholder="Tulis catatan..."></textarea><button id="addNoteBtn" class="btn-primary">Simpan Catatan</button><div id="notesList">${notes.map(n => `<div class="flex-between"><span>${n.text}</span><button class="deleteNote" data-id="${n.id}">Hapus</button></div>`).join('')}</div></div>
-            <div class="card"><h3>⭐ Watchlist Market</h3><div class="flex-between"><input id="newWatchPair" placeholder="Pair (BTC/USD)"><button id="addWatchBtn">Tambah</button></div><div id="watchlistContainer">${watchlist.map(w => `<div class="flex-between"><span>${w.pair}</span><button class="delWatch" data-id="${w.id}">Hapus</button></div>`).join('')}</div></div></div>`;
+            <div class="card"><h3>📝 Catatan Trading</h3><textarea id="newNote" rows="2" placeholder="Tulis catatan..."></textarea><button id="addNoteBtn" class="btn-primary">Simpan Catatan</button><div id="notesList" class="mt-2">${notes.map(n => `<div class="flex-between"><span>${n.text}</span><button class="deleteNote btn-outline" data-id="${n.id}" style="width:auto; padding:4px 12px;">Hapus</button></div>`).join('')}</div></div>
+            <div class="card"><h3>⭐ Watchlist Market</h3><div class="flex-between gap-2"><input id="newWatchPair" placeholder="Pair (BTC/USD)"><button id="addWatchBtn" class="btn-primary" style="width:auto;">Tambah</button></div><div id="watchlistContainer" class="mt-2">${watchlist.map(w => `<div class="flex-between"><span>${w.pair}</span><button class="delWatch btn-outline" data-id="${w.id}" style="width:auto; padding:4px 12px;">Hapus</button></div>`).join('')}</div></div></div>`;
     }
 
     function attachToolsEvents() {
@@ -660,19 +700,16 @@
         });
     }
 
-    // MEMBERSHIP
     function renderMembershipPage() {
-        return `<div class="container page"><h2>💎 Membership</h2><div class="card" style="text-align:center;"><h3>Upgrade ke Trader X Premium</h3><p>Akses semua signal premium, materi expert, dan analisis realtime.</p><div class="stat-number">$29.99 / bulan</div><button id="upgradeBtn" class="btn-primary">Upgrade Sekarang</button></div></div>`;
+        return `<div class="container page"><h2>💎 Membership</h2><div class="card text-center"><h3>Upgrade ke Trader X Premium</h3><p>Akses semua signal premium, materi expert, dan analisis realtime.</p><div class="stat-number">$29.99 <span style="font-size:14px;">/ bulan</span></div><button id="upgradeBtn" class="btn-primary mt-2">Upgrade Sekarang</button></div></div>`;
     }
 
-    // ADMIN MODE (tersembunyi)
     function renderAdminPanel() {
         if (currentUser.email !== "admin@traderx.com") return `<div class="container"><h3>Akses ditolak</h3></div>`;
         const users = getUsers();
-        return `<div class="container"><h2>🛡️ Admin Panel</h2><div class="card"><h3>User List</h3>${users.map(u => `<div>${u.email} - ${u.role} - Poin:${u.points}</div>`).join('')}</div><button id="resetDataBtn" class="btn-outline">Reset Database</button></div>`;
+        return `<div class="container page"><h2>🛡️ Admin Panel</h2><div class="card"><h3>User List</h3>${users.map(u => `<div class="flex-between"><span>${u.email}</span><span>${u.role} - ⭐${u.points}</span></div>`).join('')}</div><button id="resetDataBtn" class="btn-outline">Reset Database</button></div>`;
     }
 
-    // NAVIGATION
     function renderNavbar() {
         const pages = [
             { id: 'dashboard', icon: '🏠', label: 'Home' },
@@ -703,6 +740,7 @@
     }
 
     window.changePage = (page) => { currentPage = page; render(); };
+    window.showToast = showToast;
     render();
 </script>
 </body>
