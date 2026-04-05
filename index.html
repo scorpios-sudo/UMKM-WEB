@@ -8,13 +8,18 @@
 <style>
 body{
   margin:0;
-  font-family:sans-serif;
+  font-family:Arial;
   background:#0B0F1C;
   color:white;
 }
-.container{padding:20px; padding-bottom:80px}
-.hidden{display:none}
-
+.container{padding:20px;padding-bottom:80px}
+h2{margin-top:0}
+.card{
+  background:#14182a;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:10px;
+}
 .nav{
   position:fixed;
   bottom:0;
@@ -24,27 +29,25 @@ body{
 }
 .nav button{
   flex:1;
+  padding:15px;
+  border:none;
   background:none;
   color:white;
-  border:none;
-  padding:15px;
+  font-size:16px;
 }
-
-.card{
-  background:#14182a;
-  padding:15px;
-  border-radius:12px;
-  margin:10px 0;
-}
-
-.premium-lock{
-  opacity:0.5;
-}
-
-/* button */
-button{
+.lock{opacity:0.4}
+.btn{
+  background:#1f6fff;
+  color:white;
   padding:10px;
   border:none;
+  border-radius:10px;
+  margin-top:10px;
+}
+.select{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
   border-radius:10px;
 }
 </style>
@@ -56,35 +59,45 @@ button{
 
 <script>
 
-// ================= USER =================
+// ================= INIT =================
 if(!localStorage.getItem("role")){
   localStorage.setItem("role","free");
+}
+if(!localStorage.getItem("signals")){
+  localStorage.setItem("signals", JSON.stringify([
+    {type:"forex",pair:"XAUUSD BUY",entry:2350,tp:2380,sl:2330,premium:false},
+    {type:"crypto",pair:"BTC BUY",entry:60000,tp:65000,sl:58000,premium:true},
+    {type:"saham",pair:"BBCA BUY",entry:9000,tp:9500,sl:8800,premium:true}
+  ]));
 }
 
 // ================= NAV =================
 function nav(){
 return `
 <div class="nav">
-<button onclick="showDashboard()">🏠</button>
-<button onclick="showSignal()">📊</button>
-<button onclick="showMateri()">📘</button>
-<button onclick="showMember()">👑</button>
+<button onclick="dashboard()">🏠</button>
+<button onclick="signal()">📊</button>
+<button onclick="materi()">📘</button>
+<button onclick="member()">👑</button>
 </div>`;
 }
 
 // ================= DASHBOARD =================
-function showDashboard(){
+function dashboard(){
 app.innerHTML = `
 <div class="container">
 <h2>Trader X Academy</h2>
-<p>Status: ${localStorage.getItem("role")}</p>
 
 <div class="card">
-🔥 Welcome bro, ini dashboard lu
+🔥 Status: ${localStorage.getItem("role")}
 </div>
 
 <div class="card">
 📊 Fokus: Forex / Crypto / Saham
+</div>
+
+<div class="card">
+💰 Target: Profit Konsisten
 </div>
 
 </div>
@@ -93,44 +106,95 @@ ${nav()}
 }
 
 // ================= SIGNAL =================
-let signals = [
-{type:"forex",pair:"XAUUSD BUY",entry:2350,tp:2380,sl:2330,premium:false},
-{type:"crypto",pair:"BTC BUY",entry:60000,tp:65000,sl:58000,premium:true},
-{type:"saham",pair:"BBCA BUY",entry:9000,tp:9500,sl:8800,premium:true}
-];
+function signal(){
+let data = JSON.parse(localStorage.getItem("signals"));
+let html = `<div class="container">
+<h2>Signal</h2>
 
-function showSignal(){
-let html = `<div class="container"><h2>Signal</h2>`;
+<select class="select" onchange="filterSignal(this.value)">
+<option value="all">Semua</option>
+<option value="forex">Forex</option>
+<option value="crypto">Crypto</option>
+<option value="saham">Saham</option>
+</select>
 
-signals.reverse().forEach(s=>{
+<div id="signalList"></div>
 
-let locked = s.premium && localStorage.getItem("role")=="free";
+<h3>Tambah Signal</h3>
+<input id="pair" placeholder="Pair" class="select">
+<input id="entry" placeholder="Entry" class="select">
+<input id="tp" placeholder="TP" class="select">
+<input id="sl" placeholder="SL" class="select">
+<select id="type" class="select">
+<option value="forex">Forex</option>
+<option value="crypto">Crypto</option>
+<option value="saham">Saham</option>
+</select>
+<label><input type="checkbox" id="premium"> Premium</label><br>
+<button class="btn" onclick="addSignal()">Tambah</button>
 
-html+=`
-<div class="card ${locked?'premium-lock':''}">
-<b>${locked?'🔒 Premium Only':s.pair}</b><br>
-${locked?'':
-`Entry: ${s.entry}<br>TP: ${s.tp}<br>SL: ${s.sl}`}
 </div>
-`;
-});
+${nav()}`;
 
-html+=`</div>`+nav();
 app.innerHTML = html;
+renderSignal(data);
 }
 
-// ================= MATERI (AMBIL DARI CODE LU) =================
-function showMateri(){
+function renderSignal(data){
+let list = document.getElementById("signalList");
+list.innerHTML="";
+
+data.slice().reverse().forEach(s=>{
+let lock = s.premium && localStorage.getItem("role")=="free";
+list.innerHTML += `
+<div class="card ${lock?'lock':''}">
+<b>${lock?'🔒 Premium':s.pair}</b><br>
+${lock?'':
+`Entry: ${s.entry}<br>TP: ${s.tp}<br>SL: ${s.sl}`}
+</div>`;
+});
+}
+
+function filterSignal(type){
+let data = JSON.parse(localStorage.getItem("signals"));
+if(type!="all"){
+  data = data.filter(s=>s.type==type);
+}
+renderSignal(data);
+}
+
+function addSignal(){
+let data = JSON.parse(localStorage.getItem("signals"));
+let newSignal = {
+  pair:document.getElementById("pair").value,
+  entry:document.getElementById("entry").value,
+  tp:document.getElementById("tp").value,
+  sl:document.getElementById("sl").value,
+  type:document.getElementById("type").value,
+  premium:document.getElementById("premium").checked
+};
+data.push(newSignal);
+localStorage.setItem("signals", JSON.stringify(data));
+alert("Signal ditambah!");
+signal();
+}
+
+// ================= MATERI =================
+function materi(){
 app.innerHTML = `
 <div class="container">
 <h2>Materi</h2>
 
 <div class="card">
-📘 Dasar Blockchain
+📘 Dasar Trading
 </div>
 
-<div class="card premium-lock">
-🔒 Smart Money Concept (Premium)
+<div class="card lock">
+🔒 Smart Money Concept
+</div>
+
+<div class="card lock">
+🔒 Risk Management Pro
 </div>
 
 </div>
@@ -139,14 +203,16 @@ ${nav()}
 }
 
 // ================= MEMBER =================
-function showMember(){
+function member(){
 app.innerHTML = `
 <div class="container">
 <h2>Membership</h2>
 
-<p>Status: ${localStorage.getItem("role")}</p>
+<div class="card">
+Status: ${localStorage.getItem("role")}
+</div>
 
-<button onclick="upgrade()">Upgrade Premium</button>
+<button class="btn" onclick="upgrade()">Upgrade Premium</button>
 
 </div>
 ${nav()}
@@ -155,12 +221,12 @@ ${nav()}
 
 function upgrade(){
 localStorage.setItem("role","premium");
-alert("Lu sekarang premium 😈");
-showMember();
+alert("Sekarang lu Premium 😈");
+member();
 }
 
-// INIT
-showDashboard();
+// ================= START =================
+dashboard();
 
 </script>
 
