@@ -12,22 +12,16 @@ body {
     background: #0f172a;
     color: white;
 }
-
 .container {
     padding: 20px;
 }
-
-.hidden {
-    display: none;
-}
-
+.hidden { display: none; }
 .card {
     background: #1e293b;
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 10px;
 }
-
 button {
     padding: 10px;
     border: none;
@@ -35,14 +29,6 @@ button {
     background: #3b82f6;
     color: white;
     cursor: pointer;
-}
-
-input {
-    padding: 10px;
-    width: 100%;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    border: none;
 }
 </style>
 
@@ -52,17 +38,12 @@ input {
 <!-- LOGIN -->
 <div id="loginPage" class="container">
     <h2>Trader X Academy</h2>
-    <p>Login dulu bro 🔐</p>
-
-    <input type="text" id="name" placeholder="Nama">
-    <input type="email" id="email" placeholder="Email">
-
-    <button onclick="login()">Login</button>
+    <button onclick="loginGoogle()">Login dengan Google</button>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="container hidden">
-    <h2>Welcome <span id="userName"></span> 🚀</h2>
+    <h2>Welcome <span id="userName"></span></h2>
     <p>Status: <span id="status"></span></p>
 
     <button onclick="upgrade()">Upgrade Premium 💎</button>
@@ -77,79 +58,100 @@ input {
     <button onclick="logout()">Logout</button>
 </div>
 
-<script>
-let user = {
-    name: "",
-    email: "",
-    status: "free"
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// 🔥 GANTI DENGAN CONFIG LU
+const firebaseConfig = {
+  apiKey: "ISI_API_KEY",
+  authDomain: "ISI_PROJECT.firebaseapp.com",
+  projectId: "ISI_PROJECT_ID",
+  storageBucket: "ISI.appspot.com",
+  messagingSenderId: "ISI",
+  appId: "ISI"
 };
 
-function login(){
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
 
-    if(name === "" || email === ""){
-        alert("Isi dulu bro!");
-        return;
+let currentUser = null;
+
+window.loginGoogle = async function() {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    currentUser = user;
+
+    // cek database
+    const userRef = doc(db, "users", user.uid);
+    const snap = await getDoc(userRef);
+
+    if(!snap.exists()){
+        await setDoc(userRef, {
+            name: user.displayName,
+            email: user.email,
+            status: "free"
+        });
     }
 
-    user.name = name;
-    user.email = email;
+    loadDashboard();
+}
 
+async function loadDashboard(){
     document.getElementById("loginPage").classList.add("hidden");
     document.getElementById("dashboard").classList.remove("hidden");
 
-    document.getElementById("userName").innerText = user.name;
-    document.getElementById("status").innerText = user.status;
+    const userRef = doc(db, "users", currentUser.uid);
+    const snap = await getDoc(userRef);
+    const data = snap.data();
 
-    loadContent();
+    document.getElementById("userName").innerText = data.name;
+    document.getElementById("status").innerText = data.status;
+
+    loadContent(data.status);
 }
 
-function loadContent(){
+function loadContent(status){
     let materiDiv = document.getElementById("materi");
     let signalDiv = document.getElementById("signal");
 
     materiDiv.innerHTML = "";
     signalDiv.innerHTML = "";
 
-    // Materi
-    let materi = [
-        "Basic Trading",
-        "Support & Resistance",
-        "Risk Management",
-        "Advanced Strategy"
-    ];
+    let materi = ["Basic Trading","Support & Resistance","Risk Management","Advanced Strategy"];
 
     materi.forEach((m, i) => {
-        if(user.status === "free" && i > 1){
-            materiDiv.innerHTML += `<div class="card">🔒 ${m} (Premium)</div>`;
+        if(status === "free" && i > 1){
+            materiDiv.innerHTML += `<div class="card">🔒 ${m}</div>`;
         } else {
             materiDiv.innerHTML += `<div class="card">✅ ${m}</div>`;
         }
     });
 
-    // Signal
-    let signals = [
-        "XAUUSD BUY TP 2000 SL 1980",
-        "BTC SELL TP 60000 SL 62000"
-    ];
+    let signals = ["XAUUSD BUY TP 2000 SL 1980","BTC SELL TP 60000 SL 62000"];
 
     signals.forEach((s, i) => {
-        if(user.status === "free" && i > 0){
-            signalDiv.innerHTML += `<div class="card">🔒 Premium Only</div>`;
+        if(status === "free" && i > 0){
+            signalDiv.innerHTML += `<div class="card">🔒 Premium</div>`;
         } else {
             signalDiv.innerHTML += `<div class="card">${s}</div>`;
         }
     });
 }
 
-function upgrade(){
-    user.status = "premium";
-    document.getElementById("status").innerText = user.status;
-    loadContent();
+window.upgrade = async function(){
+    const userRef = doc(db, "users", currentUser.uid);
+    await setDoc(userRef, { status: "premium" }, { merge: true });
+
+    loadDashboard();
 }
 
-function logout(){
+window.logout = function(){
+    signOut(auth);
     location.reload();
 }
 </script>
