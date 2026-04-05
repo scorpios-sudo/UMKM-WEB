@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Trader X Academy</title>
+    <meta name="theme-color" content="#0A0E1A">
+    <title>Trader X Academy | Premium Trading Signals & Education</title>
     <style>
         * {
             margin: 0;
@@ -14,68 +14,129 @@
         }
 
         body {
-            font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             background: #0A0E1A;
             color: #E2E8F0;
-            padding-bottom: 70px;
+            overflow-x: hidden;
+            padding-bottom: 75px;
         }
 
-        .container {
-            padding: 20px 16px 30px;
+        /* Scrollbar premium */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1E293B;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #F59E0B;
+            border-radius: 10px;
+        }
+
+        /* Container utama */
+        .app-container {
             max-width: 600px;
             margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 20%, rgba(15, 25, 45, 0.4), #0A0E1A);
         }
 
-        /* Card style */
+        /* Halaman transisi */
+        .page {
+            animation: fadeIn 0.25s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Komponen UI */
         .card {
-            background: #111827;
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 14px;
-            border: 1px solid #1F2A3E;
-            transition: 0.1s;
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 24px;
+            padding: 18px 16px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-left: 3px solid #F59E0B;
-            padding-left: 12px;
+        .card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            transform: translateY(-2px);
         }
-
+        .glass-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            border: 1px solid rgba(245,158,11,0.3);
+        }
         .badge {
+            display: inline-block;
             background: #F59E0B;
             color: #0A0E1A;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 30px;
         }
-
-        .lock {
-            opacity: 0.6;
-            filter: blur(0.8px);
-            background: #1A1F2E;
+        .badge-premium {
+            background: linear-gradient(135deg, #F59E0B, #FFD966);
+            box-shadow: 0 0 8px #F59E0B;
         }
-
-        /* Navbar bawah */
+        .btn {
+            border: none;
+            border-radius: 40px;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            background: #1E293B;
+            color: white;
+        }
+        .btn-primary {
+            background: linear-gradient(95deg, #F59E0B, #EAB308);
+            color: #0A0E1A;
+            box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #F59E0B;
+            color: #F59E0B;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            background: #111827;
+            border: 1px solid #1F2A3E;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 12px;
+            outline: none;
+            transition: 0.2s;
+        }
+        input:focus, select:focus {
+            border-color: #F59E0B;
+        }
         .navbar {
             position: fixed;
             bottom: 0;
-            width: 100%;
-            background: #0F1422;
-            backdrop-filter: blur(10px);
+            left: 0;
+            right: 0;
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-around;
-            border-top: 1px solid #1F2A3E;
-            padding: 8px 0 12px;
-            z-index: 100;
+            padding: 8px 12px 20px;
+            border-top: 1px solid rgba(245,158,11,0.3);
+            z-index: 1000;
         }
-
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -87,531 +148,562 @@
             gap: 4px;
             cursor: pointer;
             transition: 0.1s;
+            padding: 6px 12px;
+            border-radius: 30px;
         }
-
         .nav-item.active {
             color: #F59E0B;
+            background: rgba(245,158,11,0.1);
         }
-
         .nav-item span:first-child {
             font-size: 22px;
         }
-
-        /* Form */
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 6px 0;
-            border-radius: 14px;
-            border: 1px solid #1F2A3E;
-            background: #0F1422;
-            color: white;
-            font-size: 14px;
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        button, .btn {
+        .progress-bar {
+            background: #1E293B;
+            border-radius: 12px;
+            height: 8px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .progress-fill {
             background: #F59E0B;
-            color: #0A0E1A;
-            border: none;
-            padding: 12px;
-            border-radius: 40px;
-            font-weight: bold;
-            font-size: 15px;
-            width: 100%;
-            margin-top: 8px;
-            cursor: pointer;
-            transition: 0.1s;
+            width: 0%;
+            height: 100%;
+            border-radius: 12px;
         }
-
-        .btn-outline {
-            background: transparent;
+        .signal-card, .materi-card {
+            cursor: pointer;
+        }
+        .premium-locked {
+            filter: blur(4px);
+            pointer-events: none;
+            opacity: 0.7;
+            position: relative;
+        }
+        .premium-badge {
+            background: #F59E0B;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 30px;
+            margin-left: 8px;
+        }
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background: #111827;
+            border-radius: 32px;
+            max-width: 90%;
+            width: 400px;
+            padding: 24px;
             border: 1px solid #F59E0B;
+        }
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            right: 20px;
+            background: #1E293B;
+            border-left: 4px solid #F59E0B;
+            padding: 12px;
+            border-radius: 16px;
+            z-index: 1500;
+            animation: slideUp 0.3s;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
             color: #F59E0B;
         }
-
-        .flex {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .profit {
-            color: #22C55E;
-        }
-
-        .loss {
-            color: #EF4444;
-        }
-
-        .small {
-            font-size: 12px;
-            color: #94A3B8;
-        }
-
         hr {
             border-color: #1F2A3E;
-            margin: 10px 0;
+            margin: 12px 0;
         }
-
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #1F2A3E;
+        .filter-chip {
+            display: inline-block;
+            background: #1E293B;
+            padding: 6px 14px;
+            border-radius: 30px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .filter-chip.active {
+            background: #F59E0B;
+            color: #0A0E1A;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+            }
         }
     </style>
 </head>
 <body>
-<div id="app"></div>
+<div class="app-container" id="appRoot"></div>
 
 <script>
-    // ----------------------- INIT STORAGE -----------------------
-    if (!localStorage.getItem("users")) localStorage.setItem("users", JSON.stringify([]));
-    if (!localStorage.getItem("signals")) localStorage.setItem("signals", JSON.stringify([]));
-    if (!localStorage.getItem("materi")) {
-        localStorage.setItem("materi", JSON.stringify([
-            { id: 0, title: "📘 Dasar Trading", premium: false, materi: "Candlestick, Support Resistance, Trendline" },
-            { id: 1, title: "🔥 Smart Money Concept", premium: true, materi: "Liquidity, Order Block, Fair Value Gap" },
-            { id: 2, title: "🛡️ Risk Management", premium: true, materi: "Lot size, Rasio Risk Reward, Psikologi Trading" }
-        ]));
+    // ================================ DATABASE & STORAGE ================================
+    const STORAGE_KEYS = {
+        USERS: "traderx_users",
+        CURRENT_USER: "traderx_current",
+        SIGNALS: "traderx_signals",
+        MATERI: "traderx_materi",
+        NOTES: "traderx_notes",
+        WATCHLIST: "traderx_watchlist",
+        USER_PROGRESS: "traderx_progress"
+    };
+
+    // Data awal dummy yang kaya
+    const defaultMateri = [
+        { id: "m1", title: "📘 Dasar Forex & Crypto", level: "Pemula", premium: false, content: "Forex (Foreign Exchange) adalah pasar terbesar di dunia. Pelajari pips, lot, leverage, dan cara membaca quote. Crypto adalah aset digital dengan volatilitas tinggi.", duration: "20 menit", progress: 0 },
+        { id: "m2", title: "🔥 Smart Money Concept (SMC)", level: "Lanjutan", premium: true, content: "SMC mengikuti pergerakan bank sentral. Pelajari Order Block, Fair Value Gap, Liquidity Grab. Teknik pro trader.", duration: "45 menit", progress: 0 },
+        { id: "m3", title: "📈 Analisis Teknikal: Candlestick", level: "Menengah", premium: false, content: "Candlestick Jepang: Doji, Hammer, Engulfing. Pola reversal dan continuation. Indikator support resistance.", duration: "30 menit", progress: 0 },
+        { id: "m4", title: "🛡️ Risk Management Pro", level: "Expert", premium: true, content: "Manajemen risiko: 1-2% risk per trade, rasio risk reward 1:3, psikologi trading, jurnal trading.", duration: "40 menit", progress: 0 },
+        { id: "m5", title: "💎 Scalping & Day Trading", level: "Advanced", premium: true, content: "Strategi scalping dengan timeframe M1-M5, penggunaan order flow, volume profile.", duration: "55 menit", progress: 0 },
+        { id: "m6", title: "🏦 Analisa Fundamental", level: "Pemula", premium: false, content: "Berita ekonomi: NFP, Interest Rate, CPI. Dampaknya ke forex dan crypto.", duration: "25 menit", progress: 0 }
+    ];
+
+    const defaultSignals = [
+        { id: "sig1", pair: "EUR/USD", type: "Forex", entry: "1.0850", tp: "1.0920", sl: "1.0800", status: "RUNNING", premium: false, createdAt: Date.now() - 86400000, analyst: "Alpha Trader" },
+        { id: "sig2", pair: "BTC/USD", type: "Crypto", entry: "43500", tp: "45000", sl: "42500", status: "TP HIT", premium: true, createdAt: Date.now() - 172800000, analyst: "CryptoKing" },
+        { id: "sig3", pair: "AAPL", type: "Saham", entry: "175.50", tp: "182.00", sl: "172.00", status: "RUNNING", premium: false, createdAt: Date.now() - 43200000, analyst: "StockHunter" },
+        { id: "sig4", pair: "GBP/JPY", type: "Forex", entry: "186.20", tp: "188.50", sl: "185.00", status: "SL HIT", premium: true, createdAt: Date.now() - 259200000, analyst: "ForexMaster" },
+        { id: "sig5", pair: "ETH/USD", type: "Crypto", entry: "2280", tp: "2450", sl: "2200", status: "RUNNING", premium: true, createdAt: Date.now() - 7200000, analyst: "DeFiWhale" },
+        { id: "sig6", pair: "TSLA", type: "Saham", entry: "245.30", tp: "260.00", sl: "238.00", status: "RUNNING", premium: false, createdAt: Date.now() - 10800000, analyst: "ElonTrader" }
+    ];
+
+    // Inisialisasi localStorage
+    function initStorage() {
+        if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
+            const defaultUsers = [
+                { email: "demo@traderx.com", password: "demo123", role: "free", points: 120, joined: Date.now() },
+                { email: "premium@traderx.com", password: "premium", role: "premium", points: 450, joined: Date.now() }
+            ];
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(defaultUsers));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.SIGNALS)) {
+            localStorage.setItem(STORAGE_KEYS.SIGNALS, JSON.stringify(defaultSignals));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.MATERI)) {
+            localStorage.setItem(STORAGE_KEYS.MATERI, JSON.stringify(defaultMateri));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.NOTES)) {
+            localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify([]));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.WATCHLIST)) {
+            localStorage.setItem(STORAGE_KEYS.WATCHLIST, JSON.stringify([]));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.USER_PROGRESS)) {
+            localStorage.setItem(STORAGE_KEYS.USER_PROGRESS, JSON.stringify({}));
+        }
     }
-    if (!localStorage.getItem("journals")) localStorage.setItem("journals", JSON.stringify([]));
-    if (!localStorage.getItem("quizHistory")) localStorage.setItem("quizHistory", JSON.stringify([])); // simpan tanggal terakhir kuis & skor
-    if (!localStorage.getItem("leaderboardPoints")) {
-        // points per user disimpan di object user (field points)
-        // kita akan sinkronkan
+    initStorage();
+
+    let currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+    let currentPage = "dashboard";
+
+    // Helper functions
+    function saveUser(user) {
+        let users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS));
+        const idx = users.findIndex(u => u.email === user.email);
+        if (idx !== -1) users[idx] = user;
+        localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+        currentUser = user;
     }
 
-    // helper get/set users
-    function getUsers() { return JSON.parse(localStorage.getItem("users")); }
-    function setUsers(users) { localStorage.setItem("users", JSON.stringify(users)); }
+    function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)); }
 
-    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    function showToast(msg, isError = false) {
+        let toastDiv = document.createElement('div');
+        toastDiv.className = 'toast';
+        toastDiv.innerHTML = `<span>${isError ? '⚠️ ' : '✅ '}${msg}</span>`;
+        document.body.appendChild(toastDiv);
+        setTimeout(() => toastDiv.remove(), 2500);
+    }
 
-    // ----------------------- AUTH -----------------------
-    function showLogin() {
-        document.getElementById("app").innerHTML = `
-            <div class="container">
-                <div class="card" style="text-align:center; margin-top:40px;">
-                    <h2>🚀 Trader X Academy</h2>
-                    <p>Login untuk mulai trading</p>
+    // ================================ RENDER ENGINE SPA ================================
+    function render() {
+        if (!currentUser) {
+            renderAuth();
+            return;
+        }
+        const app = document.getElementById('appRoot');
+        let content = '';
+        switch (currentPage) {
+            case 'dashboard': content = renderDashboard(); break;
+            case 'signals': content = renderSignalsPage(); break;
+            case 'materi': content = renderMateriPage(); break;
+            case 'tools': content = renderToolsPage(); break;
+            case 'membership': content = renderMembershipPage(); break;
+            case 'admin': content = renderAdminPanel(); break;
+            default: content = renderDashboard();
+        }
+        app.innerHTML = content + renderNavbar();
+        attachNavEvents();
+        attachPageSpecificEvents();
+    }
+
+    function renderAuth() {
+        const app = document.getElementById('appRoot');
+        app.innerHTML = `
+            <div class="container" style="padding: 32px 20px;">
+                <div class="glass-card" style="text-align: center; padding: 32px 20px;">
+                    <h1 style="font-size: 32px; background: linear-gradient(135deg,#F59E0B,#FFD966); -webkit-background-clip:text; background-clip:text; color:transparent;">Trader X Academy</h1>
+                    <p style="margin-top: 8px;">Premium Signals & Education</p>
                 </div>
-                <div class="card">
-                    <input id="loginEmail" placeholder="Email">
-                    <input id="loginPass" placeholder="Password" type="password">
-                    <button class="btn" onclick="handleLogin()">Login</button>
-                    <p style="text-align:center; margin-top:12px;"><a href="#" onclick="showRegister()">Belum punya akun? Daftar</a></p>
+                <div class="card" id="authBox">
+                    <h3 id="authTitle">Login</h3>
+                    <input type="email" id="authEmail" placeholder="Email" autocomplete="off">
+                    <input type="password" id="authPassword" placeholder="Password">
+                    <button class="btn btn-primary" id="authSubmitBtn">Login</button>
+                    <p style="text-align: center; margin-top: 12px;"><a href="#" id="switchAuth">Belum punya akun? Daftar</a></p>
+                    <p style="text-align: center; font-size: 12px; margin-top: 12px;">Demo: demo@traderx.com / demo123 | premium@traderx.com / premium</p>
                 </div>
             </div>
         `;
-    }
+        let isLogin = true;
+        const title = document.getElementById('authTitle');
+        const btn = document.getElementById('authSubmitBtn');
+        const switchLink = document.getElementById('switchAuth');
+        const authEmail = document.getElementById('authEmail');
+        const authPass = document.getElementById('authPassword');
 
-    function showRegister() {
-        document.getElementById("app").innerHTML = `
-            <div class="container">
-                <div class="card" style="text-align:center; margin-top:40px;">
-                    <h2>Daftar Akun Baru</h2>
-                </div>
-                <div class="card">
-                    <input id="regEmail" placeholder="Email">
-                    <input id="regPass" placeholder="Password">
-                    <button class="btn" onclick="handleRegister()">Daftar</button>
-                    <p style="text-align:center; margin-top:12px;"><a href="#" onclick="showLogin()">Sudah punya akun? Login</a></p>
-                </div>
-            </div>
-        `;
-    }
-
-    function handleRegister() {
-        let email = document.getElementById("regEmail").value.trim();
-        let pass = document.getElementById("regPass").value.trim();
-        if (!email || !pass) return alert("Isi semua");
-        let users = getUsers();
-        if (users.find(u => u.email === email)) return alert("Email sudah terdaftar");
-        let newUser = {
-            email, pass,
-            role: "free",
-            points: 0,
-            totalProfit: 0,
-            targetProfit: 100,
-            rank: "Bronze",
-            lastQuizDate: null
+        function handleAuth() {
+            const email = authEmail.value.trim();
+            const pass = authPass.value.trim();
+            if (!email || !pass) return showToast("Isi semua field", true);
+            const users = getUsers();
+            if (isLogin) {
+                const user = users.find(u => u.email === email && u.password === pass);
+                if (user) {
+                    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+                    currentUser = user;
+                    showToast(`Selamat datang ${email}`);
+                    render();
+                } else {
+                    showToast("Email atau password salah", true);
+                }
+            } else {
+                if (users.find(u => u.email === email)) return showToast("Email sudah terdaftar", true);
+                const newUser = { email, password: pass, role: "free", points: 0, joined: Date.now() };
+                users.push(newUser);
+                localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+                showToast("Registrasi berhasil, silakan login");
+                isLogin = true;
+                title.innerText = "Login";
+                btn.innerText = "Login";
+                switchLink.innerText = "Belum punya akun? Daftar";
+                authEmail.value = email;
+                authPass.value = "";
+            }
+        }
+        btn.onclick = handleAuth;
+        switchLink.onclick = (e) => {
+            e.preventDefault();
+            isLogin = !isLogin;
+            title.innerText = isLogin ? "Login" : "Register";
+            btn.innerText = isLogin ? "Login" : "Daftar";
+            switchLink.innerText = isLogin ? "Belum punya akun? Daftar" : "Sudah punya akun? Login";
         };
-        users.push(newUser);
-        setUsers(users);
-        alert("Akun berhasil dibuat! Silakan login.");
-        showLogin();
     }
 
-    function handleLogin() {
-        let email = document.getElementById("loginEmail").value.trim();
-        let pass = document.getElementById("loginPass").value.trim();
-        let users = getUsers();
-        let user = users.find(u => u.email === email && u.pass === pass);
-        if (user) {
-            localStorage.setItem("currentUser", JSON.stringify(user));
-            currentUser = user;
-            renderHome();
-        } else {
-            alert("Email atau password salah");
-        }
-    }
-
-    function logout() {
-        localStorage.removeItem("currentUser");
-        currentUser = null;
-        showLogin();
-    }
-
-    // update currentUser & sync
-    function updateCurrentUser(updatedUser) {
-        let users = getUsers();
-        let index = users.findIndex(u => u.email === updatedUser.email);
-        if (index !== -1) users[index] = updatedUser;
-        setUsers(users);
-        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-        currentUser = updatedUser;
-    }
-
-    // ----------------------- DASHBOARD (HOME) -----------------------
-    function renderHome() {
-        if (!currentUser) return showLogin();
-        let signals = JSON.parse(localStorage.getItem("signals"));
-        let latestSignals = signals.slice(-2).reverse();
-        let journals = JSON.parse(localStorage.getItem("journals")).filter(j => j.userEmail === currentUser.email);
-        let totalProfit = journals.reduce((sum, j) => sum + (j.profit || 0), 0);
-        // update total profit di user
-        if (currentUser.totalProfit !== totalProfit) {
-            currentUser.totalProfit = totalProfit;
-            updateCurrentUser(currentUser);
-        }
-
-        let html = `
-            <div class="container">
-                <div class="card" style="background: linear-gradient(135deg, #1E293B, #0F172A);">
-                    <div style="display: flex; justify-content: space-between;">
-                        <div>
-                            <h3>🏆 ${currentUser.email.split('@')[0]}</h3>
-                            <p class="small">${currentUser.role === 'premium' ? '💎 Premium Member' : '🆓 Free Member'}</p>
-                        </div>
-                        <div class="badge">Level ${currentUser.rank || 'Bronze'}</div>
-                    </div>
-                    <hr>
-                    <div class="flex">
-                        <div>⭐ Poin: <strong>${currentUser.points || 0}</strong></div>
-                        <div>📈 Profit: <span class="${totalProfit>=0?'profit':'loss'}">$${totalProfit}</span></div>
-                        <div>🎯 Target: $${currentUser.targetProfit || 100}</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📊 Sinyal Terbaru</div>
-                    ${latestSignals.length === 0 ? '<p class="small">Belum ada sinyal</p>' : latestSignals.map(s => `
-                        <div style="border-left: 2px solid #F59E0B; padding-left: 10px; margin-bottom: 8px;">
-                            <b>${s.pair}</b> | Entry: ${s.entry} | TP: ${s.tp} | Status: ${s.status}
-                            ${s.premium && currentUser.role === 'free' ? '<span class="small">🔒 Premium</span>' : ''}
-                        </div>
-                    `).join('')}
-                    <button class="btn-outline" onclick="renderSignals()">🔍 Lihat semua sinyal</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📝 Target Harian</div>
-                    <div class="flex">
-                        <input type="number" id="targetInput" placeholder="Target profit (USD)" value="${currentUser.targetProfit || 100}">
-                        <button onclick="setTarget()" style="width:auto; padding:0 16px;">Set</button>
-                    </div>
-                    <p class="small">💰 Profit saat ini: $${totalProfit} | ${totalProfit >= (currentUser.targetProfit||100) ? '✅ Target tercapai!' : '🚀 Semangat!'}</p>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📖 Jurnal Terakhir</div>
-                    ${journals.slice(-2).reverse().map(j => `
-                        <div><b>${j.pair}</b> | ${j.type} | ${j.profit>=0?'+':''}$${j.profit}</div>
-                    `).join('') || '<p class="small">Belum ada jurnal</p>'}
-                    <button class="btn-outline" onclick="renderJournal()">✍️ Buka Jurnal</button>
-                </div>
-            </div>
-        `;
-        document.getElementById("app").innerHTML = html + renderNavbar('home');
-    }
-
-    function setTarget() {
-        let val = parseInt(document.getElementById("targetInput").value);
-        if (isNaN(val)) return;
-        currentUser.targetProfit = val;
-        updateCurrentUser(currentUser);
-        renderHome();
-    }
-
-    // ----------------------- SIGNALS -----------------------
-    function renderSignals() {
-        if (!currentUser) return;
-        let signals = JSON.parse(localStorage.getItem("signals"));
-        let html = `
-            <div class="container">
-                <h3>📡 Semua Sinyal Trading</h3>
-                <div class="card">
-                    <input id="pair" placeholder="Pair (BTC/USD)">
-                    <input id="entry" placeholder="Entry">
-                    <input id="tp" placeholder="TP">
-                    <input id="sl" placeholder="SL">
-                    <select id="status">
-                        <option>RUNNING</option><option>TP HIT</option><option>SL HIT</option>
-                    </select>
-                    <label><input type="checkbox" id="premiumCheckbox"> Premium (hanya terlihat premium)</label>
-                    <button onclick="addSignal()">➕ Tambah Sinyal</button>
-                </div>
-                <div id="signalList"></div>
-            </div>
-        `;
-        document.getElementById("app").innerHTML = html + renderNavbar('signals');
-        renderSignalList();
-    }
-
-    function renderSignalList() {
-        let signals = JSON.parse(localStorage.getItem("signals"));
-        let container = document.getElementById("signalList");
-        if (!container) return;
-        container.innerHTML = "";
-        signals.slice().reverse().forEach((s, idx) => {
-            let isLocked = s.premium && currentUser.role === "free";
-            container.innerHTML += `
-                <div class="card ${isLocked ? 'lock' : ''}">
-                    <div><b>${isLocked ? '🔒 Premium Signal' : s.pair}</b> <span class="small">${s.status}</span></div>
-                    ${!isLocked ? `<div>Entry: ${s.entry} | TP: ${s.tp} | SL: ${s.sl}</div>` : ''}
-                    <button class="btn-outline" onclick="deleteSignal(${signals.length - 1 - idx})" style="margin-top:8px;">🗑 Hapus</button>
-                </div>
-            `;
-        });
-    }
-
-    function addSignal() {
-        let pair = document.getElementById("pair").value;
-        let entry = document.getElementById("entry").value;
-        let tp = document.getElementById("tp").value;
-        let sl = document.getElementById("sl").value;
-        let status = document.getElementById("status").value;
-        let premium = document.getElementById("premiumCheckbox").checked;
-        if (!pair || !entry) return alert("Isi pair dan entry");
-        let signals = JSON.parse(localStorage.getItem("signals"));
-        signals.push({ pair, entry, tp, sl, status, premium });
-        localStorage.setItem("signals", JSON.stringify(signals));
-        renderSignals();
-    }
-
-    function deleteSignal(index) {
-        let signals = JSON.parse(localStorage.getItem("signals"));
-        signals.splice(index, 1);
-        localStorage.setItem("signals", JSON.stringify(signals));
-        renderSignals();
-    }
-
-    // ----------------------- MATERI -----------------------
-    function renderMateri() {
-        if (!currentUser) return;
-        let materi = JSON.parse(localStorage.getItem("materi"));
-        let html = `<div class="container"><h3>📚 Materi Trader X</h3>`;
-        materi.forEach(m => {
-            let locked = m.premium && currentUser.role === "free";
-            html += `
-                <div class="card ${locked ? 'lock' : ''}" onclick="${!locked ? `showMateriDetail(${m.id})` : ''}">
-                    <b>${locked ? '🔒 ' : ''}${m.title}</b>
-                    <p class="small">${locked ? 'Upgrade Premium untuk akses' : 'Klik untuk baca'}</p>
-                </div>
-            `;
-        });
-        html += `</div>`;
-        document.getElementById("app").innerHTML = html + renderNavbar('materi');
-    }
-
-    function showMateriDetail(id) {
-        let materi = JSON.parse(localStorage.getItem("materi"));
-        let m = materi.find(x => x.id === id);
-        if (!m) return;
-        if (m.premium && currentUser.role === "free") return alert("Upgrade premium dulu bro!");
-        alert(`📖 ${m.title}\n\n${m.materi}`);
-    }
-
-    // ----------------------- JURNAL TRADING -----------------------
-    function renderJournal() {
-        if (!currentUser) return;
-        let journals = JSON.parse(localStorage.getItem("journals")).filter(j => j.userEmail === currentUser.email);
-        let total = journals.reduce((s, j) => s + (j.profit || 0), 0);
-        let html = `
-            <div class="container">
-                <h3>📝 Jurnal Trading</h3>
-                <div class="card">
-                    <input id="jPair" placeholder="Pair (EUR/USD)">
-                    <select id="jType"><option>BUY</option><option>SELL</option></select>
-                    <input id="jLot" placeholder="Lot" type="number" step="0.01">
-                    <input id="jEntryPrice" placeholder="Harga Entry">
-                    <input id="jExitPrice" placeholder="Harga Exit">
-                    <button onclick="addJournal()">➕ Tambah Transaksi</button>
-                </div>
-                <div class="card">
-                    <div class="flex"><span>💰 Total Profit/Loss:</span> <span class="${total>=0?'profit':'loss'}">$${total}</span></div>
-                </div>
-                <div id="journalList"></div>
-            </div>
-        `;
-        document.getElementById("app").innerHTML = html + renderNavbar('journal');
-        renderJournalList();
-    }
-
-    function addJournal() {
-        let pair = document.getElementById("jPair").value;
-        let type = document.getElementById("jType").value;
-        let lot = parseFloat(document.getElementById("jLot").value);
-        let entry = parseFloat(document.getElementById("jEntryPrice").value);
-        let exit = parseFloat(document.getElementById("jExitPrice").value);
-        if (!pair || isNaN(lot) || isNaN(entry) || isNaN(exit)) return alert("Isi semua data");
-        let profit = type === "BUY" ? (exit - entry) * lot : (entry - exit) * lot;
-        profit = Math.round(profit * 100) / 100;
-        let journals = JSON.parse(localStorage.getItem("journals"));
-        journals.push({
-            userEmail: currentUser.email,
-            pair, type, lot, entry, exit, profit,
-            date: new Date().toISOString()
-        });
-        localStorage.setItem("journals", JSON.stringify(journals));
-        // update total profit user
-        let userProfit = journals.filter(j => j.userEmail === currentUser.email).reduce((s, j) => s + j.profit, 0);
-        currentUser.totalProfit = userProfit;
-        updateCurrentUser(currentUser);
-        renderJournal();
-    }
-
-    function renderJournalList() {
-        let journals = JSON.parse(localStorage.getItem("journals")).filter(j => j.userEmail === currentUser.email);
-        let container = document.getElementById("journalList");
-        if (!container) return;
-        container.innerHTML = "";
-        journals.slice().reverse().forEach((j, idx) => {
-            container.innerHTML += `
-                <div class="card">
-                    <div class="flex"><b>${j.pair} - ${j.type}</b> <span class="${j.profit>=0?'profit':'loss'}">$${j.profit}</span></div>
-                    <div class="small">Lot: ${j.lot} | Entry: ${j.entry} | Exit: ${j.exit}</div>
-                    <button class="btn-outline" onclick="deleteJournal(${journals.length-1-idx})">Hapus</button>
-                </div>
-            `;
-        });
-    }
-
-    function deleteJournal(index) {
-        let journals = JSON.parse(localStorage.getItem("journals"));
-        let filtered = journals.filter(j => j.userEmail === currentUser.email);
-        let actualIndex = journals.findIndex(j => j === filtered[index]);
-        journals.splice(actualIndex, 1);
-        localStorage.setItem("journals", JSON.stringify(journals));
-        renderJournal();
-    }
-
-    // ----------------------- QUIZ & LEADERBOARD & PROFILE -----------------------
-    function renderProfile() {
-        if (!currentUser) return;
-        let html = `
-            <div class="container">
-                <h3>👤 Profil Saya</h3>
-                <div class="card">
-                    <p><b>Email:</b> ${currentUser.email}</p>
-                    <p><b>Role:</b> ${currentUser.role === 'premium' ? '💎 Premium' : '🆓 Free'}</p>
-                    <p><b>⭐ Poin Edukasi:</b> ${currentUser.points || 0}</p>
-                    <p><b>🏆 Rank:</b> ${currentUser.rank || 'Bronze'}</p>
-                    <button onclick="upgradePremium()" class="${currentUser.role === 'premium' ? 'btn-outline' : ''}">${currentUser.role === 'premium' ? '✅ Sudah Premium' : '🚀 Upgrade Premium'}</button>
-                    <button onclick="renderQuiz()" class="btn-outline" style="margin-top:8px;">📝 Ikuti Kuis Harian (+10 poin)</button>
-                    <button onclick="renderLeaderboard()" class="btn-outline">🏅 Leaderboard Member</button>
-                    <button onclick="logout()" style="background:#EF4444; margin-top:16px;">Logout</button>
-                </div>
-            </div>
-        `;
-        document.getElementById("app").innerHTML = html + renderNavbar('profile');
-    }
-
-    function renderQuiz() {
-        let lastQuiz = currentUser.lastQuizDate;
-        let today = new Date().toISOString().slice(0,10);
-        if (lastQuiz === today) return alert("Kamu sudah mengikuti kuis hari ini! Coba besok lagi.");
-        let html = `
-            <div class="container">
-                <h3>📝 Kuis Harian - Dapat Poin</h3>
-                <div class="card">
-                    <p><b>Soal 1:</b> Apa singkatan dari TP dalam trading?</p>
-                    <select id="quiz1">
-                        <option>Take Profit</option><option>Trend Point</option><option>Total Profit</option>
-                    </select>
-                    <p><b>Soal 2:</b> Mana yang termasuk Risk Management?</p>
-                    <select id="quiz2">
-                        <option>Menggunakan SL</option><option>FOMO</option><option>Average Down</option>
-                    </select>
-                    <button onclick="submitQuiz()">Submit Kuis</button>
-                </div>
-            </div>
-        `;
-        document.getElementById("app").innerHTML = html + renderNavbar('profile');
-    }
-
-    function submitQuiz() {
-        let q1 = document.getElementById("quiz1").value;
-        let q2 = document.getElementById("quiz2").value;
-        let score = 0;
-        if (q1 === "Take Profit") score += 5;
-        if (q2 === "Menggunakan SL") score += 5;
-        if (score === 10) {
-            let newPoints = (currentUser.points || 0) + 10;
-            currentUser.points = newPoints;
-            // update rank
-            if (newPoints >= 200) currentUser.rank = "Platinum";
-            else if (newPoints >= 100) currentUser.rank = "Gold";
-            else if (newPoints >= 50) currentUser.rank = "Silver";
-            else currentUser.rank = "Bronze";
-            currentUser.lastQuizDate = new Date().toISOString().slice(0,10);
-            updateCurrentUser(currentUser);
-            alert("✅ Selamat! Jawaban benar semua. +10 poin. Rank: " + currentUser.rank);
-            renderProfile();
-        } else {
-            alert("❌ Ada jawaban salah. Coba lagi besok ya!");
-        }
-    }
-
-    function renderLeaderboard() {
-        let users = getUsers();
-        let sorted = [...users].sort((a,b) => (b.points || 0) - (a.points || 0));
-        let html = `<div class="container"><h3>🏅 Leaderboard Trader X</h3><div class="card">`;
-        sorted.forEach((u, idx) => {
-            html += `<div class="leaderboard-item"><span>${idx+1}. ${u.email.split('@')[0]}</span><span>⭐ ${u.points || 0} pts | ${u.rank || 'Bronze'}</span></div>`;
-        });
-        html += `</div><button class="btn-outline" onclick="renderProfile()">Kembali</button></div>`;
-        document.getElementById("app").innerHTML = html + renderNavbar('profile');
-    }
-
-    function upgradePremium() {
-        if (currentUser.role === "premium") return alert("Sudah premium!");
-        currentUser.role = "premium";
-        updateCurrentUser(currentUser);
-        alert("🎉 Selamat! Kamu sekarang Premium Member. Akses semua materi dan sinyal terbuka.");
-        renderProfile();
-    }
-
-    // ----------------------- NAVBAR -----------------------
-    function renderNavbar(active) {
+    // Dashboard
+    function renderDashboard() {
+        const signals = JSON.parse(localStorage.getItem(STORAGE_KEYS.SIGNALS));
+        const materi = JSON.parse(localStorage.getItem(STORAGE_KEYS.MATERI));
+        const progressData = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_PROGRESS))[currentUser.email] || { completed: [] };
+        const totalSignals = signals.length;
+        const totalMateri = materi.length;
+        const completedMateri = progressData.completed?.length || 0;
+        const latestSignals = signals.slice(-3).reverse();
         return `
-            <div class="navbar">
-                <button class="nav-item ${active === 'home' ? 'active' : ''}" onclick="renderHome()"><span>🏠</span><span>Home</span></button>
-                <button class="nav-item ${active === 'signals' ? 'active' : ''}" onclick="renderSignals()"><span>📊</span><span>Signal</span></button>
-                <button class="nav-item ${active === 'materi' ? 'active' : ''}" onclick="renderMateri()"><span>📘</span><span>Materi</span></button>
-                <button class="nav-item ${active === 'journal' ? 'active' : ''}" onclick="renderJournal()"><span>📝</span><span>Jurnal</span></button>
-                <button class="nav-item ${active === 'profile' ? 'active' : ''}" onclick="renderProfile()"><span>👤</span><span>Profil</span></button>
+            <div class="container page" style="padding: 20px 16px;">
+                <div class="flex-between">
+                    <h2>🏠 Dashboard</h2>
+                    <div class="badge ${currentUser.role === 'premium' ? 'badge-premium' : ''}">${currentUser.role === 'premium' ? '💎 PREMIUM' : '🆓 FREE'}</div>
+                </div>
+                <div class="card glass-card">
+                    <div class="flex-between"><span>👋 Halo, ${currentUser.email.split('@')[0]}</span><span>⭐ Poin: ${currentUser.points || 0}</span></div>
+                    <hr>
+                    <div class="flex-between"><span>📊 Total Signal</span><span class="stat-number">${totalSignals}</span></div>
+                    <div class="flex-between"><span>📘 Materi Tersedia</span><span class="stat-number">${totalMateri}</span></div>
+                    <div class="flex-between"><span>✅ Progress Belajar</span><span>${completedMateri}/${totalMateri}</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${(completedMateri/totalMateri)*100}%"></div></div>
+                </div>
+                <div class="card">
+                    <div class="flex-between"><span>🔥 Sinyal Terbaru</span><span onclick="changePage('signals')" style="color:#F59E0B; font-size:12px;">Lihat semua →</span></div>
+                    ${latestSignals.map(s => `<div class="flex-between" style="margin-top:8px;"><span>${s.pair}</span><span class="badge" style="background:#1E293B;">${s.status}</span></div>`).join('')}
+                </div>
+                <div class="card">
+                    <div class="flex-between"><span>📈 Target Harian Anda</span><span>💰 Profit target: $250</span></div>
+                    <button class="btn btn-outline" onclick="showToast('Fitur profit tracking aktif')">Set Target</button>
+                </div>
+                <div class="card" style="background:linear-gradient(145deg,#1E293B,#0F172A);">
+                    <span>🎓 Rekomendasi Materi</span>
+                    <p class="small">Pelajari Smart Money Concept untuk meningkatkan akurasi sinyal.</p>
+                </div>
             </div>
         `;
     }
 
-    // ----------------------- START -----------------------
-    if (currentUser) {
-        renderHome();
-    } else {
-        showLogin();
+    // SIGNAL PAGE (Advanced)
+    function renderSignalsPage() {
+        let signals = JSON.parse(localStorage.getItem(STORAGE_KEYS.SIGNALS));
+        let filterType = "Semua";
+        return `
+            <div class="container page">
+                <div class="flex-between"><h2>📡 Signal Trading</h2><button class="btn btn-primary" id="openAddSignalModal" style="width:auto; padding:8px 16px;">+ Tambah</button></div>
+                <div id="filterChips" style="margin: 12px 0;">
+                    ${["Semua","Forex","Crypto","Saham"].map(cat => `<span class="filter-chip" data-filter="${cat}">${cat}</span>`).join('')}
+                </div>
+                <div id="signalListContainer"></div>
+            </div>
+        `;
     }
+
+    function refreshSignalList(filter = "Semua") {
+        let signals = JSON.parse(localStorage.getItem(STORAGE_KEYS.SIGNALS));
+        if (filter !== "Semua") signals = signals.filter(s => s.type === filter);
+        signals.sort((a,b) => b.createdAt - a.createdAt);
+        const container = document.getElementById("signalListContainer");
+        if (!container) return;
+        container.innerHTML = signals.map(sig => {
+            const isLocked = sig.premium && currentUser.role !== "premium";
+            return `
+                <div class="card signal-card ${isLocked ? 'premium-locked' : ''}" data-id="${sig.id}">
+                    <div class="flex-between">
+                        <b>${sig.pair} (${sig.type})</b>
+                        <span class="badge" style="background:${sig.status === 'RUNNING' ? '#22C55E' : sig.status === 'TP HIT' ? '#F59E0B' : '#EF4444'}">${sig.status}</span>
+                    </div>
+                    <div>Entry: ${sig.entry} | TP: ${sig.tp} | SL: ${sig.sl}</div>
+                    <div class="small">Analyst: ${sig.analyst} | ${new Date(sig.createdAt).toLocaleDateString()}</div>
+                    ${!isLocked ? `<div class="flex-between" style="margin-top:8px;"><button class="btn-outline edit-signal" data-id="${sig.id}" style="width:45%;">✏️ Edit</button><button class="btn-outline delete-signal" data-id="${sig.id}" style="width:45%;">🗑 Hapus</button></div>` : '<span class="badge-premium" style="font-size:10px;">🔒 Premium Signal</span>'}
+                </div>
+            `;
+        }).join('');
+        // attach edit delete
+        document.querySelectorAll('.edit-signal').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); openEditSignal(btn.dataset.id); }));
+        document.querySelectorAll('.delete-signal').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); deleteSignalById(btn.dataset.id); }));
+    }
+
+    function openAddSignalModal() {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3>Tambah Signal Baru</h3>
+                <input id="newPair" placeholder="Pair (contoh: BTC/USD)">
+                <select id="newType"><option>Forex</option><option>Crypto</option><option>Saham</option></select>
+                <input id="newEntry" placeholder="Entry">
+                <input id="newTp" placeholder="Take Profit">
+                <input id="newSl" placeholder="Stop Loss">
+                <select id="newStatus"><option>RUNNING</option><option>TP HIT</option><option>SL HIT</option></select>
+                <label><input type="checkbox" id="newPremium"> Premium Only</label>
+                <div class="flex-between" style="margin-top:12px;"><button id="confirmAddSignal" class="btn-primary">Simpan</button><button id="closeModal" class="btn-outline">Batal</button></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('confirmAddSignal').onclick = () => {
+            const signals = JSON.parse(localStorage.getItem(STORAGE_KEYS.SIGNALS));
+            const newId = Date.now().toString();
+            signals.push({
+                id: newId, pair: document.getElementById('newPair').value, type: document.getElementById('newType').value,
+                entry: document.getElementById('newEntry').value, tp: document.getElementById('newTp').value,
+                sl: document.getElementById('newSl').value, status: document.getElementById('newStatus').value,
+                premium: document.getElementById('newPremium').checked, createdAt: Date.now(), analyst: currentUser.email.split('@')[0]
+            });
+            localStorage.setItem(STORAGE_KEYS.SIGNALS, JSON.stringify(signals));
+            showToast("Signal ditambahkan");
+            modal.remove();
+            if (currentPage === 'signals') renderSignalsPage();
+            render();
+        };
+        document.getElementById('closeModal').onclick = () => modal.remove();
+    }
+
+    function openEditSignal(id) {
+        let signals = JSON.parse(localStorage.getItem(STORAGE_KEYS.SIGNALS));
+        let sig = signals.find(s => s.id === id);
+        if (!sig) return;
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><h3>Edit Signal</h3><input id="editPair" value="${sig.pair}"><input id="editEntry" value="${sig.entry}"><input id="editTp" value="${sig.tp}"><input id="editSl" value="${sig.sl}"><select id="editStatus"><option ${sig.status==='RUNNING'?'selected':''}>RUNNING</option><option ${sig.status==='TP HIT'?'selected':''}>TP HIT</option><option ${sig.status==='SL HIT'?'selected':''}>SL HIT</option></select><button id="saveEdit" class="btn-primary">Simpan</button><button id="closeModalEdit">Batal</button></div>`;
+        document.body.appendChild(modal);
+        document.getElementById('saveEdit').onclick = () => {
+            sig.pair = document.getElementById('editPair').value;
+            sig.entry = document.getElementById('editEntry').value;
+            sig.tp = document.getElementById('editTp').value;
+            sig.sl = document.getElementById('editSl').value;
+            sig.status = document.getElementById('editStatus').value;
+            localStorage.setItem(STORAGE_KEYS.SIGNALS, JSON.stringify(signals));
+            showToast("Signal diupdate");
+            modal.remove();
+            if (currentPage === 'signals') render();
+        };
+        document.getElementById('closeModalEdit').onclick = () => modal.remove();
+    }
+
+    function deleteSignalById(id) {
+        let signals = JSON.parse(localStorage.getItem(STORAGE_KEYS.SIGNALS));
+        signals = signals.filter(s => s.id !== id);
+        localStorage.setItem(STORAGE_KEYS.SIGNALS, JSON.stringify(signals));
+        showToast("Signal dihapus");
+        if (currentPage === 'signals') render();
+    }
+
+    // MATERI dengan progress
+    function renderMateriPage() {
+        const materi = JSON.parse(localStorage.getItem(STORAGE_KEYS.MATERI));
+        const progressData = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_PROGRESS))[currentUser.email] || { completed: [] };
+        return `<div class="container page"><h2>📘 Materi Belajar</h2>${materi.map(m => {
+            const completed = progressData.completed.includes(m.id);
+            const locked = m.premium && currentUser.role !== 'premium';
+            return `<div class="card materi-card" data-id="${m.id}"><div class="flex-between"><b>${m.title}</b>${locked ? '<span class="badge-premium">PREMIUM</span>' : (completed ? '✅' : '📖')}</div><p class="small">${m.duration} • ${m.level}</p><div class="progress-bar"><div class="progress-fill" style="width: ${completed ? 100 : 0}%"></div></div></div>`;
+        }).join('')}</div>`;
+    }
+
+    function attachMateriDetail() {
+        const materi = JSON.parse(localStorage.getItem(STORAGE_KEYS.MATERI));
+        const progressData = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_PROGRESS))[currentUser.email] || { completed: [] };
+        document.querySelectorAll('.materi-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const id = card.dataset.id;
+                const mat = materi.find(m => m.id === id);
+                if (mat.premium && currentUser.role !== 'premium') return showToast("Upgrade ke premium untuk akses materi ini", true);
+                const isCompleted = progressData.completed.includes(id);
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.innerHTML = `<div class="modal-content"><h3>${mat.title}</h3><p>${mat.content}</p><button id="markCompleteBtn" class="btn-primary">${isCompleted ? 'Sudah Selesai' : 'Tandai Selesai'}</button><button id="closeModalMateri">Tutup</button></div>`;
+                document.body.appendChild(modal);
+                document.getElementById('markCompleteBtn').onclick = () => {
+                    if (!isCompleted) {
+                        let allProgress = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_PROGRESS));
+                        let userProg = allProgress[currentUser.email] || { completed: [] };
+                        if (!userProg.completed.includes(id)) userProg.completed.push(id);
+                        allProgress[currentUser.email] = userProg;
+                        localStorage.setItem(STORAGE_KEYS.USER_PROGRESS, JSON.stringify(allProgress));
+                        showToast("+10 poin edukasi");
+                        let users = getUsers();
+                        let u = users.find(u => u.email === currentUser.email);
+                        u.points = (u.points || 0) + 10;
+                        saveUser(u);
+                        modal.remove();
+                        render();
+                    } else modal.remove();
+                };
+                document.getElementById('closeModalMateri').onclick = () => modal.remove();
+            });
+        });
+    }
+
+    // TOOLS: Notes & Watchlist
+    function renderToolsPage() {
+        let notes = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)).filter(n => n.userEmail === currentUser.email);
+        let watchlist = JSON.parse(localStorage.getItem(STORAGE_KEYS.WATCHLIST)).filter(w => w.userEmail === currentUser.email);
+        return `<div class="container page"><h2>🛠️ Trading Tools</h2>
+            <div class="card"><h3>📝 Catatan Trading</h3><textarea id="newNote" rows="2" placeholder="Tulis catatan..."></textarea><button id="addNoteBtn" class="btn-primary">Simpan Catatan</button><div id="notesList">${notes.map(n => `<div class="flex-between"><span>${n.text}</span><button class="deleteNote" data-id="${n.id}">Hapus</button></div>`).join('')}</div></div>
+            <div class="card"><h3>⭐ Watchlist Market</h3><div class="flex-between"><input id="newWatchPair" placeholder="Pair (BTC/USD)"><button id="addWatchBtn">Tambah</button></div><div id="watchlistContainer">${watchlist.map(w => `<div class="flex-between"><span>${w.pair}</span><button class="delWatch" data-id="${w.id}">Hapus</button></div>`).join('')}</div></div></div>`;
+    }
+
+    function attachToolsEvents() {
+        const addNote = document.getElementById('addNoteBtn');
+        if (addNote) addNote.onclick = () => {
+            let text = document.getElementById('newNote').value;
+            if (!text) return;
+            let notes = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES));
+            notes.push({ id: Date.now(), userEmail: currentUser.email, text, createdAt: Date.now() });
+            localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
+            render();
+        };
+        document.querySelectorAll('.deleteNote').forEach(btn => btn.onclick = () => {
+            let id = btn.dataset.id;
+            let notes = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES));
+            notes = notes.filter(n => n.id != id);
+            localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
+            render();
+        });
+        const addWatch = document.getElementById('addWatchBtn');
+        if (addWatch) addWatch.onclick = () => {
+            let pair = document.getElementById('newWatchPair').value;
+            if (!pair) return;
+            let watch = JSON.parse(localStorage.getItem(STORAGE_KEYS.WATCHLIST));
+            watch.push({ id: Date.now(), userEmail: currentUser.email, pair });
+            localStorage.setItem(STORAGE_KEYS.WATCHLIST, JSON.stringify(watch));
+            render();
+        };
+        document.querySelectorAll('.delWatch').forEach(btn => btn.onclick = () => {
+            let id = btn.dataset.id;
+            let watch = JSON.parse(localStorage.getItem(STORAGE_KEYS.WATCHLIST));
+            watch = watch.filter(w => w.id != id);
+            localStorage.setItem(STORAGE_KEYS.WATCHLIST, JSON.stringify(watch));
+            render();
+        });
+    }
+
+    // MEMBERSHIP
+    function renderMembershipPage() {
+        return `<div class="container page"><h2>💎 Membership</h2><div class="card" style="text-align:center;"><h3>Upgrade ke Trader X Premium</h3><p>Akses semua signal premium, materi expert, dan analisis realtime.</p><div class="stat-number">$29.99 / bulan</div><button id="upgradeBtn" class="btn-primary">Upgrade Sekarang</button></div></div>`;
+    }
+
+    // ADMIN MODE (tersembunyi)
+    function renderAdminPanel() {
+        if (currentUser.email !== "admin@traderx.com") return `<div class="container"><h3>Akses ditolak</h3></div>`;
+        const users = getUsers();
+        return `<div class="container"><h2>🛡️ Admin Panel</h2><div class="card"><h3>User List</h3>${users.map(u => `<div>${u.email} - ${u.role} - Poin:${u.points}</div>`).join('')}</div><button id="resetDataBtn" class="btn-outline">Reset Database</button></div>`;
+    }
+
+    // NAVIGATION
+    function renderNavbar() {
+        const pages = [
+            { id: 'dashboard', icon: '🏠', label: 'Home' },
+            { id: 'signals', icon: '📊', label: 'Signal' },
+            { id: 'materi', icon: '📘', label: 'Materi' },
+            { id: 'tools', icon: '🛠️', label: 'Tools' },
+            { id: 'membership', icon: '💎', label: 'Pro' }
+        ];
+        if (currentUser && currentUser.email === "admin@traderx.com") pages.push({ id: 'admin', icon: '⚙️', label: 'Admin' });
+        return `<div class="navbar">${pages.map(p => `<button class="nav-item ${currentPage === p.id ? 'active' : ''}" data-page="${p.id}"><span>${p.icon}</span><span>${p.label}</span></button>`).join('')}</div>`;
+    }
+
+    function attachNavEvents() {
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', () => { currentPage = btn.dataset.page; render(); });
+        });
+        const addSignalBtn = document.getElementById('openAddSignalModal');
+        if (addSignalBtn) addSignalBtn.onclick = openAddSignalModal;
+        const filterChips = document.querySelectorAll('.filter-chip');
+        if (filterChips.length) filterChips.forEach(chip => chip.addEventListener('click', (e) => { refreshSignalList(e.target.innerText); }));
+        if (currentPage === 'signals') refreshSignalList("Semua");
+        if (currentPage === 'materi') attachMateriDetail();
+        if (currentPage === 'tools') attachToolsEvents();
+        const upgradeBtn = document.getElementById('upgradeBtn');
+        if (upgradeBtn) upgradeBtn.onclick = () => { if (currentUser.role !== 'premium') { currentUser.role = 'premium'; saveUser(currentUser); showToast("Selamat! Anda sekarang Premium"); render(); } else showToast("Sudah premium"); };
+        const resetData = document.getElementById('resetDataBtn');
+        if (resetData) resetData.onclick = () => { localStorage.clear(); initStorage(); window.location.reload(); };
+    }
+
+    window.changePage = (page) => { currentPage = page; render(); };
+    render();
 </script>
 </body>
 </html>
