@@ -1,212 +1,54 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <meta name="theme-color" content="#0A0F1F">
-    <title>Trader X Academy | Edukasi Premium + Kalkulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Trader X Academy | Premium Trading Platform</title>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter + Space Grotesk -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
+
         body {
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
-            background: #0A0F1F;
-            color: #E2E8F0;
+            background: #0A0C10;
+            font-family: 'Inter', sans-serif;
+            color: #EFF3F8;
             overflow-x: hidden;
             padding-bottom: 80px;
         }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #1E293B; }
-        ::-webkit-scrollbar-thumb { background: #00FFAA; border-radius: 10px; }
 
-        .app {
+        /* mobile-first container */
+        .app-container {
             max-width: 500px;
             margin: 0 auto;
-            position: relative;
+            background: radial-gradient(circle at 20% 30%, #0F1219, #07090E);
             min-height: 100vh;
-            background: radial-gradient(circle at 20% 30%, #0F172A, #0A0F1F);
-        }
-        .page {
-            animation: fadeIn 0.25s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .container { padding: 20px 18px 30px; }
-
-        /* Card glassmorphism */
-        .card {
-            background: rgba(18, 25, 45, 0.65);
-            backdrop-filter: blur(12px);
-            border-radius: 32px;
-            border: 1px solid rgba(0, 255, 170, 0.25);
-            padding: 18px 20px;
-            margin-bottom: 18px;
-            transition: all 0.2s;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        .card:hover {
-            border-color: #00FFAA;
-            transform: translateY(-2px);
-        }
-        .btn {
-            border: none;
-            border-radius: 44px;
-            padding: 12px 20px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.15s;
-        }
-        .btn-primary {
-            background: linear-gradient(95deg, #00FFAA, #00D4FF);
-            color: #0A0F1F;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #00FFAA;
-            color: #00FFAA;
-        }
-        input, select {
-            width: 100%;
-            padding: 14px 16px;
-            background: #0F1422;
-            border: 1px solid #2D3A5E;
-            border-radius: 28px;
-            color: white;
-            font-size: 14px;
-            margin-bottom: 14px;
-            outline: none;
-        }
-        input:focus { border-color: #00FFAA; }
-
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .mt-2 { margin-top: 12px; }
-        .mb-2 { margin-bottom: 12px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
-
-        .quick-btn {
-            background: linear-gradient(95deg, #1E2A47, #0F172A);
-            border: 1px solid #00FFAA;
-            border-radius: 40px;
-            padding: 12px;
-            text-align: center;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .quick-btn:active { transform: scale(0.97); }
-        .stat-value { font-size: 28px; font-weight: 800; color: #00FFAA; }
-
-        .market-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #1E293B;
-        }
-        .up { color: #00FFAA; }
-        .down { color: #FF4466; }
-
-        /* Video Carousel */
-        .video-carousel {
-            display: flex;
-            overflow-x: auto;
-            gap: 16px;
-            scroll-snap-type: x mandatory;
-            padding-bottom: 8px;
-        }
-        .video-carousel::-webkit-scrollbar { height: 3px; }
-        .video-card {
-            flex: 0 0 280px;
-            scroll-snap-align: start;
-            background: #111827;
-            border-radius: 28px;
-            overflow: hidden;
-            border: 1px solid rgba(0,255,170,0.3);
-        }
-        .video-thumb iframe { width: 100%; height: 100%; border: none; }
-        .video-info { padding: 12px; }
-        .video-title { font-weight: 600; font-size: 14px; }
-
-        /* News */
-        .news-carousel {
-            display: flex;
-            overflow-x: auto;
-            gap: 14px;
-            padding-bottom: 8px;
-        }
-        .news-card {
-            flex: 0 0 220px;
-            background: #111827;
-            border-radius: 28px;
-            overflow: hidden;
-        }
-        .news-img { width: 100%; height: 120px; object-fit: cover; }
-        .news-title { padding: 12px; font-size: 13px; }
-
-        /* Activity */
-        .activity-item {
-            background: rgba(0,255,170,0.05);
-            border-radius: 24px;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-left: 3px solid #00FFAA;
-            font-size: 13px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.6);
+            position: relative;
         }
 
-        .edit-icon {
-            cursor: pointer;
-            background: #1E293B;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 12px;
+        /* scrollbar premium */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
         }
-        .badge-premium { background: #00FFAA; color: #0A0F1F; }
-        .badge { display: inline-flex; padding: 4px 12px; border-radius: 30px; font-size: 11px; font-weight: 600; }
-        .toast {
-            position: fixed;
-            bottom: 90px;
-            left: 20px;
-            right: 20px;
-            background: #1E293B;
-            border-left: 4px solid #00FFAA;
-            padding: 14px;
-            border-radius: 28px;
-            z-index: 1500;
-            animation: slideUp 0.3s;
+        ::-webkit-scrollbar-track {
+            background: #1A1F2A;
         }
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        ::-webkit-scrollbar-thumb {
+            background: #2A6DFF;
+            border-radius: 12px;
         }
-        .modal {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-        .modal-content {
-            background: #111827;
-            border-radius: 36px;
-            max-width: 90%;
-            width: 380px;
-            padding: 24px;
-            border: 1px solid #00FFAA;
-        }
-        .profit-positive { color: #00FFAA; }
-        .profit-negative { color: #FF4466; }
+
+        /* bottom navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -214,613 +56,493 @@
             right: 0;
             max-width: 500px;
             margin: 0 auto;
-            background: rgba(10, 15, 31, 0.96);
+            background: rgba(12, 16, 24, 0.92);
             backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-around;
-            padding: 8px 12px 22px;
-            border-top: 1px solid rgba(0,255,170,0.3);
+            padding: 12px 16px 20px;
+            border-top: 1px solid rgba(42, 109, 255, 0.2);
             z-index: 100;
         }
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: none;
+            gap: 6px;
+            background: transparent;
             border: none;
-            color: #7E8AA8;
-            font-size: 11px;
-            gap: 4px;
+            color: #8E9AAF;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
             cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 30px;
+            font-family: 'Inter', sans-serif;
         }
-        .nav-item.active { color: #00FFAA; background: rgba(0,255,170,0.12); }
-        .nav-item span:first-child { font-size: 22px; }
+        .nav-item i {
+            font-size: 22px;
+        }
+        .nav-item.active {
+            color: #2A6DFF;
+            text-shadow: 0 0 6px rgba(42,109,255,0.5);
+            transform: translateY(-2px);
+        }
+        .page {
+            display: none;
+            padding: 20px 18px 30px;
+            animation: fadeIn 0.25s ease;
+        }
+        .page.active-page {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
 
-        /* ========== EDUKASI STYLE BARU (seperti gambar) ========== */
-        .edu-card {
-            background: rgba(18, 25, 45, 0.7);
+        /* Cards & UI */
+        .card {
+            background: rgba(20, 26, 36, 0.75);
+            backdrop-filter: blur(4px);
             border-radius: 28px;
             padding: 18px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(0,255,170,0.2);
-            transition: 0.2s;
+            margin-bottom: 20px;
+            border: 1px solid rgba(42, 109, 255, 0.2);
+            box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
+            transition: transform 0.15s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 32px -12px rgba(0,0,0,0.6);
+            border-color: rgba(42, 109, 255, 0.4);
+        }
+        .glass-btn {
+            background: linear-gradient(95deg, #1F2A44, #121A2A);
+            border: none;
+            padding: 12px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
-        .edu-card:hover {
-            border-color: #00FFAA;
-            transform: translateX(4px);
+        .glass-btn.primary {
+            background: linear-gradient(135deg, #2A6DFF, #0047CA);
+            box-shadow: 0 4px 12px rgba(42,109,255,0.3);
         }
-        .edu-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #00FFAA;
+        .glass-btn.primary:hover {
+            transform: scale(0.97);
+            filter: brightness(1.05);
         }
-        .edu-desc {
-            font-size: 13px;
-            color: #CBD5E1;
-            line-height: 1.4;
+        .badge {
+            background: #2A6DFF20;
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6D9EFF;
+        }
+        .profit-text { color: #00E6B2; font-weight: 700; }
+        .loss-text { color: #FF4D6D; font-weight: 700; }
+        hr { border-color: #2A3448; margin: 12px 0; }
+
+        /* horizontal scroll */
+        .scroll-x {
+            display: flex;
+            overflow-x: auto;
+            gap: 16px;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 8px;
+        }
+        .video-card, .news-card-mini {
+            flex: 0 0 280px;
+            background: #11161F;
+            border-radius: 24px;
+            overflow: hidden;
+            scroll-snap-align: start;
+            border: 1px solid #2A3A55;
+        }
+        iframe { width: 100%; height: 160px; border: none; }
+        .signal-item, .journal-item, .news-item {
+            background: #0E121C;
+            border-radius: 20px;
+            padding: 14px;
             margin-bottom: 12px;
-        }
-        .edu-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 8px;
+            transition: 0.1s;
         }
-        .edu-badge {
-            background: #1E293B;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .edu-number {
-            font-size: 14px;
-            font-weight: 800;
-            color: #00FFAA;
-        }
-        .premium-lock {
-            filter: blur(3px);
+        .locked-signal {
+            filter: blur(4px);
+            background: #161C28;
             pointer-events: none;
-            opacity: 0.6;
+            position: relative;
         }
-        /* kalkulator result */
-        .result-box {
-            background: rgba(0,255,170,0.08);
+        .lock-overlay {
+            position: relative;
+        }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        /* toasts */
+        .toast-msg {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            right: 20px;
+            max-width: 460px;
+            margin: 0 auto;
+            background: #1E293B;
+            backdrop-filter: blur(16px);
+            border-left: 4px solid #2A6DFF;
+            padding: 12px 16px;
+            border-radius: 60px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 200;
+            box-shadow: 0 8px 20px black;
+            animation: slideUp 0.2s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        button { background: none; border: none; cursor: pointer; }
+        .upgrade-chip {
+            background: #FFB34720;
+            color: #FFB347;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #11161F;
+            border-radius: 32px;
+            width: 85%;
+            max-width: 380px;
+            padding: 24px;
+            border: 1px solid #2A6DFF;
+        }
+        input, select {
+            background: #0A0F18;
+            border: 1px solid #2A3A55;
+            padding: 12px 14px;
             border-radius: 24px;
-            padding: 14px;
-            margin-top: 16px;
+            color: white;
+            width: 100%;
+            margin-top: 6px;
+            margin-bottom: 14px;
+            font-family: 'Inter', sans-serif;
         }
-        .profit-step {
-            background: #111827;
-            border-radius: 20px;
-            padding: 10px;
-            margin-bottom: 8px;
-        }
-        .calc-label {
-            font-weight: 600;
-            margin-bottom: 6px;
-            display: block;
-        }
+        .inline-icon { margin-right: 8px; }
+        .watchlist-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #1F2A3A; }
+        .glow-text { text-shadow: 0 0 5px #2A6DFF; }
     </style>
 </head>
 <body>
-<div class="app" id="appRoot"></div>
+<div class="app-container" id="appRoot">
+    <!-- PAGES -->
+    <div id="homePage" class="page active-page"></div>
+    <div id="signalsPage" class="page"></div>
+    <div id="journalPage" class="page"></div>
+    <div id="newsPage" class="page"></div>
+    <div id="profilePage" class="page"></div>
+
+    <div class="bottom-nav">
+        <button class="nav-item" data-page="home"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item" data-page="signals"><i class="fas fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" data-page="journal"><i class="fas fa-book-open"></i><span>Journal</span></button>
+        <button class="nav-item" data-page="news"><i class="fas fa-newspaper"></i><span>News</span></button>
+        <button class="nav-item" data-page="profile"><i class="fas fa-user"></i><span>Profile</span></button>
+    </div>
+</div>
 
 <script>
-    // ======================== STORAGE ========================
-    const STORAGE = {
-        USERS: "traderX_users",
-        CURRENT: "traderX_current",
-        SIGNALS: "traderX_signals",
-        JOURNALS: "traderX_journals",
-        ACTIVITIES: "traderX_activities",
-        EDU_PROGRESS: "traderX_edu_progress"
-    };
-
-    const defaultSignals = [
-        { id: "s1", pair: "BTC/USD", entry: "43200", tp: "45000", sl: "42500", status: "OPEN", premium: true, createdAt: Date.now() - 3600000 },
-        { id: "s2", pair: "XAUUSD", entry: "1985", tp: "2000", sl: "1970", status: "WIN", premium: false, createdAt: Date.now() - 86400000 },
-        { id: "s3", pair: "EUR/USD", entry: "1.0890", tp: "1.0950", sl: "1.0850", status: "LOSS", premium: false, createdAt: Date.now() - 172800000 }
-    ];
-    const defaultActivities = [
-        { id: "act1", text: "🔥 Kamu profit +$20 di EURUSD", timestamp: Date.now() - 7200000 },
-        { id: "act2", text: "📡 Signal BTC Aktif: Entry 43200", timestamp: Date.now() - 3600000 }
-    ];
-
-    // Data materi edukasi yang kaya (mirip contoh gambar)
-    const educationData = [
-        { id: "edu1", title: "Teknik Manajemen Risiko untuk Trader", desc: "Manajemen risiko adalah upaya menyeimbangkan peluang keuntungan dengan potensi kerugian dari pilihan investasi...", level: "Pemula", premium: false, readCount: 1, content: "Manajemen risiko mencakup pengaturan lot, stop loss, dan risk reward ratio. Jangan pernah risk lebih dari 2% per trade." },
-        { id: "edu2", title: "Apa Itu Candlestick? (Gimana Cara Kerjanya Dan Pola dasar)", desc: "Pelajari komponen utama candlestick: open, high, low, close. Pahami bagaimana candlestick menunjukkan cerita pe...", level: "Pemula", premium: false, readCount: 1, content: "Candlestick berasal dari Jepang. Setiap lilin memiliki tubuh (body) dan sumbu (wick/wick). Pola doji, hammer, engulfing dll." },
-        { id: "edu3", title: "Pengertian Liquidity", desc: "Liquidity (likuiditas) dalam Trading berarti seberapa cepat dan mudahnya sebuah pasangan mata uang bisa dibeli atau dijual...", level: "Menengah", premium: false, readCount: 0, content: "Likuiditas tinggi membuat slippage kecil. Forex adalah pasar paling likuid. Crypto memiliki likuiditas bervariasi." },
-        { id: "edu4", title: "MARKET STRUCTURE", desc: "Pengertian dari Struktur Market adalah gambaran atau struktur yang terbentuk dari pergerakan harga di market tert...", level: "Menengah", premium: false, readCount: 12, content: "Market structure: bullish, bearish, sideways. Break of structure (BOS) dan change of character (CHoCH)." },
-        { id: "edu5", title: "Pola Candle Pattrens (Bagaimana Pola Grafik Bekerja?)", desc: "Pola grafik trading adalah bentuk atau formasi spesifik yang terbentuk dalam grafik harga pasar yang sering kali ber...", level: "Lanjutan", premium: true, readCount: 1, content: "Pola candlestick lanjutan: morning star, evening star, three white soldiers. Premium content." },
-        { id: "edu6", title: "SUPPORT & RESISTANCE", desc: "Asas tentang konsep support dan resistance. Support dan resistance adalah kunci penting dalam analisis ...", level: "Pemula", premium: false, readCount: 1, content: "Support adalah level harga bawah yang cenderung ditahan, resistance adalah level atas yang menghalangi kenaikan." },
-        { id: "edu7", title: "Smart Money Concept (SMC) Advanced", desc: "Pelajari Order Block, Fair Value Gap, Liquidity Grab. Strategi institutional trading.", level: "Expert", premium: true, readCount: 8, content: "SMC mengikuti aliran bank sentral. Order block adalah area akumulasi institusi. Premium hanya untuk member premium." }
-    ];
-
-    function initStorage() {
-        if (!localStorage.getItem(STORAGE.USERS)) {
-            localStorage.setItem(STORAGE.USERS, JSON.stringify([
-                { email: "demo@traderx.com", password: "demo123", name: "Demo Trader", role: "free", balance: 12500, profitToday: 340, totalTrades: 28, winrate: 64 }
-            ]));
-        }
-        if (!localStorage.getItem(STORAGE.SIGNALS)) localStorage.setItem(STORAGE.SIGNALS, JSON.stringify(defaultSignals));
-        if (!localStorage.getItem(STORAGE.JOURNALS)) localStorage.setItem(STORAGE.JOURNALS, JSON.stringify([]));
-        if (!localStorage.getItem(STORAGE.ACTIVITIES)) localStorage.setItem(STORAGE.ACTIVITIES, JSON.stringify(defaultActivities));
-        if (!localStorage.getItem(STORAGE.EDU_PROGRESS)) localStorage.setItem(STORAGE.EDU_PROGRESS, JSON.stringify({}));
-    }
-    initStorage();
-
-    let currentUser = JSON.parse(localStorage.getItem(STORAGE.CURRENT));
-    let currentPage = "home";
+    // ---------- GLOBALS ----------
+    let journalEntries = [];      // { id, pair, profitLoss, dateISO, timestamp }
+    let isPremium = false;
+    let userName = "Alex Trader";
+    let userEmail = "alex@traderx.com";
+    let balanceStarting = 10000; // simulated base
     let chartInstance = null;
-    let balanceChartInstance = null;
-    let liveInterval = null;
+    let activities = [];          // max 10 items
+    let marketPrices = { BTC: 68250, GOLD: 2350, EURUSD: 1.0852 };
+    let signalsArray = [];
 
-    function getUsers() { return JSON.parse(localStorage.getItem(STORAGE.USERS)); }
-    function saveUser(user) {
-        let users = getUsers();
-        const idx = users.findIndex(u => u.email === user.email);
-        if (idx !== -1) users[idx] = user;
-        localStorage.setItem(STORAGE.USERS, JSON.stringify(users));
-        localStorage.setItem(STORAGE.CURRENT, JSON.stringify(user));
-        currentUser = user;
-    }
-    function showToast(msg, isError = false) {
-        let toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.innerHTML = `${isError ? '⚠️ ' : '✅ '}${msg}`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2600);
-    }
-    function addActivity(text) {
-        let acts = JSON.parse(localStorage.getItem(STORAGE.ACTIVITIES));
-        acts.unshift({ id: Date.now(), text, timestamp: Date.now() });
-        if (acts.length > 15) acts.pop();
-        localStorage.setItem(STORAGE.ACTIVITIES, JSON.stringify(acts));
-    }
-
-    // ======================== RENDER ========================
-    function render() {
-        if (!currentUser) { renderAuth(); return; }
-        const root = document.getElementById('appRoot');
-        let content = '';
-        switch (currentPage) {
-            case 'home': content = renderHome(); break;
-            case 'signals': content = renderSignals(); break;
-            case 'journal': content = renderJournal(); break;
-            case 'calculator': content = renderCalculator(); break;
-            case 'education': content = renderEducation(); break;
-            case 'membership': content = renderMembership(); break;
-            case 'profile': content = renderProfile(); break;
-            default: content = renderHome();
-        }
-        root.innerHTML = content + renderBottomNav();
-        attachNavEvents();
-        attachPageEvents();
-        if (currentPage === 'home') {
-            initBalanceChart();
-            startLiveUpdates();
-        } else {
-            if (liveInterval) clearInterval(liveInterval);
-        }
-    }
-
-    // ======================== AUTH ========================
-    function renderAuth() {
-        const root = document.getElementById('appRoot');
-        root.innerHTML = `
-            <div class="container" style="padding: 40px 20px;">
-                <div class="card" style="text-align:center;">
-                    <h1 style="font-size: 32px; background:linear-gradient(135deg,#00FFAA,#00D4FF); -webkit-background-clip:text; background-clip:text; color:transparent;">Trader X Academy</h1>
-                    <p class="mt-2">Edukasi + Kalkulator Pro</p>
-                </div>
-                <div class="card" id="authBox">
-                    <h3 id="authTitle">Login</h3>
-                    <input type="text" id="authName" placeholder="Nama" style="display:none;">
-                    <input type="email" id="authEmail" placeholder="Email">
-                    <input type="password" id="authPass" placeholder="Password">
-                    <button class="btn btn-primary" id="authBtn">Login</button>
-                    <p class="flex-between mt-2"><a href="#" id="switchAuth" style="color:#00FFAA;">Belum punya akun? Daftar</a></p>
-                    <p class="small" style="font-size:12px; text-align:center;">demo@traderx.com / demo123</p>
-                </div>
-            </div>
-        `;
-        let isLogin = true;
-        const title = document.getElementById('authTitle');
-        const btn = document.getElementById('authBtn');
-        const switchLink = document.getElementById('switchAuth');
-        const nameField = document.getElementById('authName');
-        const emailInp = document.getElementById('authEmail');
-        const passInp = document.getElementById('authPass');
-
-        function handleAuth() {
-            const email = emailInp.value.trim();
-            const pass = passInp.value.trim();
-            if (!email || !pass) return showToast("Isi semua field", true);
-            const users = getUsers();
-            if (isLogin) {
-                const user = users.find(u => u.email === email && u.password === pass);
-                if (user) {
-                    localStorage.setItem(STORAGE.CURRENT, JSON.stringify(user));
-                    currentUser = user;
-                    showToast(`Selamat datang ${user.name}`);
-                    render();
-                } else showToast("Email atau password salah", true);
-            } else {
-                if (users.find(u => u.email === email)) return showToast("Email sudah terdaftar", true);
-                const name = nameField.value.trim() || email.split('@')[0];
-                const newUser = { email, password: pass, name, role: "free", balance: 5000, profitToday: 0, totalTrades: 0, winrate: 0 };
-                users.push(newUser);
-                localStorage.setItem(STORAGE.USERS, JSON.stringify(users));
-                showToast("Registrasi berhasil, silakan login");
-                isLogin = true;
-                title.innerText = "Login";
-                btn.innerText = "Login";
-                switchLink.innerText = "Belum punya akun? Daftar";
-                nameField.style.display = "none";
-                emailInp.value = email;
-                passInp.value = "";
-            }
-        }
-        btn.onclick = handleAuth;
-        switchLink.onclick = (e) => {
-            e.preventDefault();
-            isLogin = !isLogin;
-            title.innerText = isLogin ? "Login" : "Register";
-            btn.innerText = isLogin ? "Login" : "Daftar";
-            switchLink.innerText = isLogin ? "Belum punya akun? Daftar" : "Sudah punya akun? Login";
-            nameField.style.display = isLogin ? "none" : "block";
-        };
-    }
-
-    // ======================== HOME ========================
-    function renderHome() {
-        const journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
-        const totalTrades = journals.length;
-        const wins = journals.filter(j => j.profit > 0).length;
-        const winrate = totalTrades ? ((wins / totalTrades) * 100).toFixed(0) : 0;
-        currentUser.totalTrades = totalTrades;
-        currentUser.winrate = parseInt(winrate);
-        currentUser.profitToday = journals.filter(j => new Date(j.date).toDateString() === new Date().toDateString()).reduce((s,j)=>s+j.profit,0);
-        saveUser(currentUser);
-
-        const videos = [
-            { title: "Smart Money Concept", channel: "Trader X", embed: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-            { title: "Scalping Strategy", channel: "Pro Trader", embed: "https://www.youtube.com/embed/3JZ_D3ELwOQ" }
+    // ---------- DUMMY SIGNALS (Premium lock strategy) ----------
+    function buildSignals() {
+        return [
+            { id: 1, pair: "BTC/USD", entry: 68400, tp: 69200, sl: 67800, status: "OPEN", createdAt: Date.now() - 86400000, premiumLocked: false },
+            { id: 2, pair: "EUR/USD", entry: 1.0865, tp: 1.0920, sl: 1.0820, status: "WIN", createdAt: Date.now() - 172800000, premiumLocked: false },
+            { id: 3, pair: "XAU/USD", entry: 2345, tp: 2360, sl: 2330, status: "OPEN", createdAt: Date.now() - 43200000, premiumLocked: false },
+            { id: 4, pair: "ETH/USD", entry: 3210, tp: 3350, sl: 3150, status: "OPEN", createdAt: Date.now() - 21600000, premiumLocked: true },
+            { id: 5, pair: "GBP/JPY", entry: 192.5, tp: 194.2, sl: 191.2, status: "LOSS", createdAt: Date.now() - 10800000, premiumLocked: true },
+            { id: 6, pair: "SOL/USD", entry: 165.4, tp: 175.2, sl: 160.1, status: "WIN", createdAt: Date.now() - 3600000, premiumLocked: true },
         ];
-        const news = [
-            { title: "Gold Menuju ATH", img: "https://picsum.photos/id/26/400/200" },
-            { title: "BTC Dominance 52%", img: "https://picsum.photos/id/104/400/200" }
-        ];
-        let activities = JSON.parse(localStorage.getItem(STORAGE.ACTIVITIES)).slice(0, 5);
-
-        return `
-            <div class="container page">
-                <div class="flex-between">
-                    <div><h2>Welcome, ${currentUser.name}</h2><p>${currentUser.role === 'premium' ? '💎 Premium' : '🆓 Free'}</p></div>
-                    <div class="badge ${currentUser.role === 'premium' ? 'badge-premium' : ''}">${currentUser.role.toUpperCase()}</div>
-                </div>
-                <div class="card">
-                    <div class="flex-between">
-                        <span>💰 Balance</span>
-                        <span class="stat-value" id="balanceDisplay">$${currentUser.balance}</span>
-                        <span class="edit-icon" id="editBalanceBtn">✏️ Edit</span>
-                    </div>
-                    <div class="flex-between"><span>📈 Today Profit</span><span class="${currentUser.profitToday>=0?'profit-positive':'profit-negative'}">$${currentUser.profitToday}</span></div>
-                    <div class="flex-between"><span>📊 Total Trades</span><span>${currentUser.totalTrades}</span></div>
-                    <div class="flex-between"><span>🏆 Winrate</span><span>${currentUser.winrate}%</span></div>
-                </div>
-                <div class="card">
-                    <div class="flex-between"><span>📈 Balance History</span></div>
-                    <canvas id="balanceHistoryChart" height="100"></canvas>
-                </div>
-                <div class="card">
-                    <div class="flex-between"><span>🎥 Update & Edukasi Video</span></div>
-                    <div class="video-carousel">
-                        ${videos.map(v => `<div class="video-card"><div class="video-thumb"><iframe src="${v.embed}" frameborder="0"></iframe></div><div class="video-info"><div class="video-title">${v.title}</div><div class="video-channel">${v.channel}</div></div></div>`).join('')}
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="flex-between"><span>🖼️ Market Update</span></div>
-                    <div class="news-carousel">
-                        ${news.map(n => `<div class="news-card"><img class="news-img" src="${n.img}"><div class="news-title">${n.title}</div></div>`).join('')}
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="flex-between"><span>⚡ Aktivitas Terbaru</span></div>
-                    <div id="activityFeed">${activities.map(act => `<div class="activity-item">${act.text}<br><span class="small">${new Date(act.timestamp).toLocaleTimeString()}</span></div>`).join('')}</div>
-                </div>
-                <div class="grid-2">
-                    <div class="quick-btn" data-nav="calculator">🧮 Kalkulator</div>
-                    <div class="quick-btn" data-nav="journal">📓 Jurnal</div>
-                    <div class="quick-btn" data-nav="signals">📡 Signal</div>
-                    <div class="quick-btn" data-nav="education">📘 Edukasi</div>
-                </div>
-                <div class="card">
-                    <div class="flex-between"><span>🌍 Market Snapshot (Live)</span><span id="liveMarketTime"></span></div>
-                    <div id="liveMarketData">
-                        <div class="market-item">BTC/USD <span class="up">+2.4%</span></div>
-                        <div class="market-item">XAUUSD <span class="up">+0.8%</span></div>
-                        <div class="market-item">EUR/USD <span class="down">-0.3%</span></div>
-                    </div>
-                </div>
-            </div>
-        `;
     }
 
-    function initBalanceChart() {
-        const ctx = document.getElementById('balanceHistoryChart')?.getContext('2d');
-        if (!ctx) return;
-        if (balanceChartInstance) balanceChartInstance.destroy();
-        const journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
-        journals.sort((a,b) => a.date - b.date);
-        let profitPoints = [0];
-        let labels = ['Start'];
-        let sum = 0;
-        journals.forEach((j, idx) => { sum += j.profit; profitPoints.push(sum); labels.push(`T${idx+1}`); });
-        balanceChartInstance = new Chart(ctx, {
+    // News data
+    const newsData = [
+        { id: 1, title: "Fed signals rate cut, crypto rallies", category: "Crypto", image: "https://picsum.photos/id/26/100/100", date: "2h ago", source: "Bloomberg" },
+        { id: 2, title: "Gold hits new record amid inflation fears", category: "Gold", image: "https://picsum.photos/id/29/100/100", date: "5h ago", source: "Reuters" },
+        { id: 3, title: "EURUSD volatility ahead of ECB", category: "Forex", image: "https://picsum.photos/id/35/100/100", date: "Yesterday", source: "FT" },
+        { id: 4, title: "Bitcoin dominance rises to 52%", category: "Crypto", image: "https://picsum.photos/id/20/100/100", date: "3h ago", source: "Coindesk" },
+        { id: 5, title: "Stocks mixed, tech earnings awaited", category: "Stocks", image: "https://picsum.photos/id/0/100/100", date: "1d ago", source: "WSJ" },
+        { id: 6, title: "Oil prices decline, supply concerns ease", category: "Forex", image: "https://picsum.photos/id/42/100/100", date: "6h ago", source: "CNBC" }
+    ];
+
+    // Helper: load/save localStorage
+    function loadStorage() {
+        const storedJournal = localStorage.getItem("traderx_journal");
+        if(storedJournal) journalEntries = JSON.parse(storedJournal);
+        else {
+            // sample demo trades for beautiful chart
+            journalEntries = [
+                { id: Date.now()+1, pair: "BTC/USD", profitLoss: 320, dateISO: new Date(Date.now() - 86400000*2).toISOString(), timestamp: Date.now() - 86400000*2 },
+                { id: Date.now()+2, pair: "ETH/USD", profitLoss: -85, dateISO: new Date(Date.now() - 86400000).toISOString(), timestamp: Date.now() - 86400000 },
+                { id: Date.now()+3, pair: "XAU/USD", profitLoss: 210, dateISO: new Date().toISOString(), timestamp: Date.now() }
+            ];
+            saveJournal();
+        }
+        const premiumStatus = localStorage.getItem("traderx_premium");
+        isPremium = premiumStatus === "true";
+        const savedName = localStorage.getItem("traderx_name");
+        if(savedName) userName = savedName;
+        const savedEmail = localStorage.getItem("traderx_email");
+        if(savedEmail) userEmail = savedEmail;
+        signalsArray = buildSignals();
+        initActivitiesLog();
+    }
+
+    function saveJournal() { localStorage.setItem("traderx_journal", JSON.stringify(journalEntries)); }
+    function setPremium(value) { isPremium = value; localStorage.setItem("traderx_premium", value); renderAllPages(); showToast(value ? "🎉 PREMIUM UNLOCKED! Full signals & insights" : "Free tier activated"); }
+    function saveUserName(name) { userName = name; localStorage.setItem("traderx_name", name); renderProfilePage(); renderHomePage(); }
+
+    function initActivitiesLog() {
+        activities = ["📈 Welcome back! Ready for premium edge", "🎯 Winrate improving", "💡 New signal analysis available"];
+        if(journalEntries.length) activities.unshift(`📊 ${journalEntries.length} trades logged`);
+    }
+    function addActivity(msg) { activities.unshift(msg); if(activities.length>8) activities.pop(); renderHomePage(); }
+
+    // Real time market price update + activity
+    function updateMarketPrices() {
+        marketPrices.BTC += (Math.random() - 0.5) * 180;
+        marketPrices.GOLD += (Math.random() - 0.5) * 8;
+        marketPrices.EURUSD += (Math.random() - 0.5) * 0.002;
+        marketPrices.BTC = Math.max(40000, marketPrices.BTC);
+        marketPrices.GOLD = Math.max(2000, marketPrices.GOLD);
+        if(Math.random() > 0.7) addActivity(`⚡ ${Object.keys(marketPrices)[Math.floor(Math.random()*3)]} moved sharply`); 
+        renderWatchlistOnHome();
+    }
+
+    // ---------- CORE MATH ----------
+    function getTotalPnL() { return journalEntries.reduce((sum, t) => sum + (t.profitLoss || 0), 0); }
+    function getTodayPnL() {
+        const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+        return journalEntries.filter(t => new Date(t.dateISO) >= todayStart).reduce((sum, t) => sum + t.profitLoss, 0);
+    }
+    function getWinRate() {
+        if(journalEntries.length === 0) return 0;
+        const wins = journalEntries.filter(t => t.profitLoss > 0).length;
+        return (wins / journalEntries.length * 100).toFixed(1);
+    }
+    function getCurrentBalance() { return balanceStarting + getTotalPnL(); }
+
+    // chart data from journal cumulative
+    function getCumulativeBalanceData() {
+        let sorted = [...journalEntries].sort((a,b) => a.timestamp - b.timestamp);
+        let cumulative = balanceStarting;
+        let points = [{label: 'Start', balance: cumulative}];
+        sorted.forEach(t => { cumulative += t.profitLoss; points.push({label: t.pair, balance: cumulative}); });
+        if(points.length === 1) points.push({label: 'Now', balance: cumulative});
+        return points;
+    }
+
+    function updateBalanceChart() {
+        const canvas = document.getElementById("balanceChartCanvas");
+        if(!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const dataPoints = getCumulativeBalanceData();
+        const labels = dataPoints.map(p => p.label.length>8 ? p.label.slice(0,6) : p.label);
+        const balances = dataPoints.map(p => p.balance);
+        if(chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx, {
             type: 'line',
-            data: { labels, datasets: [{ label: 'Cumulative P&L', data: profitPoints, borderColor: '#00FFAA', backgroundColor: 'rgba(0,255,170,0.1)', tension: 0.3, fill: true }] },
-            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } } }
+            data: { labels: labels, datasets: [{ label: 'Portfolio ($)', data: balances, borderColor: '#00E6B2', backgroundColor: 'rgba(0,230,178,0.05)', borderWidth: 3, pointRadius: 3, pointBackgroundColor: '#2A6DFF', tension: 0.3, fill: true }] },
+            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#C0D0F0' } } }, scales: { y: { grid: { color: '#1F2A44' }, ticks: { color: '#ddd' } }, x: { ticks: { color: '#aaa' } } } }
         });
     }
 
-    function startLiveUpdates() {
-        if (liveInterval) clearInterval(liveInterval);
-        liveInterval = setInterval(() => {
-            const btc = (Math.random() * 3 - 1).toFixed(1);
-            const gold = (Math.random() * 2 - 0.5).toFixed(1);
-            const eur = (Math.random() * 2 - 1).toFixed(1);
-            const marketDiv = document.getElementById('liveMarketData');
-            if (marketDiv) marketDiv.innerHTML = `<div class="market-item">BTC/USD <span class="${btc>=0?'up':'down'}">${btc>=0?'+':''}${btc}%</span></div><div class="market-item">XAUUSD <span class="${gold>=0?'up':'down'}">${gold>=0?'+':''}${gold}%</span></div><div class="market-item">EUR/USD <span class="${eur>=0?'up':'down'}">${eur>=0?'+':''}${eur}%</span></div>`;
-            const timeSpan = document.getElementById('liveMarketTime');
-            if (timeSpan) timeSpan.innerText = new Date().toLocaleTimeString();
-        }, 10000);
+    // Add trade logic
+    function addTrade(pair, profitLossNum) {
+        const newTrade = { id: Date.now(), pair: pair, profitLoss: profitLossNum, dateISO: new Date().toISOString(), timestamp: Date.now() };
+        journalEntries.push(newTrade);
+        saveJournal();
+        addActivity(`📝 ${pair} ${profitLossNum>=0 ? '+' : ''}$${profitLossNum.toFixed(2)} recorded`);
+        if(profitLossNum > 0) showToast(`✅ Profit +$${profitLossNum.toFixed(2)}`, "profit");
+        else showToast(`⚠️ Loss $${Math.abs(profitLossNum).toFixed(2)}`, "loss");
+        renderAllPages();
+        updateBalanceChart();
+    }
+    function deleteTrade(id) {
+        journalEntries = journalEntries.filter(t => t.id !== id);
+        saveJournal();
+        addActivity(`🗑️ Trade removed`);
+        renderAllPages();
+        updateBalanceChart();
     }
 
-    function attachBalanceEdit() {
-        const editBtn = document.getElementById('editBalanceBtn');
-        if (editBtn) editBtn.onclick = () => {
-            let newBalance = prompt("Balance baru (USD):", currentUser.balance);
-            if (newBalance && !isNaN(parseFloat(newBalance))) {
-                currentUser.balance = parseFloat(newBalance);
-                saveUser(currentUser);
-                showToast("Balance diperbarui");
-                render();
-            }
-        };
-    }
-
-    // ======================== KALKULATOR PRO ========================
-    function renderCalculator() {
-        return `
-            <div class="container page">
-                <h2>🧮 Forex Calculator</h2>
-                <div class="card">
-                    <label class="calc-label">Account Balance (USD)</label>
-                    <input type="number" id="calcBalance" value="100" step="1">
-                    <label class="calc-label">Risk Percentage (%)</label>
-                    <input type="number" id="calcRisk" value="20" step="0.5">
-                    <label class="calc-label">Risk to Reward Ratio</label>
-                    <input type="text" id="calcRR" value="1:4" placeholder="1:4">
-                    <label class="calc-label">Stop Loss (pip)</label>
-                    <input type="number" id="calcSL" value="10" step="1">
-                    <label class="calc-label">Step (jumlah compounding)</label>
-                    <input type="number" id="calcStep" value="6" step="1" min="1" max="20">
-                    <button id="calcBtn" class="btn btn-primary mt-2">Calculate</button>
-                    <div id="calcResults"></div>
-                </div>
-            </div>
+    // ---------- RENDER FUNCTIONS ----------
+    function renderHomePage() {
+        const homeDiv = document.getElementById("homePage");
+        const balance = getCurrentBalance();
+        const todayPnL = getTodayPnL();
+        const totalPnL = getTotalPnL();
+        const winrate = getWinRate();
+        const premiumBadge = isPremium ? '<span class="badge" style="background:#FFB34720;color:#FFB347;">⭐ PREMIUM</span>' : '<span class="badge">🔓 FREE</span>';
+        const visibleSignals = signalsArray.slice(0, 3).map(s => `<div class="signal-item"><span><b>${s.pair}</b> ${s.status}</span><span>${s.entry}</span></div>`).join('');
+        const activityHtml = activities.slice(0,4).map(a => `<div class="flex-between"><span>🔔 ${a}</span></div>`).join('');
+        homeDiv.innerHTML = `
+            <div class="card"><div class="flex-between"><div><h2>Welcome back, ${userName}</h2>${premiumBadge}</div><i class="fas fa-chart-simple" style="font-size:28px;color:#2A6DFF;"></i></div></div>
+            <div class="card"><div class="flex-between"><span>💰 Balance</span><span class="profit-text">$${balance.toFixed(2)}</span></div>
+            <div class="flex-between"><span>📈 Profit Today</span><span class="${todayPnL>=0?'profit-text':'loss-text'}">${todayPnL>=0?'+':''}$${todayPnL.toFixed(2)}</span></div>
+            <div class="flex-between"><span>📊 Total PnL</span><span class="${totalPnL>=0?'profit-text':'loss-text'}">${totalPnL>=0?'+':''}$${totalPnL.toFixed(2)}</span></div><hr>
+            <div class="flex-between"><span>🏆 Winrate</span><span>${winrate}%</span></div></div>
+            <div class="card"><canvas id="balanceChartCanvas" height="160" style="max-height:180px"></canvas></div>
+            <div class="card"><div class="flex-between"><h3>🔥 Latest Signals</h3><button class="badge" id="gotoSignalsQuick">View all →</button></div>${visibleSignals || '<div>No signals</div>'}</div>
+            <div class="card"><h3>📺 Trading Videos</h3><div class="scroll-x" id="videoFeedHome"></div></div>
+            <div class="card"><h3>📰 Market News Preview</h3><div id="newsPreview"></div></div>
+            <div class="card"><h3>⚡ Activity Feed</h3>${activityHtml}</div>
+            <div class="grid-2"><button class="glass-btn primary" id="quickAddTradeBtn"><i class="fas fa-plus-circle"></i> Add Trade</button>
+            <button class="glass-btn" id="quickSignalsBtn"><i class="fas fa-bullhorn"></i> Signals</button>
+            <button class="glass-btn" id="quickCalcBtn"><i class="fas fa-calculator"></i> Calculator</button>
+            <div id="watchlistMini" class="glass-btn" style="background:#121A2A;">📊 Watchlist</div></div>
         `;
+        document.getElementById("quickAddTradeBtn")?.addEventListener("click", () => openAddTradeModal());
+        document.getElementById("quickSignalsBtn")?.addEventListener("click", () => switchPage("signals"));
+        document.getElementById("quickCalcBtn")?.addEventListener("click", () => openCalculatorModal());
+        document.getElementById("gotoSignalsQuick")?.addEventListener("click", () => switchPage("signals"));
+        renderVideoFeed("videoFeedHome");
+        renderNewsPreview();
+        renderWatchlistOnHome();
+        updateBalanceChart();
     }
-
-    function calculateForex() {
-        let balance = parseFloat(document.getElementById('calcBalance').value);
-        let riskPercent = parseFloat(document.getElementById('calcRisk').value);
-        let rrInput = document.getElementById('calcRR').value;
-        let slPip = parseFloat(document.getElementById('calcSL').value);
-        let steps = parseInt(document.getElementById('calcStep').value);
-        if (isNaN(balance) || isNaN(riskPercent) || isNaN(slPip) || isNaN(steps)) return;
-
-        let rrMatch = rrInput.match(/(\d+):(\d+)/);
-        let rewardRatio = rrMatch ? parseFloat(rrMatch[2]) / parseFloat(rrMatch[1]) : 4;
-        let amountAtRisk = balance * (riskPercent / 100);
-        let pipValue = amountAtRisk / slPip;
-        let lots = pipValue / 10;
-        let netStopLoss = amountAtRisk;
-        let netTakeProfit = amountAtRisk * rewardRatio;
-
-        let currentBalance = balance;
-        let stepsHtml = '';
-        for (let i = 1; i <= steps; i++) {
-            let profitStep = currentBalance * (riskPercent / 100) * rewardRatio;
-            let newBalance = currentBalance + profitStep;
-            stepsHtml += `<div class="profit-step">Profit Step ${i}: ${profitStep.toFixed(2)} USD<br>Balance: ${newBalance.toFixed(2)} USD</div>`;
-            currentBalance = newBalance;
-        }
-        let totalProfit = currentBalance - balance;
-
-        const resultDiv = document.getElementById('calcResults');
-        resultDiv.innerHTML = `
-            <div class="result-box">
-                <div class="flex-between"><span>Amount at Risk:</span><span>${amountAtRisk.toFixed(2)} USD</span></div>
-                <div class="flex-between"><span>Pip Value:</span><span>${pipValue.toFixed(2)} USD</span></div>
-                <div class="flex-between"><span>Lots:</span><span>${lots.toFixed(2)}</span></div>
-                <div class="flex-between"><span>Net Stop Loss:</span><span>${netStopLoss.toFixed(2)} USD</span></div>
-                <div class="flex-between"><span>Net Take Profit:</span><span>${netTakeProfit.toFixed(2)} USD</span></div>
-            </div>
-            <div class="result-box mt-2">
-                <h4>📈 Compounding Steps (${steps}x)</h4>
-                ${stepsHtml}
-            </div>
-            <div class="result-box mt-2">
-                <div class="flex-between"><span>Total Profit after ${steps} steps:</span><span class="profit-positive">${totalProfit.toFixed(2)} USD</span></div>
-                <div class="flex-between"><span>Final Balance:</span><span>${currentBalance.toFixed(2)} USD</span></div>
-            </div>
-            <div class="result-box mt-2">
-                <h4>📊 Detailed Analysis</h4>
-                <p>Risk per trade: ${riskPercent}% of balance<br>Risk-to-Reward: 1:${rewardRatio}<br>Compounding aktif menghasilkan growth eksponensial.</p>
-                <h4>📅 Monthly Projections</h4>
-                <p>Jika ${steps} step dalam sebulan, profit potensial: ~${(totalProfit * (30/steps)).toFixed(0)} USD</p>
-                <h4>⚠️ Risk Metrics</h4>
-                <p>Max Drawdown: ${(amountAtRisk/balance*100).toFixed(1)}% per trade<br>Disarankan risk ≤2% per trade.</p>
-                <h4>💡 Trading Tips:</h4>
-                <ul style="margin-left: 20px;"><li>Never risk more than 2% per trade</li><li>Consider reducing risk after consecutive losses</li><li>Monitor your maximum drawdown carefully</li><li>Adjust position size based on volatility</li></ul>
-            </div>
-        `;
+    function renderWatchlistOnHome() {
+        const container = document.getElementById("watchlistMini");
+        if(container) container.innerHTML = `<div><i class="fas fa-chart-line"></i> BTC: $${marketPrices.BTC.toFixed(0)} | GOLD: $${marketPrices.GOLD.toFixed(1)} | EUR: ${marketPrices.EURUSD.toFixed(4)}</div>`;
     }
-
-    // ======================== EDUKASI PREMIUM (seperti gambar) ========================
-    function renderEducation() {
-        let eduProgress = JSON.parse(localStorage.getItem(STORAGE.EDU_PROGRESS))[currentUser.email] || {};
-        const materials = educationData.map(edu => {
-            const isLocked = edu.premium && currentUser.role !== 'premium';
-            const readCount = edu.readCount; // bisa dari progress nanti
-            return `
-                <div class="edu-card ${isLocked ? 'premium-lock' : ''}" data-id="${edu.id}">
-                    <div class="edu-title">${edu.title}</div>
-                    <div class="edu-desc">${edu.desc}</div>
-                    <div class="edu-footer">
-                        <span class="edu-badge">${edu.level}</span>
-                        <span class="edu-number">${readCount}</span>
-                    </div>
-                    ${edu.premium && currentUser.role !== 'premium' ? '<div style="margin-top:8px;"><small>🔒 Premium Content</small></div>' : ''}
-                </div>
-            `;
+    function renderVideoFeed(containerId) {
+        const videos = ["dQw4w9WgXcQ", "JfVOs4VSpmA", "3nXLaO--DqM", "LDU_Txk06tM"];
+        const container = document.getElementById(containerId);
+        if(container) container.innerHTML = videos.map(id => `<div class="video-card"><iframe src="https://www.youtube.com/embed/${id}?autoplay=0&mute=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe><div class="p-2">Trading insight</div></div>`).join('');
+    }
+    function renderNewsPreview() {
+        const previewDiv = document.getElementById("newsPreview");
+        if(previewDiv) previewDiv.innerHTML = newsData.slice(0,2).map(n => `<div class="flex-between" style="margin-bottom:8px"><img src="${n.image}" width="40" height="40" style="border-radius:12px"><span><b>${n.title.slice(0,30)}</b><br><small>${n.source}</small></span></div>`).join('');
+    }
+    function renderSignalsPage() {
+        const container = document.getElementById("signalsPage");
+        let sorted = [...signalsArray].sort((a,b)=>b.createdAt - a.createdAt);
+        let signalsHtml = sorted.map(sig => {
+            const isLocked = sig.premiumLocked && !isPremium;
+            if(isLocked) return `<div class="signal-item locked-signal" style="filter: blur(3px);"><div><i class="fas fa-lock"></i> ${sig.pair} 🔒</div><div>Premium signal</div></div>`;
+            return `<div class="signal-item"><div><b>${sig.pair}</b><div><small>Entry:${sig.entry} TP:${sig.tp} SL:${sig.sl}</small></div></div><span class="badge">${sig.status}</span></div>`;
         }).join('');
-        return `
-            <div class="container page">
-                <h2>📘 Materi Edukasi</h2>
-                <div id="educationList">${materials}</div>
-                <div class="card mt-2">
-                    <p class="small">✨ Upgrade ke Premium untuk akses materi eksklusif & video lengkap.</p>
-                </div>
-            </div>
-        `;
+        if(!isPremium) signalsHtml += `<div class="card" style="text-align:center"><i class="fas fa-crown"></i> <b>Upgrade to PREMIUM</b> for 5+ exclusive signals<br><button class="glass-btn primary" id="upgradeFromSignals">Upgrade Now</button></div>`;
+        container.innerHTML = `<div class="card"><h2>📡 Trading Signals</h2><div>🔒 Premium unlocks hidden signals</div></div>${signalsHtml}`;
+        document.getElementById("upgradeFromSignals")?.addEventListener("click", ()=>{ setPremium(true); renderSignalsPage(); });
     }
-
-    function attachEducationEvents() {
-        document.querySelectorAll('.edu-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                const id = card.dataset.id;
-                const edu = educationData.find(e => e.id === id);
-                if (!edu) return;
-                if (edu.premium && currentUser.role !== 'premium') {
-                    showToast("Upgrade ke Premium untuk membaca materi ini", true);
-                    return;
-                }
-                // Tampilkan modal detail materi
-                const modal = document.createElement('div');
-                modal.className = 'modal';
-                modal.innerHTML = `
-                    <div class="modal-content">
-                        <h3 style="color:#00FFAA;">${edu.title}</h3>
-                        <p class="mt-2">${edu.content}</p>
-                        <div class="flex-between mt-2">
-                            <button id="closeEduModal" class="btn-outline">Tutup</button>
-                            <button id="markReadBtn" class="btn-primary">Tandai Selesai +10 Poin</button>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-                document.getElementById('closeEduModal').onclick = () => modal.remove();
-                document.getElementById('markReadBtn').onclick = () => {
-                    // update progress
-                    let progressAll = JSON.parse(localStorage.getItem(STORAGE.EDU_PROGRESS)) || {};
-                    let userProg = progressAll[currentUser.email] || { readIds: [] };
-                    if (!userProg.readIds.includes(edu.id)) {
-                        userProg.readIds.push(edu.id);
-                        progressAll[currentUser.email] = userProg;
-                        localStorage.setItem(STORAGE.EDU_PROGRESS, JSON.stringify(progressAll));
-                        // tambah poin
-                        currentUser.balance += 10; // bonus poin ke balance?
-                        saveUser(currentUser);
-                        addActivity(`Membaca materi "${edu.title}" dan mendapat +10 poin`);
-                        showToast("+10 poin edukasi");
-                        modal.remove();
-                        render();
-                    } else {
-                        showToast("Anda sudah membaca materi ini");
-                        modal.remove();
-                    }
-                };
-            });
+    function renderJournalPage() {
+        const container = document.getElementById("journalPage");
+        const totalTrades = journalEntries.length;
+        const winrate = getWinRate();
+        const totalPnl = getTotalPnL();
+        let tradesList = journalEntries.slice().reverse().map(t => `<div class="journal-item"><div><b>${t.pair}</b> <span class="${t.profitLoss>=0?'profit-text':'loss-text'}">${t.profitLoss>=0?'+':''}$${t.profitLoss.toFixed(2)}</span><div><small>${new Date(t.dateISO).toLocaleDateString()}</small></div></div><button class="deleteTradeBtn" data-id="${t.id}"><i class="fas fa-trash-alt"></i></button></div>`).join('');
+        container.innerHTML = `<div class="card"><div class="flex-between"><span>📊 Stats</span><span>Total trades: ${totalTrades}</span></div><div class="flex-between"><span>Win Rate: ${winrate}%</span><span>Total PnL: ${totalPnl>=0?'+':''}$${totalPnl.toFixed(2)}</span></div></div>
+        <div class="card"><h3>➕ Add Trade</h3><input type="text" id="journalPair" placeholder="Pair (BTC/USD)" value="ETH/USD"><input type="number" id="journalPL" placeholder="Profit/Loss Amount"><button class="glass-btn primary" id="submitTradeBtn">Add to Journal</button></div>
+        <div class="card"><h3>📜 Trade History</h3>${tradesList || 'No trades yet'}</div>`;
+        document.getElementById("submitTradeBtn")?.addEventListener("click", ()=>{
+            let pair = document.getElementById("journalPair").value;
+            let pl = parseFloat(document.getElementById("journalPL").value);
+            if(!pair || isNaN(pl)) { showToast("Invalid trade data"); return; }
+            addTrade(pair, pl);
+            renderJournalPage();
         });
+        document.querySelectorAll(".deleteTradeBtn").forEach(btn => btn.addEventListener("click", (e) => { let id = parseInt(btn.dataset.id); deleteTrade(id); renderJournalPage(); }));
     }
-
-    // ======================== SIGNAL, JURNAL DLL ========================
-    function renderSignals() {
-        let signals = JSON.parse(localStorage.getItem(STORAGE.SIGNALS));
-        signals.sort((a,b) => b.createdAt - a.createdAt);
-        return `<div class="container page"><h2>📡 Signal Trading</h2>${signals.map(s => `<div class="card"><div class="flex-between"><b>${s.pair}</b>${s.premium ? '<span class="badge-premium">PREMIUM</span>' : ''}</div><div>Entry: ${s.entry} | TP: ${s.tp} | SL: ${s.sl}</div><div>Status: ${s.status}</div></div>`).join('')}</div>`;
-    }
-
-    function renderJournal() {
-        let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
-        return `<div class="container page"><div class="flex-between"><h2>📓 Trading Journal</h2><button id="addJournalBtn" class="btn-primary" style="width:auto;">+</button></div><div id="journalList">${journals.slice().reverse().map(j => `<div class="card"><div class="flex-between"><b>${j.pair}</b><span class="${j.profit>=0?'profit-positive':'profit-negative'}">$${j.profit}</span></div><div class="small">${new Date(j.date).toLocaleString()}</div><button class="delJournal btn-outline" data-id="${j.id}">Hapus</button></div>`).join('')}</div></div>`;
-    }
-    function attachJournalEvents() {
-        document.getElementById('addJournalBtn')?.addEventListener('click', () => {
-            const modal = document.createElement('div'); modal.className = 'modal';
-            modal.innerHTML = `<div class="modal-content"><h3>New Trade</h3><input id="jPair" placeholder="Pair"><input id="jProfit" type="number" placeholder="Profit/Loss USD"><button id="saveJournal" class="btn-primary">Simpan</button><button id="closeJournal" class="btn-outline">Batal</button></div>`;
-            document.body.appendChild(modal);
-            document.getElementById('saveJournal').onclick = () => {
-                let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS));
-                journals.push({ id: Date.now(), userEmail: currentUser.email, pair: document.getElementById('jPair').value, profit: parseFloat(document.getElementById('jProfit').value), date: Date.now() });
-                localStorage.setItem(STORAGE.JOURNALS, JSON.stringify(journals));
-                addActivity(`Trade ${document.getElementById('jPair').value} profit $${document.getElementById('jProfit').value}`);
-                modal.remove(); render();
-            };
-            document.getElementById('closeJournal').onclick = () => modal.remove();
-        });
-        document.querySelectorAll('.delJournal').forEach(btn => btn.onclick = () => {
-            let id = btn.dataset.id;
-            let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS));
-            journals = journals.filter(j => j.id != id);
-            localStorage.setItem(STORAGE.JOURNALS, JSON.stringify(journals));
-            render();
-        });
-    }
-
-    function renderMembership() { return `<div class="container page"><h2>👑 Membership</h2><div class="card"><h3>${currentUser.role === 'premium' ? 'Premium' : 'Free'}</h3><button id="upgradeBtn" class="btn-primary">Upgrade Premium</button></div></div>`; }
-    function attachMembershipEvents() { document.getElementById('upgradeBtn')?.addEventListener('click', () => { currentUser.role = 'premium'; saveUser(currentUser); showToast("Premium aktif!"); render(); }); }
-    function renderProfile() { return `<div class="container page"><h2>⚙️ Profile</h2><div class="card"><div>Nama: ${currentUser.name}</div><div>Email: ${currentUser.email}</div><button id="logoutBtn" class="btn-outline">Logout</button></div></div>`; }
-    function attachProfileEvents() { document.getElementById('logoutBtn')?.addEventListener('click', () => { localStorage.removeItem(STORAGE.CURRENT); currentUser = null; render(); }); }
-
-    // ======================== NAVIGATION ========================
-    function renderBottomNav() {
-        const items = [
-            { id: 'home', icon: '🏠', label: 'Home' },
-            { id: 'signals', icon: '📊', label: 'Signal' },
-            { id: 'journal', icon: '📓', label: 'Journal' },
-            { id: 'calculator', icon: '🧮', label: 'Calc' },
-            { id: 'education', icon: '📘', label: 'Edukasi' }
-        ];
-        return `<div class="bottom-nav">${items.map(item => `<button class="nav-item ${currentPage === item.id ? 'active' : ''}" data-nav="${item.id}"><span>${item.icon}</span><span>${item.label}</span></button>`).join('')}</div>`;
-    }
-
-    function attachNavEvents() {
-        document.querySelectorAll('[data-nav]').forEach(el => {
-            el.addEventListener('click', (e) => { const nav = el.dataset.nav; if (nav) { currentPage = nav; render(); } });
-        });
-        if (currentPage === 'home') attachBalanceEdit();
-        if (currentPage === 'journal') attachJournalEvents();
-        if (currentPage === 'calculator') {
-            document.getElementById('calcBtn')?.addEventListener('click', calculateForex);
-            calculateForex();
+    function renderNewsPage() {
+        const container = document.getElementById("newsPage");
+        let categories = ["All","Crypto","Forex","Gold","Stocks"];
+        let filterButtons = categories.map(cat => `<button class="badge news-filter" data-cat="${cat}">${cat}</button>`).join(' ');
+        container.innerHTML = `<div class="card"><h3>🎥 Video Hub</h3><div class="scroll-x" id="newsVideoScroll"></div></div><div class="card">📰 Category: ${filterButtons}</div><div id="newsListContainer"></div>`;
+        renderVideoFeed("newsVideoScroll");
+        function renderNewsByCategory(cat) {
+            let filtered = cat === "All" ? newsData : newsData.filter(n => n.category === cat);
+            const newsHtml = filtered.map(n => `<div class="news-item"><img src="${n.image}" width="50" height="50" style="border-radius:16px"><div style="flex:1; margin-left:12px"><b>${n.title}</b><br><small>${n.source} • ${n.date}</small></div></div>`).join('');
+            document.getElementById("newsListContainer").innerHTML = newsHtml || '<div>No news</div>';
         }
-        if (currentPage === 'membership') attachMembershipEvents();
-        if (currentPage === 'profile') attachProfileEvents();
-        if (currentPage === 'education') attachEducationEvents();
+        renderNewsByCategory("All");
+        document.querySelectorAll(".news-filter").forEach(btn => btn.addEventListener("click", (e) => renderNewsByCategory(btn.dataset.cat)));
     }
-    function attachPageEvents() {}
-
-    render();
+    function renderProfilePage() {
+        const container = document.getElementById("profilePage");
+        container.innerHTML = `<div class="card" style="text-align:center"><i class="fas fa-user-circle fa-4x" style="color:#2A6DFF"></i><h2>${userName}</h2><p>${userEmail}</p><span class="badge">${isPremium ? "✨ PREMIUM MEMBER" : "FREE TIER"}</span></div>
+        <div class="card"><label>Edit Name</label><input type="text" id="editNameInput" value="${userName}"><button class="glass-btn primary" id="saveNameBtn">Save Name</button><hr>
+        <button class="glass-btn" id="upgradeProfileBtn"><i class="fas fa-gem"></i> ${isPremium ? "Already Premium" : "Upgrade to Premium"}</button>
+        <button class="glass-btn" id="logoutBtn" style="margin-top:12px; background:#2A1A2A"><i class="fas fa-sign-out-alt"></i> Logout</button></div>`;
+        document.getElementById("saveNameBtn")?.addEventListener("click", () => { let newName = document.getElementById("editNameInput").value; if(newName) saveUserName(newName); renderProfilePage(); renderHomePage(); });
+        document.getElementById("upgradeProfileBtn")?.addEventListener("click", () => setPremium(true));
+        document.getElementById("logoutBtn")?.addEventListener("click", () => { setPremium(false); saveUserName("TraderX"); userEmail = "guest@traderx.com"; localStorage.removeItem("traderx_name"); userName = "TraderX"; renderAllPages(); showToast("Logged out • free tier"); });
+    }
+    function openAddTradeModal() {
+        const modalDiv = document.createElement("div"); modalDiv.className = "modal"; modalDiv.innerHTML = `<div class="modal-content"><h3>Add Trade</h3><input id="modalPair" placeholder="Pair"><input id="modalPL" type="number" placeholder="Profit/Loss $"><div class="flex-between"><button class="glass-btn" id="closeModal">Cancel</button><button class="glass-btn primary" id="confirmModalTrade">Add</button></div></div>`;
+        document.body.appendChild(modalDiv);
+        document.getElementById("closeModal")?.addEventListener("click",()=>modalDiv.remove());
+        document.getElementById("confirmModalTrade")?.addEventListener("click",()=>{ let p = document.getElementById("modalPair").value; let pl = parseFloat(document.getElementById("modalPL").value); if(p && !isNaN(pl)){ addTrade(p,pl); modalDiv.remove(); renderJournalPage(); } else showToast("Invalid"); });
+    }
+    function openCalculatorModal() {
+        const modalDiv = document.createElement("div"); modalDiv.className = "modal"; modalDiv.innerHTML = `<div class="modal-content"><h3>⚖️ Risk Calculator</h3><label>Balance ($)</label><input id="calcBalance" value="${getCurrentBalance().toFixed(0)}"><label>Risk %</label><input id="calcRisk" value="1.5"><div>📐 Lot Size: <span id="lotResult">0.00</span> lots</div><button class="glass-btn" id="closeCalc">Close</button></div>`;
+        document.body.appendChild(modalDiv);
+        function updateLot(){ let bal = parseFloat(document.getElementById("calcBalance").value)||0; let risk = parseFloat(document.getElementById("calcRisk").value)||0; let lot = (bal * risk / 100) / 100000; document.getElementById("lotResult").innerText = lot.toFixed(3); }
+        document.getElementById("calcBalance")?.addEventListener("input",updateLot);
+        document.getElementById("calcRisk")?.addEventListener("input",updateLot);
+        updateLot();
+        document.getElementById("closeCalc")?.addEventListener("click",()=>modalDiv.remove());
+    }
+    function showToast(msg, type="info") { const toast = document.createElement("div"); toast.className = "toast-msg"; toast.innerHTML = `<i class="fas fa-bell"></i> ${msg}`; document.body.appendChild(toast); setTimeout(()=>toast.remove(), 2200); }
+    function switchPage(pageId) {
+        document.querySelectorAll(".page").forEach(p => p.classList.remove("active-page"));
+        document.getElementById(`${pageId}Page`).classList.add("active-page");
+        document.querySelectorAll(".nav-item").forEach(btn => btn.classList.remove("active"));
+        document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add("active");
+        if(pageId === "home") renderHomePage();
+        if(pageId === "signals") renderSignalsPage();
+        if(pageId === "journal") renderJournalPage();
+        if(pageId === "news") renderNewsPage();
+        if(pageId === "profile") renderProfilePage();
+    }
+    function renderAllPages() { renderHomePage(); renderSignalsPage(); renderJournalPage(); renderNewsPage(); renderProfilePage(); }
+    loadStorage();
+    renderAllPages();
+    updateBalanceChart();
+    setInterval(() => { updateMarketPrices(); renderWatchlistOnHome(); if(Math.random()>0.6) addActivity(`💹 Market update: BTC $${marketPrices.BTC.toFixed(0)}`); }, 4000);
+    document.querySelectorAll(".nav-item").forEach(btn => btn.addEventListener("click", (e) => switchPage(btn.dataset.page)));
+    window.switchPage = switchPage;
 </script>
 </body>
 </html>
