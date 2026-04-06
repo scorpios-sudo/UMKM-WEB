@@ -1,743 +1,708 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>Trader X Academy | Platform Edukasi Forex, Crypto, Saham</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="theme-color" content="#0A0F1F">
+    <title>Trader X Academy | Social Trading + Dashboard Pro</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: #0A0F1F;
+            color: #E2E8F0;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #1E293B; }
+        ::-webkit-scrollbar-thumb { background: #00FFAA; border-radius: 10px; }
 
-    body {
-      background-color: #000000;
-      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-      color: #F0F4F8;
-      overflow-x: hidden;
-    }
+        .app {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 30%, #0F172A, #0A0F1F);
+        }
+        .page {
+            animation: fadeIn 0.25s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container { padding: 20px 18px 30px; }
 
-    /* custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 4px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0F1219;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #00E5A0;
-      border-radius: 8px;
-    }
+        /* Card glassmorphism */
+        .card {
+            background: rgba(18, 25, 45, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            border: 1px solid rgba(0, 255, 170, 0.25);
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            transition: all 0.2s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .card:hover {
+            border-color: #00FFAA;
+            transform: translateY(-2px);
+        }
+        .btn {
+            border: none;
+            border-radius: 44px;
+            padding: 12px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.15s;
+        }
+        .btn-primary {
+            background: linear-gradient(95deg, #00FFAA, #00D4FF);
+            color: #0A0F1F;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #00FFAA;
+            color: #00FFAA;
+        }
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0F1422;
+            border: 1px solid #2D3A5E;
+            border-radius: 28px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 14px;
+            outline: none;
+        }
+        input:focus { border-color: #00FFAA; }
 
-    /* dark theme premium */
-    :root {
-      --bg-dark: #0A0D14;
-      --card-bg: #12161F;
-      --surface: #1A1F2A;
-      --border: #2A2F3C;
-      --accent: #00E5A0;
-      --accent-glow: #00E5A080;
-      --blue-neon: #2A6DFF;
-      --danger: #FF4D6D;
-      --warning: #FFB347;
-      --text-secondary: #9AA4BF;
-    }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .mt-2 { margin-top: 12px; }
+        .mb-2 { margin-bottom: 12px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
 
-    .app-container {
-      max-width: 500px;
-      margin: 0 auto;
-      background: var(--bg-dark);
-      min-height: 100vh;
-      position: relative;
-      box-shadow: 0 0 40px rgba(0,0,0,0.8);
-    }
+        /* quick action */
+        .quick-btn {
+            background: linear-gradient(95deg, #1E2A47, #0F172A);
+            border: 1px solid #00FFAA;
+            border-radius: 40px;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .quick-btn:active { transform: scale(0.97); }
+        .stat-value { font-size: 28px; font-weight: 800; color: #00FFAA; }
 
-    /* header */
-    .app-header {
-      padding: 20px 20px 8px 20px;
-      background: var(--bg-dark);
-      border-bottom: 1px solid var(--border);
-    }
-    .logo {
-      font-size: 1.7rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #FFFFFF, var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -0.5px;
-    }
-    .logo span {
-      font-size: 0.8rem;
-      background: none;
-      -webkit-background-clip: unset;
-      color: var(--accent);
-    }
+        .market-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #1E293B;
+        }
+        .up { color: #00FFAA; }
+        .down { color: #FF4466; }
 
-    /* bottom navigation */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      max-width: 500px;
-      margin: 0 auto;
-      background: rgba(18, 22, 31, 0.96);
-      backdrop-filter: blur(16px);
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 16px 22px;
-      border-top: 1px solid var(--border);
-      z-index: 20;
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 0.7rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.2s;
-      padding: 6px 12px;
-      border-radius: 40px;
-    }
-    .nav-item.active {
-      color: var(--accent);
-      background: rgba(0, 229, 160, 0.12);
-    }
-    .nav-icon {
-      font-size: 1.5rem;
-    }
+        /* Video Carousel */
+        .video-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 16px;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 8px;
+        }
+        .video-carousel::-webkit-scrollbar { height: 3px; }
+        .video-card {
+            flex: 0 0 280px;
+            scroll-snap-align: start;
+            background: #111827;
+            border-radius: 28px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            border: 1px solid rgba(0,255,170,0.3);
+        }
+        .video-card:hover { transform: scale(0.98); }
+        .video-thumb {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #1E293B;
+            position: relative;
+        }
+        .video-thumb iframe { width: 100%; height: 100%; border: none; }
+        .video-info { padding: 12px; }
+        .video-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .video-channel { font-size: 11px; color: #94A3B8; }
 
-    /* content */
-    .main-content {
-      padding: 20px 16px 80px 16px;
-    }
+        /* Market News Card */
+        .news-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 14px;
+            padding-bottom: 8px;
+        }
+        .news-card {
+            flex: 0 0 220px;
+            background: #111827;
+            border-radius: 28px;
+            overflow: hidden;
+            transition: 0.2s;
+            border: 1px solid rgba(0,255,170,0.3);
+        }
+        .news-card:hover { transform: translateY(-4px); box-shadow: 0 0 12px #00FFAA; }
+        .news-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            background: #1E293B;
+        }
+        .news-title { padding: 12px; font-size: 13px; font-weight: 500; }
 
-    /* card UI */
-    .card {
-      background: var(--card-bg);
-      border-radius: 28px;
-      padding: 20px 16px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease, box-shadow 0.2s;
-    }
-    .card:active {
-      transform: scale(0.98);
-    }
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      font-weight: 600;
-      color: var(--accent);
-    }
-    .badge {
-      background: #1E2A3A;
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-    .badge-free { background: #1E3A2A; color: var(--accent); }
-    .badge-premium { background: linear-gradient(135deg, #FFB347, #FF8C00); color: #0A0D14; }
+        /* Activity Feed */
+        .activity-item {
+            background: rgba(0,255,170,0.05);
+            border-radius: 24px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00FFAA;
+            font-size: 13px;
+        }
 
-    /* button */
-    .btn {
-      border: none;
-      padding: 12px 18px;
-      border-radius: 60px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-size: 0.85rem;
-      background: var(--surface);
-      color: white;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #0A0D14;
-      box-shadow: 0 2px 8px var(--accent-glow);
-    }
-    .btn-primary:active { transform: scale(0.96); }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-    }
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-    }
-
-    /* form */
-    input, select, textarea {
-      width: 100%;
-      padding: 14px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      color: white;
-      font-size: 0.9rem;
-      margin: 8px 0;
-      transition: 0.2s;
-    }
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px var(--accent-glow);
-    }
-    label {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin-left: 8px;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    /* signal item */
-    .signal-item {
-      background: var(--surface);
-      border-radius: 24px;
-      padding: 14px;
-      margin-bottom: 12px;
-      border-left: 4px solid var(--accent);
-    }
-    .signal-premium-locked {
-      opacity: 0.6;
-      filter: blur(0.8px);
-      pointer-events: none;
-    }
-    /* modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      visibility: hidden;
-      opacity: 0;
-      transition: 0.2s;
-    }
-    .modal-overlay.active {
-      visibility: visible;
-      opacity: 1;
-    }
-    .modal-content {
-      background: var(--card-bg);
-      max-width: 340px;
-      width: 90%;
-      border-radius: 32px;
-      padding: 24px;
-      border: 1px solid var(--accent);
-      max-height: 80vh;
-      overflow-y: auto;
-    }
-    .toast-notif {
-      position: fixed;
-      bottom: 80px;
-      left: 20px;
-      right: 20px;
-      max-width: 460px;
-      margin: 0 auto;
-      background: #1E2A3A;
-      backdrop-filter: blur(12px);
-      padding: 12px 20px;
-      border-radius: 60px;
-      text-align: center;
-      color: var(--accent);
-      font-weight: 600;
-      z-index: 150;
-      opacity: 0;
-      transition: 0.3s;
-      pointer-events: none;
-    }
-    .toast-notif.show {
-      opacity: 1;
-      bottom: 100px;
-    }
-    .flex-between {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .mt-2 { margin-top: 8px; }
-    .mb-2 { margin-bottom: 8px; }
-    .text-accent { color: var(--accent); }
-    .text-danger { color: var(--danger); }
-  </style>
+        .edit-icon {
+            cursor: pointer;
+            background: #1E293B;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+        }
+        .badge-premium { background: #00FFAA; color: #0A0F1F; }
+        .badge { display: inline-flex; padding: 4px 12px; border-radius: 30px; font-size: 11px; font-weight: 600; }
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            right: 20px;
+            background: #1E293B;
+            border-left: 4px solid #00FFAA;
+            padding: 14px;
+            border-radius: 28px;
+            z-index: 1500;
+            animation: slideUp 0.3s;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background: #111827;
+            border-radius: 36px;
+            max-width: 90%;
+            width: 380px;
+            padding: 24px;
+            border: 1px solid #00FFAA;
+        }
+        .profit-positive { color: #00FFAA; }
+        .profit-negative { color: #FF4466; }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(10, 15, 31, 0.96);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 12px 22px;
+            border-top: 1px solid rgba(0,255,170,0.3);
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            color: #7E8AA8;
+            font-size: 11px;
+            gap: 4px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 30px;
+        }
+        .nav-item.active { color: #00FFAA; background: rgba(0,255,170,0.12); }
+        .nav-item span:first-child { font-size: 22px; }
+    </style>
 </head>
 <body>
-<div class="app-container" id="appRoot">
-  <div class="app-header">
-    <div class="logo">TRADER X ACADEMY <span>⚡</span></div>
-    <div style="font-size: 0.7rem; color: var(--accent);">Edukasi • Signal • Kalkulator</div>
-  </div>
-  <div class="main-content" id="mainContent"></div>
-  <div class="bottom-nav" id="bottomNav"></div>
-</div>
-<div id="toastMsg" class="toast-notif">✨ Notifikasi</div>
-
-<!-- MODAL LOGIN -->
-<div id="loginModal" class="modal-overlay">
-  <div class="modal-content">
-    <h3 style="margin-bottom: 16px;">🔐 Masuk ke Trader X</h3>
-    <input type="email" id="loginEmail" placeholder="Email" value="demo@traderx.com">
-    <input type="password" id="loginPassword" placeholder="Password" value="123456">
-    <button class="btn btn-primary" id="doLoginBtn" style="margin-top: 12px;">Login</button>
-    <p style="text-align:center; margin-top:12px;">Belum punya akun? <span id="showRegisterBtn" style="color:var(--accent); cursor:pointer;">Daftar</span></p>
-  </div>
-</div>
-
-<!-- MODAL REGISTER -->
-<div id="registerModal" class="modal-overlay">
-  <div class="modal-content">
-    <h3>📝 Daftar Akun</h3>
-    <input type="text" id="regName" placeholder="Nama Lengkap">
-    <input type="email" id="regEmail" placeholder="Email">
-    <input type="password" id="regPassword" placeholder="Password">
-    <button class="btn btn-primary" id="doRegisterBtn">Daftar</button>
-    <p style="text-align:center; margin-top:12px;">Sudah punya akun? <span id="showLoginFromReg" style="color:var(--accent); cursor:pointer;">Login</span></p>
-  </div>
-</div>
-
-<!-- MODAL EDIT PROFILE -->
-<div id="editProfileModal" class="modal-overlay">
-  <div class="modal-content">
-    <h3>✏️ Edit Profil</h3>
-    <input type="text" id="editName" placeholder="Nama">
-    <button class="btn btn-primary" id="saveProfileBtn">Simpan Perubahan</button>
-    <button class="btn btn-outline" id="closeProfileModal" style="margin-top:8px;">Batal</button>
-  </div>
-</div>
-
-<!-- MODAL ADD SIGNAL (simulasi admin) -->
-<div id="addSignalModal" class="modal-overlay">
-  <div class="modal-content">
-    <h3>➕ Tambah Signal Baru</h3>
-    <input type="text" id="signalPair" placeholder="Pair (contoh: BTC/USD)" value="ETH/USD">
-    <input type="text" id="signalEntry" placeholder="Entry" value="3200">
-    <input type="text" id="signalSL" placeholder="Stop Loss" value="3100">
-    <input type="text" id="signalTP" placeholder="Take Profit" value="3400">
-    <select id="signalType">
-      <option value="FREE">FREE</option>
-      <option value="PREMIUM">PREMIUM</option>
-    </select>
-    <button class="btn btn-primary" id="confirmAddSignal">Tambah Signal</button>
-    <button class="btn btn-outline" id="closeSignalModal">Batal</button>
-  </div>
-</div>
-
-<!-- MODAL EDUKASI DETAIL -->
-<div id="eduModal" class="modal-overlay">
-  <div class="modal-content">
-    <h3 id="eduTitle">Materi</h3>
-    <p id="eduDesc"></p>
-    <button class="btn btn-outline" id="closeEduModal">Tutup</button>
-  </div>
-</div>
+<div class="app" id="appRoot"></div>
 
 <script>
-  // ---------- DATA STORE ----------
-  let currentUser = null; // { name, email, isPremium, password }
-  let users = [];
-  let signals = [];
-  let journals = [];
-
-  // load localStorage
-  function loadStorage() {
-    const storedUsers = localStorage.getItem('traderx_users');
-    if(storedUsers) users = JSON.parse(storedUsers);
-    else {
-      users = [{ name: "Trader Pro", email: "demo@traderx.com", password: "123456", isPremium: false }];
-      localStorage.setItem('traderx_users', JSON.stringify(users));
-    }
-    const storedSignals = localStorage.getItem('traderx_signals');
-    if(storedSignals) signals = JSON.parse(storedSignals);
-    else {
-      signals = [
-        { id: 1, pair: "BTC/USD", entry: "68500", sl: "67000", tp: "71000", type: "FREE", direction: "BUY", date: new Date().toISOString() },
-        { id: 2, pair: "XAU/USD", entry: "2320", sl: "2305", tp: "2350", type: "PREMIUM", direction: "BUY", date: new Date().toISOString() },
-        { id: 3, pair: "EUR/USD", entry: "1.0920", sl: "1.0880", tp: "1.0980", type: "FREE", direction: "SELL", date: new Date().toISOString() }
-      ];
-      localStorage.setItem('traderx_signals', JSON.stringify(signals));
-    }
-    const storedJournals = localStorage.getItem('traderx_journals');
-    if(storedJournals) journals = JSON.parse(storedJournals);
-    else journals = [];
-    // cek session
-    const sess = localStorage.getItem('traderx_session');
-    if(sess) {
-      try {
-        currentUser = JSON.parse(sess);
-      } catch(e) {}
-    }
-  }
-  function saveUsers() { localStorage.setItem('traderx_users', JSON.stringify(users)); }
-  function saveSignals() { localStorage.setItem('traderx_signals', JSON.stringify(signals)); }
-  function saveJournals() { localStorage.setItem('traderx_journals', JSON.stringify(journals)); }
-  function saveSession() { if(currentUser) localStorage.setItem('traderx_session', JSON.stringify(currentUser)); else localStorage.removeItem('traderx_session'); }
-
-  // Helper notifikasi
-  function showToast(msg, isError = false) {
-    const toast = document.getElementById('toastMsg');
-    toast.innerText = msg;
-    toast.style.background = isError ? '#4A1E2A' : '#1E3A2A';
-    toast.style.color = isError ? '#FF8A9F' : '#00E5A0';
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2500);
-  }
-
-  // RENDER MAIN berdasarkan tab
-  let currentTab = 'home';
-
-  function renderApp() {
-    if(!currentUser) {
-      // Tampilkan layar login/register
-      document.getElementById('mainContent').innerHTML = `
-        <div class="card" style="text-align:center; margin-top: 40px;">
-          <h2>🚀 Trader X Academy</h2>
-          <p style="margin: 12px 0;">Platform edukasi & sinyal trading profesional</p>
-          <button class="btn btn-primary" id="openLoginFromLanding">Masuk ke Akun</button>
-          <button class="btn btn-outline" id="openRegisterFromLanding" style="margin-top:12px;">Daftar Baru</button>
-        </div>
-      `;
-      document.getElementById('bottomNav').innerHTML = '';
-      document.getElementById('openLoginFromLanding')?.addEventListener('click', () => openLoginModal());
-      document.getElementById('openRegisterFromLanding')?.addEventListener('click', () => openRegisterModal());
-      return;
-    }
-    // render bottom nav
-    const navHtml = `
-      <button class="nav-item ${currentTab === 'home' ? 'active' : ''}" data-tab="home"><span class="nav-icon">🏠</span><span>Home</span></button>
-      <button class="nav-item ${currentTab === 'signal' ? 'active' : ''}" data-tab="signal"><span class="nav-icon">📡</span><span>Signal</span></button>
-      <button class="nav-item ${currentTab === 'calculator' ? 'active' : ''}" data-tab="calculator"><span class="nav-icon">🧮</span><span>Kalkulator</span></button>
-      <button class="nav-item ${currentTab === 'journal' ? 'active' : ''}" data-tab="journal"><span class="nav-icon">📓</span><span>Journal</span></button>
-      <button class="nav-item ${currentTab === 'profile' ? 'active' : ''}" data-tab="profile"><span class="nav-icon">👤</span><span>Profil</span></button>
-    `;
-    document.getElementById('bottomNav').innerHTML = navHtml;
-    document.querySelectorAll('.nav-item').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        currentTab = btn.dataset.tab;
-        renderApp();
-      });
-    });
-    // render konten berdasarkan tab
-    if(currentTab === 'home') renderHome();
-    else if(currentTab === 'signal') renderSignal();
-    else if(currentTab === 'calculator') renderCalculator();
-    else if(currentTab === 'journal') renderJournal();
-    else if(currentTab === 'profile') renderProfile();
-  }
-
-  // HOME + dashboard menu
-  function renderHome() {
-    let html = `<div class="card"><div class="flex-between"><span>👋 Welcome, ${currentUser.name}</span><span class="badge ${currentUser.isPremium ? 'badge-premium' : 'badge-free'}">${currentUser.isPremium ? 'PREMIUM' : 'FREE'}</span></div><p style="margin-top:8px;">Tingkatkan tradingmu dengan alat profesional.</p></div>`;
-    html += `<div class="grid-2">`;
-    const menus = [
-      { icon: "📡", name: "Signal Trading", tab: "signal" },
-      { icon: "🧮", name: "Forex Calculator", tab: "calculator" },
-      { icon: "📓", name: "Trading Journal", tab: "journal" },
-      { icon: "📘", name: "Edukasi", tab: "edu" },
-      { icon: "👑", name: "Membership", tab: "membership" },
-      { icon: "⚙️", name: "Profile", tab: "profile" }
-    ];
-    menus.forEach(menu => {
-      html += `<div class="card" style="cursor:pointer; text-align:center" data-menu="${menu.tab}"><div style="font-size:2rem;">${menu.icon}</div><div>${menu.name}</div></div>`;
-    });
-    html += `</div><div class="card"><div class="card-header">📊 Stat Cepat</div><div class="flex-between"><span>Total Trade</span><span>${journals.length}</span></div><div class="flex-between"><span>Winrate</span><span>${calculateWinRate()}%</span></div><div class="flex-between"><span>Profit / Loss</span><span class="${getTotalPnL()>=0?'text-accent':'text-danger'}">$${getTotalPnL().toFixed(2)}</span></div></div>`;
-    document.getElementById('mainContent').innerHTML = html;
-    document.querySelectorAll('[data-menu]').forEach(el => {
-      el.addEventListener('click', (e) => {
-        const target = el.dataset.menu;
-        if(target === 'edu') renderEdukasi();
-        else if(target === 'membership') renderMembership();
-        else if(target === 'profile') { currentTab = 'profile'; renderApp(); }
-        else if(target === 'signal') { currentTab = 'signal'; renderApp(); }
-        else if(target === 'calculator') { currentTab = 'calculator'; renderApp(); }
-        else if(target === 'journal') { currentTab = 'journal'; renderApp(); }
-        else showToast("Menu sedang dikembangkan", false);
-      });
-    });
-  }
-
-  function calculateWinRate() {
-    if(journals.length === 0) return 0;
-    const wins = journals.filter(j => j.result === 'Win').length;
-    return Math.round((wins / journals.length)*100);
-  }
-  function getTotalPnL() {
-    return journals.reduce((sum, j) => sum + (j.profitLoss || 0), 0);
-  }
-
-  // SIGNAL
-  function renderSignal() {
-    let html = `<div class="card"><div class="flex-between"><span>📡 Live Signal Trading</span><button id="addSignalBtnAdmin" class="badge" style="background:#2A3A5A;">+ Add Signal</button></div></div>`;
-    const sorted = [...signals].reverse();
-    sorted.forEach(sig => {
-      const isLocked = (sig.type === 'PREMIUM' && !currentUser.isPremium);
-      html += `<div class="signal-item ${isLocked ? 'signal-premium-locked' : ''}">
-        <div class="flex-between"><strong>${sig.pair}</strong> <span class="badge ${sig.type === 'FREE' ? 'badge-free' : 'badge-premium'}">${sig.type}</span></div>
-        <div>📈 Entry: ${sig.entry} | 🛑 SL: ${sig.sl} | 🎯 TP: ${sig.tp}</div>
-        ${isLocked ? '<div style="color:#FFB347;">🔒 Upgrade ke Premium untuk akses sinyal ini</div>' : '<button class="btn btn-outline btn-small copy-signal" style="margin-top:8px; padding:6px;">Copy Signal</button>'}
-      </div>`;
-    });
-    document.getElementById('mainContent').innerHTML = html;
-    document.getElementById('addSignalBtnAdmin')?.addEventListener('click', () => openAddSignalModal());
-    document.querySelectorAll('.copy-signal').forEach(btn => {
-      btn.addEventListener('click', () => showToast("Signal disalin ke clipboard (simulasi)", false));
-    });
-  }
-
-  // FOREX CALCULATOR (Lengkap dengan step & monthly)
-  function renderCalculator() {
-    const html = `
-      <div class="card"><div class="card-header">📊 Professional Risk Calculator</div>
-        <label>Account Balance ($)</label><input type="number" id="calcBalance" value="10000" step="100">
-        <label>Risk %</label><input type="number" id="calcRiskPercent" value="2" step="0.5">
-        <label>Risk Reward Ratio</label><select id="calcRR"><option>1:2</option><option>1:3</option><option>1:4</option></select>
-        <label>Stop Loss (pips)</label><input type="number" id="calcSLpips" value="20">
-        <label>Jumlah Step (compounding)</label><input type="number" id="calcSteps" value="5">
-        <button class="btn btn-primary" id="calcBtn">Hitung Sekarang</button>
-        <div id="calcResult" class="mt-2"></div>
-        <div id="calcDetail" class="mt-2"></div>
-        <div id="calcMonthly" class="mt-2"></div>
-        <div id="calcTips" class="mt-2" style="background:#1A2A2A; border-radius:20px; padding:12px;"></div>
-      </div>
-    `;
-    document.getElementById('mainContent').innerHTML = html;
-    document.getElementById('calcBtn').addEventListener('click', () => {
-      const balance = parseFloat(document.getElementById('calcBalance').value);
-      const riskPercent = parseFloat(document.getElementById('calcRiskPercent').value);
-      const rrRaw = document.getElementById('calcRR').value;
-      const rr = parseFloat(rrRaw.split(':')[1]);
-      const slPips = parseFloat(document.getElementById('calcSLpips').value);
-      const steps = parseInt(document.getElementById('calcSteps').value);
-      if(isNaN(balance) || isNaN(riskPercent) || isNaN(slPips)) return;
-      const riskAmount = balance * (riskPercent/100);
-      const pipValue = 10; // standar 1 lot = $10 per pip
-      let lotSize = riskAmount / (slPips * pipValue);
-      lotSize = Math.max(0.01, Math.min(50, lotSize));
-      const netStopLoss = slPips * pipValue * lotSize;
-      const netTakeProfit = netStopLoss * rr;
-      const profitPerStep = netTakeProfit;
-      let compounded = balance;
-      let stepDetails = [];
-      for(let i=1;i<=steps;i++) {
-        compounded += profitPerStep;
-        stepDetails.push(`Step ${i}: +$${profitPerStep.toFixed(2)} → $${compounded.toFixed(2)}`);
-      }
-      const monthlyProjection = compounded - balance;
-      document.getElementById('calcResult').innerHTML = `<div class="flex-between"><span>💰 Amount at Risk:</span><span>$${riskAmount.toFixed(2)}</span></div>
-      <div class="flex-between"><span>📐 Pip Value:</span><span>$${pipValue.toFixed(2)} / lot</span></div>
-      <div class="flex-between"><span>⚖️ Lot Size:</span><span>${lotSize.toFixed(3)}</span></div>
-      <div class="flex-between"><span>🛑 Net Stop Loss:</span><span>$${netStopLoss.toFixed(2)}</span></div>
-      <div class="flex-between"><span>🎯 Net Take Profit:</span><span>$${netTakeProfit.toFixed(2)}</span></div>`;
-      document.getElementById('calcDetail').innerHTML = `<strong>📈 Profit Step (Compounding)</strong><br>${stepDetails.join('<br>')}`;
-      document.getElementById('calcMonthly').innerHTML = `<strong>📅 Monthly Projection (${steps} trades win beruntun):</strong><br>💰 Profit: +$${monthlyProjection.toFixed(2)} | New Balance: $${compounded.toFixed(2)}`;
-      let tips = "💡 Tips: Gunakan risk 1-2% per trade, jaga disiplin.";
-      if(riskPercent > 3) tips = "⚠️ Risk di atas 3% cukup tinggi, pertimbangkan kembali.";
-      if(lotSize < 0.05) tips = "🔍 Lot kecil aman untuk pemula, fokus konsistensi.";
-      document.getElementById('calcTips').innerHTML = tips;
-    });
-  }
-
-  // TRADING JOURNAL
-  function renderJournal() {
-    let html = `<div class="card"><div class="card-header">📓 Trading Journal</div>
-      <input type="text" id="journalPair" placeholder="Pair (EUR/USD, BTC/USD)">
-      <input type="number" id="journalEntry" placeholder="Entry Price">
-      <input type="number" id="journalSL" placeholder="Stop Loss">
-      <input type="number" id="journalTP" placeholder="Take Profit">
-      <input type="number" id="journalProfit" placeholder="Profit/Loss ($)">
-      <select id="journalResult"><option>Win</option><option>Loss</option></select>
-      <button class="btn btn-primary" id="addJournalBtn">+ Tambah Trade</button>
-      <hr style="margin:16px 0;">
-      <div id="journalList"></div>
-    </div>`;
-    document.getElementById('mainContent').innerHTML = html;
-    function refreshJournalList() {
-      let listHtml = `<div class="flex-between"><span>Total Trade: ${journals.length}</span><span>Winrate: ${calculateWinRate()}%</span><span>Total P&L: $${getTotalPnL().toFixed(2)}</span></div>`;
-      journals.slice().reverse().forEach(j => {
-        listHtml += `<div class="signal-item" style="margin-top:8px;"><div class="flex-between"><strong>${j.pair}</strong> <span class="${j.result === 'Win' ? 'text-accent' : 'text-danger'}">${j.result} $${j.profitLoss}</span></div><div>Entry: ${j.entry} | SL: ${j.sl} | TP: ${j.tp}</div></div>`;
-      });
-      document.getElementById('journalList').innerHTML = listHtml;
-    }
-    document.getElementById('addJournalBtn').addEventListener('click', () => {
-      const pair = document.getElementById('journalPair').value.trim();
-      const entry = parseFloat(document.getElementById('journalEntry').value);
-      const sl = parseFloat(document.getElementById('journalSL').value);
-      const tp = parseFloat(document.getElementById('journalTP').value);
-      const profitLoss = parseFloat(document.getElementById('journalProfit').value);
-      const result = document.getElementById('journalResult').value;
-      if(!pair || isNaN(entry)) { showToast("Isi pair dan entry", true); return; }
-      journals.push({ id: Date.now(), pair, entry, sl, tp, profitLoss, result, date: new Date().toISOString() });
-      saveJournals();
-      refreshJournalList();
-      document.getElementById('journalPair').value = '';
-      document.getElementById('journalEntry').value = '';
-      document.getElementById('journalSL').value = '';
-      document.getElementById('journalTP').value = '';
-      document.getElementById('journalProfit').value = '';
-      showToast("Trade tersimpan!", false);
-    });
-    refreshJournalList();
-  }
-
-  // EDUKASI
-  const edukasiData = {
-    "Forex": "Forex adalah pasar valuta asing. Pelajari analisa teknikal & fundamental. Pair mayor: EUR/USD, GBP/USD.",
-    "Crypto": "Bitcoin, Ethereum, Altcoin. Volatilitas tinggi, gunakan risk management ketat.",
-    "Saham": "Investasi saham jangka panjang. Analisa laporan keuangan & sentimen pasar."
-  };
-  function renderEdukasi() {
-    let html = `<div class="card"><div class="card-header">📚 Pusat Edukasi</div>`;
-    for(let [key, desc] of Object.entries(edukasiData)) {
-      html += `<div class="signal-item" data-edu="${key}" style="cursor:pointer;"><strong>📖 ${key}</strong><p>${desc.substring(0,60)}...</p></div>`;
-    }
-    html += `</div>`;
-    document.getElementById('mainContent').innerHTML = html;
-    document.querySelectorAll('[data-edu]').forEach(el => {
-      el.addEventListener('click', () => {
-        const title = el.dataset.edu;
-        document.getElementById('eduTitle').innerText = title;
-        document.getElementById('eduDesc').innerText = edukasiData[title];
-        document.getElementById('eduModal').classList.add('active');
-      });
-    });
-    document.getElementById('closeEduModal').onclick = () => document.getElementById('eduModal').classList.remove('active');
-  }
-
-  // MEMBERSHIP
-  function renderMembership() {
-    const html = `<div class="card"><div class="card-header">👑 Membership Plan</div>
-      <div class="flex-between"><span>Status saat ini:</span><span class="badge ${currentUser.isPremium ? 'badge-premium' : 'badge-free'}">${currentUser.isPremium ? 'PREMIUM' : 'FREE'}</span></div>
-      <div style="background:#1A1F2A; border-radius:24px; padding:16px; margin-top:12px;">
-        <h3>✨ Premium Features</h3>
-        <li>✅ Akses semua sinyal PREMIUM</li>
-        <li>✅ Materi eksklusif & webinar</li>
-        <li>✅ Kalkulator lanjutan</li>
-        <li>✅ Support prioritas</li>
-      </div>
-      ${!currentUser.isPremium ? '<button class="btn btn-primary" id="upgradePremiumBtn" style="margin-top:20px;">Upgrade ke Premium (Simulasi)</button>' : '<p class="text-accent">Terima kasih telah menjadi member Premium!</p>'}
-    </div>`;
-    document.getElementById('mainContent').innerHTML = html;
-    document.getElementById('upgradePremiumBtn')?.addEventListener('click', () => {
-      currentUser.isPremium = true;
-      const index = users.findIndex(u => u.email === currentUser.email);
-      if(index !== -1) users[index].isPremium = true;
-      saveUsers();
-      saveSession();
-      showToast("✅ Akun Premium aktif! Akses semua sinyal.", false);
-      renderApp();
-    });
-  }
-
-  // PROFILE
-  function renderProfile() {
-    const html = `<div class="card"><div class="card-header">👤 Profil Saya</div>
-      <div><strong>Nama:</strong> ${currentUser.name}</div>
-      <div><strong>Email:</strong> ${currentUser.email}</div>
-      <div><strong>Tipe Akun:</strong> ${currentUser.isPremium ? 'Premium' : 'Free'}</div>
-      <button class="btn btn-outline" id="editProfileBtn" style="margin-top:16px;">✏️ Edit Nama</button>
-      <button class="btn btn-danger" id="logoutBtn" style="margin-top:12px;">🚪 Logout</button>
-    </div>`;
-    document.getElementById('mainContent').innerHTML = html;
-    document.getElementById('editProfileBtn').addEventListener('click', () => {
-      document.getElementById('editName').value = currentUser.name;
-      document.getElementById('editProfileModal').classList.add('active');
-    });
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      currentUser = null;
-      localStorage.removeItem('traderx_session');
-      renderApp();
-      showToast("Anda telah logout", false);
-    });
-    document.getElementById('saveProfileBtn').onclick = () => {
-      const newName = document.getElementById('editName').value.trim();
-      if(newName) {
-        currentUser.name = newName;
-        const idx = users.findIndex(u => u.email === currentUser.email);
-        if(idx !== -1) users[idx].name = newName;
-        saveUsers();
-        saveSession();
-        showToast("Nama berhasil diupdate");
-        renderApp();
-        document.getElementById('editProfileModal').classList.remove('active');
-      }
+    // ======================== STORAGE KEYS ========================
+    const STORAGE = {
+        USERS: "traderX_users",
+        CURRENT: "traderX_current",
+        SIGNALS: "traderX_signals",
+        JOURNALS: "traderX_journals",
+        ACTIVITIES: "traderX_activities"
     };
-    document.getElementById('closeProfileModal').onclick = () => document.getElementById('editProfileModal').classList.remove('active');
-  }
 
-  // MODAL LOGIC
-  function openLoginModal() { document.getElementById('loginModal').classList.add('active'); }
-  function openRegisterModal() { document.getElementById('registerModal').classList.add('active'); }
-  function openAddSignalModal() { document.getElementById('addSignalModal').classList.add('active'); }
+    // Default data
+    const defaultSignals = [
+        { id: "s1", pair: "BTC/USD", entry: "43200", tp: "45000", sl: "42500", status: "OPEN", premium: true, createdAt: Date.now() - 3600000 },
+        { id: "s2", pair: "XAUUSD", entry: "1985", tp: "2000", sl: "1970", status: "WIN", premium: false, createdAt: Date.now() - 86400000 },
+        { id: "s3", pair: "EUR/USD", entry: "1.0890", tp: "1.0950", sl: "1.0850", status: "LOSS", premium: false, createdAt: Date.now() - 172800000 },
+        { id: "s4", pair: "ETH/USD", entry: "3120", tp: "3300", sl: "3050", status: "OPEN", premium: true, createdAt: Date.now() - 7200000 }
+    ];
 
-  document.getElementById('doLoginBtn')?.addEventListener('click', () => {
-    const email = document.getElementById('loginEmail').value.trim();
-    const pass = document.getElementById('loginPassword').value;
-    const user = users.find(u => u.email === email && u.password === pass);
-    if(user) {
-      currentUser = { ...user };
-      saveSession();
-      document.getElementById('loginModal').classList.remove('active');
-      renderApp();
-      showToast(`Selamat datang, ${currentUser.name}`);
-    } else showToast("Email atau password salah", true);
-  });
-  document.getElementById('doRegisterBtn')?.addEventListener('click', () => {
-    const name = document.getElementById('regName').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const pass = document.getElementById('regPassword').value;
-    if(!name || !email || !pass) { showToast("Semua harus diisi", true); return; }
-    if(users.find(u=> u.email === email)) { showToast("Email sudah terdaftar", true); return; }
-    const newUser = { name, email, password: pass, isPremium: false };
-    users.push(newUser);
-    saveUsers();
-    currentUser = { ...newUser };
-    saveSession();
-    document.getElementById('registerModal').classList.remove('active');
-    renderApp();
-    showToast("Registrasi berhasil! Selamat datang.");
-  });
-  document.getElementById('showRegisterBtn')?.addEventListener('click', () => { document.getElementById('loginModal').classList.remove('active'); openRegisterModal(); });
-  document.getElementById('showLoginFromReg')?.addEventListener('click', () => { document.getElementById('registerModal').classList.remove('active'); openLoginModal(); });
-  document.getElementById('closeSignalModal')?.addEventListener('click', () => document.getElementById('addSignalModal').classList.remove('active'));
-  document.getElementById('confirmAddSignal')?.addEventListener('click', () => {
-    const pair = document.getElementById('signalPair').value;
-    const entry = document.getElementById('signalEntry').value;
-    const sl = document.getElementById('signalSL').value;
-    const tp = document.getElementById('signalTP').value;
-    const type = document.getElementById('signalType').value;
-    if(pair && entry) {
-      signals.push({ id: Date.now(), pair, entry, sl, tp, type, direction: "BUY", date: new Date().toISOString() });
-      saveSignals();
-      showToast("Signal baru ditambahkan!");
-      document.getElementById('addSignalModal').classList.remove('active');
-      if(currentTab === 'signal') renderSignal();
-    } else showToast("Lengkapi data", true);
-  });
+    const defaultActivities = [
+        { id: "act1", text: "🔥 Kamu profit +$20 di EURUSD", timestamp: Date.now() - 7200000 },
+        { id: "act2", text: "📡 Signal BTC Aktif: Entry 43200", timestamp: Date.now() - 3600000 },
+        { id: "act3", text: "🏆 Winrate naik 5% dalam 7 hari", timestamp: Date.now() - 1800000 }
+    ];
 
-  // init
-  loadStorage();
-  renderApp();
+    function initStorage() {
+        if (!localStorage.getItem(STORAGE.USERS)) {
+            localStorage.setItem(STORAGE.USERS, JSON.stringify([
+                { email: "demo@traderx.com", password: "demo123", name: "Demo Trader", role: "free", avatar: "", balance: 12500, profitToday: 340, totalTrades: 28, winrate: 64 },
+                { email: "premium@traderx.com", password: "premium", name: "Elite Member", role: "premium", avatar: "", balance: 87200, profitToday: 2150, totalTrades: 142, winrate: 78 }
+            ]));
+        }
+        if (!localStorage.getItem(STORAGE.SIGNALS)) localStorage.setItem(STORAGE.SIGNALS, JSON.stringify(defaultSignals));
+        if (!localStorage.getItem(STORAGE.JOURNALS)) localStorage.setItem(STORAGE.JOURNALS, JSON.stringify([]));
+        if (!localStorage.getItem(STORAGE.ACTIVITIES)) localStorage.setItem(STORAGE.ACTIVITIES, JSON.stringify(defaultActivities));
+    }
+    initStorage();
+
+    let currentUser = JSON.parse(localStorage.getItem(STORAGE.CURRENT));
+    let currentPage = "home";
+    let chartInstance = null;
+    let balanceChartInstance = null;
+    let liveInterval = null;
+
+    function getUsers() { return JSON.parse(localStorage.getItem(STORAGE.USERS)); }
+    function saveUser(user) {
+        let users = getUsers();
+        const idx = users.findIndex(u => u.email === user.email);
+        if (idx !== -1) users[idx] = user;
+        localStorage.setItem(STORAGE.USERS, JSON.stringify(users));
+        localStorage.setItem(STORAGE.CURRENT, JSON.stringify(user));
+        currentUser = user;
+    }
+    function showToast(msg, isError = false) {
+        let toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `${isError ? '⚠️ ' : '✅ '}${msg}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2600);
+    }
+
+    function addActivity(text) {
+        let acts = JSON.parse(localStorage.getItem(STORAGE.ACTIVITIES));
+        acts.unshift({ id: Date.now(), text, timestamp: Date.now() });
+        if (acts.length > 15) acts.pop();
+        localStorage.setItem(STORAGE.ACTIVITIES, JSON.stringify(acts));
+    }
+
+    // ======================== RENDER ENGINE ========================
+    function render() {
+        if (!currentUser) { renderAuth(); return; }
+        const root = document.getElementById('appRoot');
+        let content = '';
+        switch (currentPage) {
+            case 'home': content = renderHome(); break;
+            case 'signals': content = renderSignals(); break;
+            case 'journal': content = renderJournal(); break;
+            case 'calculator': content = renderCalculator(); break;
+            case 'education': content = renderEducation(); break;
+            case 'membership': content = renderMembership(); break;
+            case 'profile': content = renderProfile(); break;
+            default: content = renderHome();
+        }
+        root.innerHTML = content + renderBottomNav();
+        attachNavEvents();
+        attachPageEvents();
+        if (currentPage === 'home') {
+            initChart();
+            initBalanceChart();
+            startLiveUpdates();
+        } else {
+            if (liveInterval) clearInterval(liveInterval);
+        }
+    }
+
+    // ======================== AUTH ========================
+    function renderAuth() {
+        const root = document.getElementById('appRoot');
+        root.innerHTML = `
+            <div class="container" style="padding: 40px 20px;">
+                <div class="card" style="text-align:center;">
+                    <h1 style="font-size: 32px; background:linear-gradient(135deg,#00FFAA,#00D4FF); -webkit-background-clip:text; background-clip:text; color:transparent;">Trader X Academy</h1>
+                    <p class="mt-2">Social Trading + Dashboard Pro</p>
+                </div>
+                <div class="card" id="authBox">
+                    <h3 id="authTitle">Login</h3>
+                    <input type="text" id="authName" placeholder="Nama" style="display:none;">
+                    <input type="email" id="authEmail" placeholder="Email">
+                    <input type="password" id="authPass" placeholder="Password">
+                    <button class="btn btn-primary" id="authBtn">Login</button>
+                    <p class="flex-between mt-2"><a href="#" id="switchAuth" style="color:#00FFAA;">Belum punya akun? Daftar</a></p>
+                    <p class="small" style="font-size:12px; text-align:center;">demo@traderx.com / demo123 | premium@traderx.com / premium</p>
+                </div>
+            </div>
+        `;
+        let isLogin = true;
+        const title = document.getElementById('authTitle');
+        const btn = document.getElementById('authBtn');
+        const switchLink = document.getElementById('switchAuth');
+        const nameField = document.getElementById('authName');
+        const emailInp = document.getElementById('authEmail');
+        const passInp = document.getElementById('authPass');
+
+        function handleAuth() {
+            const email = emailInp.value.trim();
+            const pass = passInp.value.trim();
+            if (!email || !pass) return showToast("Isi semua field", true);
+            const users = getUsers();
+            if (isLogin) {
+                const user = users.find(u => u.email === email && u.password === pass);
+                if (user) {
+                    localStorage.setItem(STORAGE.CURRENT, JSON.stringify(user));
+                    currentUser = user;
+                    showToast(`Selamat datang ${user.name}`);
+                    render();
+                } else showToast("Email atau password salah", true);
+            } else {
+                if (users.find(u => u.email === email)) return showToast("Email sudah terdaftar", true);
+                const name = nameField.value.trim() || email.split('@')[0];
+                const newUser = { email, password: pass, name, role: "free", avatar: "", balance: 5000, profitToday: 0, totalTrades: 0, winrate: 0 };
+                users.push(newUser);
+                localStorage.setItem(STORAGE.USERS, JSON.stringify(users));
+                showToast("Registrasi berhasil, silakan login");
+                isLogin = true;
+                title.innerText = "Login";
+                btn.innerText = "Login";
+                switchLink.innerText = "Belum punya akun? Daftar";
+                nameField.style.display = "none";
+                emailInp.value = email;
+                passInp.value = "";
+            }
+        }
+        btn.onclick = handleAuth;
+        switchLink.onclick = (e) => {
+            e.preventDefault();
+            isLogin = !isLogin;
+            title.innerText = isLogin ? "Login" : "Register";
+            btn.innerText = isLogin ? "Login" : "Daftar";
+            switchLink.innerText = isLogin ? "Belum punya akun? Daftar" : "Sudah punya akun? Login";
+            nameField.style.display = isLogin ? "none" : "block";
+        };
+    }
+
+    // ======================== HOME YANG SUPER INTERAKTIF ========================
+    function renderHome() {
+        const journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
+        const totalTrades = journals.length;
+        const wins = journals.filter(j => j.profit > 0).length;
+        const winrate = totalTrades ? ((wins / totalTrades) * 100).toFixed(0) : 0;
+        const totalProfit = journals.reduce((s, j) => s + j.profit, 0);
+        currentUser.totalTrades = totalTrades;
+        currentUser.winrate = parseInt(winrate);
+        currentUser.profitToday = journals.filter(j => new Date(j.date).toDateString() === new Date().toDateString()).reduce((s,j)=>s+j.profit,0);
+        saveUser(currentUser);
+
+        // Video feed (YouTube embed)
+        const videos = [
+            { title: "Smart Money Concept", channel: "Trader X Academy", embed: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+            { title: "Scalping Strategy Forex", channel: "Pro Trader", embed: "https://www.youtube.com/embed/3JZ_D3ELwOQ" },
+            { title: "Analisa Bitcoin Hari Ini", channel: "Crypto News", embed: "https://www.youtube.com/embed/9bZkp7q19f0" }
+        ];
+        // Market news dengan gambar dummy (unsplash)
+        const news = [
+            { title: "Gold Menuju ATH?", img: "https://picsum.photos/id/26/400/200" },
+            { title: "BTC Dominance 52%", img: "https://picsum.photos/id/104/400/200" },
+            { title: "EURUSD Volatilitas Tinggi", img: "https://picsum.photos/id/48/400/200" }
+        ];
+        // Activity feed
+        let activities = JSON.parse(localStorage.getItem(STORAGE.ACTIVITIES)).slice(0, 5);
+
+        return `
+            <div class="container page">
+                <div class="flex-between">
+                    <div><h2>Welcome, ${currentUser.name}</h2><p>${currentUser.role === 'premium' ? '💎 Premium' : '🆓 Free'}</p></div>
+                    <div class="badge ${currentUser.role === 'premium' ? 'badge-premium' : ''}">${currentUser.role.toUpperCase()}</div>
+                </div>
+                <div class="card">
+                    <div class="flex-between">
+                        <span>💰 Balance</span>
+                        <span class="stat-value" id="balanceDisplay">$${currentUser.balance}</span>
+                        <span class="edit-icon" id="editBalanceBtn">✏️ Edit</span>
+                    </div>
+                    <div class="flex-between"><span>📈 Today Profit</span><span class="${currentUser.profitToday>=0?'profit-positive':'profit-negative'}">$${currentUser.profitToday}</span></div>
+                    <div class="flex-between"><span>📊 Total Trades</span><span>${currentUser.totalTrades}</span></div>
+                    <div class="flex-between"><span>🏆 Winrate</span><span>${currentUser.winrate}%</span></div>
+                </div>
+                <!-- Balance Chart (Riwayat Balance) -->
+                <div class="card">
+                    <div class="flex-between"><span>📈 Balance History (dari journal)</span><span style="font-size:12px;">Cumulative</span></div>
+                    <canvas id="balanceHistoryChart" height="100"></canvas>
+                </div>
+                <!-- Video Feed (Carousel) -->
+                <div class="card">
+                    <div class="flex-between"><span>🎥 Update & Edukasi Video</span><span style="color:#00FFAA;">▶️ Trending</span></div>
+                    <div class="video-carousel">
+                        ${videos.map(v => `
+                            <div class="video-card">
+                                <div class="video-thumb"><iframe src="${v.embed}" frameborder="0" allowfullscreen></iframe></div>
+                                <div class="video-info"><div class="video-title">${v.title}</div><div class="video-channel">${v.channel}</div></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <!-- Market News (Gambar) -->
+                <div class="card">
+                    <div class="flex-between"><span>🖼️ Market Update</span><span>Hot News 🔥</span></div>
+                    <div class="news-carousel">
+                        ${news.map(n => `
+                            <div class="news-card">
+                                <img class="news-img" src="${n.img}" alt="news">
+                                <div class="news-title">${n.title}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <!-- Activity Feed -->
+                <div class="card">
+                    <div class="flex-between"><span>⚡ Aktivitas Terbaru</span><span>Live</span></div>
+                    <div id="activityFeed">
+                        ${activities.map(act => `<div class="activity-item">${act.text}<br><span class="small" style="font-size:10px;">${new Date(act.timestamp).toLocaleTimeString()}</span></div>`).join('')}
+                    </div>
+                </div>
+                <!-- Quick Actions -->
+                <div class="grid-2">
+                    <div class="quick-btn" data-nav="calculator">🧮 Kalkulator</div>
+                    <div class="quick-btn" data-nav="journal">📓 Jurnal</div>
+                    <div class="quick-btn" data-nav="signals">📡 Signal</div>
+                    <div class="quick-btn" data-nav="membership">👑 Upgrade</div>
+                </div>
+                <div class="card">
+                    <div class="flex-between"><span>🌍 Market Snapshot (Live)</span><span id="liveMarketTime">Updating...</span></div>
+                    <div id="liveMarketData">
+                        <div class="market-item">BTC/USD <span class="up">+2.4%</span></div>
+                        <div class="market-item">XAUUSD <span class="up">+0.8%</span></div>
+                        <div class="market-item">EUR/USD <span class="down">-0.3%</span></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Chart untuk balance history dari journal
+    function initBalanceChart() {
+        const ctx = document.getElementById('balanceHistoryChart')?.getContext('2d');
+        if (!ctx) return;
+        if (balanceChartInstance) balanceChartInstance.destroy();
+        const journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
+        // sort by date ascending
+        journals.sort((a,b) => a.date - b.date);
+        let balance = currentUser.balance;
+        let cumulative = [];
+        let labels = [];
+        let running = balance;
+        // kita ambil dari balance awal dikurangi total profit? lebih baik hitung cumulative profit dari awal
+        let totalProfitSum = 0;
+        const profitPoints = [];
+        journals.forEach((j, idx) => {
+            totalProfitSum += j.profit;
+            profitPoints.push(totalProfitSum);
+            labels.push(`T${idx+1}`);
+        });
+        if (profitPoints.length === 0) {
+            profitPoints.push(0);
+            labels.push('Start');
+        }
+        balanceChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: { labels: labels, datasets: [{ label: 'Cumulative P&L', data: profitPoints, borderColor: '#00FFAA', backgroundColor: 'rgba(0,255,170,0.1)', tension: 0.3, fill: true }] },
+            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#1E293B' }, ticks: { color: '#94A3B8' } }, x: { ticks: { color: '#94A3B8' } } } }
+        });
+    }
+
+    // Portfolio Chart (tetap ada)
+    function initChart() {
+        const ctx = document.getElementById('performanceChart')?.getContext('2d');
+        if (!ctx) return;
+        if (chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: 'Profit', data: [120, 340, 580, 820], borderColor: '#00FFAA', backgroundColor: 'rgba(0,255,170,0.1)', tension: 0.3, fill: true }] },
+            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#1E293B' }, ticks: { color: '#94A3B8' } }, x: { ticks: { color: '#94A3B8' } } } }
+        });
+    }
+
+    // Live updates (simulasi setiap 10 detik)
+    function startLiveUpdates() {
+        if (liveInterval) clearInterval(liveInterval);
+        liveInterval = setInterval(() => {
+            // update market random
+            const btcChange = (Math.random() * 3 - 1).toFixed(1);
+            const goldChange = (Math.random() * 2 - 0.5).toFixed(1);
+            const eurChange = (Math.random() * 2 - 1).toFixed(1);
+            const marketDiv = document.getElementById('liveMarketData');
+            if (marketDiv) {
+                marketDiv.innerHTML = `
+                    <div class="market-item">BTC/USD <span class="${btcChange >= 0 ? 'up' : 'down'}">${btcChange >= 0 ? '+' : ''}${btcChange}%</span></div>
+                    <div class="market-item">XAUUSD <span class="${goldChange >= 0 ? 'up' : 'down'}">${goldChange >= 0 ? '+' : ''}${goldChange}%</span></div>
+                    <div class="market-item">EUR/USD <span class="${eurChange >= 0 ? 'up' : 'down'}">${eurChange >= 0 ? '+' : ''}${eurChange}%</span></div>
+                `;
+            }
+            const timeSpan = document.getElementById('liveMarketTime');
+            if (timeSpan) timeSpan.innerText = new Date().toLocaleTimeString();
+            // kadang tambah activity random
+            if (Math.random() > 0.6) {
+                const actions = ["🔥 BTC naik cepat!", "📉 EURUSD turun 20 pips", "🏆 Profit harian +$50", "📡 Signal baru untuk GBPJPY"];
+                const randomAct = actions[Math.floor(Math.random() * actions.length)];
+                addActivity(randomAct);
+                const feedDiv = document.getElementById('activityFeed');
+                if (feedDiv) {
+                    let acts = JSON.parse(localStorage.getItem(STORAGE.ACTIVITIES)).slice(0, 5);
+                    feedDiv.innerHTML = acts.map(act => `<div class="activity-item">${act.text}<br><span class="small" style="font-size:10px;">${new Date(act.timestamp).toLocaleTimeString()}</span></div>`).join('');
+                }
+            }
+        }, 10000);
+    }
+
+    function attachBalanceEdit() {
+        const editBtn = document.getElementById('editBalanceBtn');
+        if (editBtn) {
+            editBtn.onclick = () => {
+                let newBalance = prompt("Masukkan balance baru (USD):", currentUser.balance);
+                if (newBalance !== null && !isNaN(parseFloat(newBalance))) {
+                    currentUser.balance = parseFloat(newBalance);
+                    saveUser(currentUser);
+                    addActivity(`Balance diubah menjadi $${currentUser.balance}`);
+                    showToast("Balance diperbarui!");
+                    render();
+                } else if (newBalance !== null) showToast("Masukkan angka valid", true);
+            };
+        }
+    }
+
+    // ======================== SIGNAL ========================
+    function renderSignals() {
+        let signals = JSON.parse(localStorage.getItem(STORAGE.SIGNALS));
+        signals.sort((a,b) => b.createdAt - a.createdAt);
+        return `<div class="container page"><h2>📡 Signal Trading</h2>${signals.map(sig => `<div class="card"><div class="flex-between"><b>${sig.pair}</b>${sig.premium ? '<span class="badge-premium">PREMIUM</span>' : ''}</div><div>Entry: ${sig.entry} | TP: ${sig.tp} | SL: ${sig.sl}</div><div>Status: <span class="${sig.status === 'WIN' ? 'profit-positive' : (sig.status === 'LOSS' ? 'profit-negative' : '')}">${sig.status}</span></div>${sig.premium && currentUser.role !== 'premium' ? '<p class="mt-2"><small>🔒 Upgrade Premium</small></p>' : ''}</div>`).join('')}</div>`;
+    }
+
+    // ======================== JURNAL ========================
+    function renderJournal() {
+        let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
+        return `<div class="container page"><div class="flex-between"><h2>📓 Trading Journal</h2><button id="addJournalBtn" class="btn-primary" style="width:auto;">+</button></div><div class="card"><div class="flex-between"><span>📊 ${journals.length} trades</span></div></div><div id="journalList">${journals.slice().reverse().map(j => `<div class="journal-entry"><div class="flex-between"><div><strong>${j.pair}</strong> • ${j.position}</div><div class="${j.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${j.profit >= 0 ? '+' : ''}$${j.profit}</div></div><div class="flex-between mt-2"><span class="small">${new Date(j.date).toLocaleString()}</span><button class="delJournal btn-outline" data-id="${j.id}" style="width:auto;">Hapus</button></div></div>`).join('')}</div></div>`;
+    }
+    function attachJournalEvents() {
+        document.getElementById('addJournalBtn')?.addEventListener('click', () => {
+            const modal = document.createElement('div'); modal.className = 'modal';
+            modal.innerHTML = `<div class="modal-content"><h3>📝 New Trade</h3><input id="jPair" placeholder="Pair"><select id="jPosition"><option>LONG</option><option>SHORT</option></select><input type="number" id="jProfit" placeholder="Profit/Loss USD"><button id="saveJournalModal" class="btn-primary">Simpan</button><button id="closeJournalModal" class="btn-outline">Batal</button></div>`;
+            document.body.appendChild(modal);
+            document.getElementById('saveJournalModal').onclick = () => {
+                let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS));
+                journals.push({ id: Date.now(), userEmail: currentUser.email, pair: document.getElementById('jPair').value, position: document.getElementById('jPosition').value, profit: parseFloat(document.getElementById('jProfit').value), date: Date.now() });
+                localStorage.setItem(STORAGE.JOURNALS, JSON.stringify(journals));
+                addActivity(`Menambahkan trade ${document.getElementById('jPair').value} profit $${document.getElementById('jProfit').value}`);
+                showToast("Jurnal tersimpan");
+                modal.remove();
+                render();
+            };
+            document.getElementById('closeJournalModal').onclick = () => modal.remove();
+        });
+        document.querySelectorAll('.delJournal').forEach(btn => btn.onclick = () => {
+            let id = btn.dataset.id;
+            let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS));
+            journals = journals.filter(j => j.id != id);
+            localStorage.setItem(STORAGE.JOURNALS, JSON.stringify(journals));
+            render();
+        });
+    }
+
+    // ======================== KALKULATOR ========================
+    function renderCalculator() { return `<div class="container page"><h2>🧮 Forex Calculator</h2><div class="card"><input id="calcBalance" placeholder="Balance"><input id="calcRisk" placeholder="Risk %"><button id="calcBtn" class="btn-primary">Hitung</button><div id="calcResult" class="mt-2"></div></div></div>`; }
+    function attachCalculatorEvents() {
+        document.getElementById('calcBtn')?.addEventListener('click', () => {
+            let bal = parseFloat(document.getElementById('calcBalance').value);
+            let risk = parseFloat(document.getElementById('calcRisk').value);
+            if (!isNaN(bal) && !isNaN(risk)) {
+                let lot = (bal * (risk/100) / 100).toFixed(2);
+                document.getElementById('calcResult').innerHTML = `<span class="profit-positive">Lot rekomendasi: ${lot}</span>`;
+            }
+        });
+    }
+
+    // ======================== EDUKASI ========================
+    function renderEducation() { return `<div class="container page"><h2>📘 Edukasi</h2><div class="card">Forex Dasar</div><div class="card">Smart Money Concept (Premium)</div></div>`; }
+
+    // ======================== MEMBERSHIP ========================
+    function renderMembership() {
+        return `<div class="container page"><h2>👑 Membership</h2><div class="card"><h3>${currentUser.role === 'premium' ? 'Premium Member' : 'Free Member'}</h3><button id="upgradeBtn" class="btn-primary">Upgrade Premium</button></div></div>`;
+    }
+    function attachMembershipEvents() {
+        document.getElementById('upgradeBtn')?.addEventListener('click', () => { currentUser.role = 'premium'; saveUser(currentUser); showToast("Premium aktif!"); render(); });
+    }
+
+    // ======================== PROFILE ========================
+    function renderProfile() { return `<div class="container page"><h2>⚙️ Profile</h2><div class="card"><div>Nama: ${currentUser.name}</div><div>Email: ${currentUser.email}</div><button id="logoutBtn" class="btn-outline">Logout</button></div></div>`; }
+    function attachProfileEvents() {
+        document.getElementById('logoutBtn')?.addEventListener('click', () => { localStorage.removeItem(STORAGE.CURRENT); currentUser = null; render(); });
+    }
+
+    // ======================== NAVIGATION ========================
+    function renderBottomNav() {
+        const items = [
+            { id: 'home', icon: '🏠', label: 'Home' },
+            { id: 'signals', icon: '📊', label: 'Signal' },
+            { id: 'journal', icon: '📓', label: 'Journal' },
+            { id: 'calculator', icon: '🧮', label: 'Calc' },
+            { id: 'profile', icon: '👤', label: 'Profile' }
+        ];
+        return `<div class="bottom-nav">${items.map(item => `<button class="nav-item ${currentPage === item.id ? 'active' : ''}" data-nav="${item.id}"><span>${item.icon}</span><span>${item.label}</span></button>`).join('')}</div>`;
+    }
+
+    function attachNavEvents() {
+        document.querySelectorAll('[data-nav]').forEach(el => {
+            el.addEventListener('click', (e) => { const nav = el.dataset.nav; if (nav) { currentPage = nav; render(); } });
+        });
+        if (currentPage === 'home') attachBalanceEdit();
+        if (currentPage === 'journal') attachJournalEvents();
+        if (currentPage === 'calculator') attachCalculatorEvents();
+        if (currentPage === 'membership') attachMembershipEvents();
+        if (currentPage === 'profile') attachProfileEvents();
+    }
+    function attachPageEvents() {}
+
+    render();
 </script>
 </body>
 </html>
