@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="theme-color" content="#0A0F1F">
-    <title>Trader X Academy | Kalkulator Pro + Social Trading</title>
+    <title>Trader X Academy | Edukasi Premium + Kalkulator</title>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
@@ -238,7 +238,56 @@
         .nav-item.active { color: #00FFAA; background: rgba(0,255,170,0.12); }
         .nav-item span:first-child { font-size: 22px; }
 
-        /* Kalkulator hasil */
+        /* ========== EDUKASI STYLE BARU (seperti gambar) ========== */
+        .edu-card {
+            background: rgba(18, 25, 45, 0.7);
+            border-radius: 28px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0,255,170,0.2);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .edu-card:hover {
+            border-color: #00FFAA;
+            transform: translateX(4px);
+        }
+        .edu-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #00FFAA;
+        }
+        .edu-desc {
+            font-size: 13px;
+            color: #CBD5E1;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+        .edu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+        .edu-badge {
+            background: #1E293B;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .edu-number {
+            font-size: 14px;
+            font-weight: 800;
+            color: #00FFAA;
+        }
+        .premium-lock {
+            filter: blur(3px);
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        /* kalkulator result */
         .result-box {
             background: rgba(0,255,170,0.08);
             border-radius: 24px;
@@ -268,7 +317,8 @@
         CURRENT: "traderX_current",
         SIGNALS: "traderX_signals",
         JOURNALS: "traderX_journals",
-        ACTIVITIES: "traderX_activities"
+        ACTIVITIES: "traderX_activities",
+        EDU_PROGRESS: "traderX_edu_progress"
     };
 
     const defaultSignals = [
@@ -281,6 +331,17 @@
         { id: "act2", text: "📡 Signal BTC Aktif: Entry 43200", timestamp: Date.now() - 3600000 }
     ];
 
+    // Data materi edukasi yang kaya (mirip contoh gambar)
+    const educationData = [
+        { id: "edu1", title: "Teknik Manajemen Risiko untuk Trader", desc: "Manajemen risiko adalah upaya menyeimbangkan peluang keuntungan dengan potensi kerugian dari pilihan investasi...", level: "Pemula", premium: false, readCount: 1, content: "Manajemen risiko mencakup pengaturan lot, stop loss, dan risk reward ratio. Jangan pernah risk lebih dari 2% per trade." },
+        { id: "edu2", title: "Apa Itu Candlestick? (Gimana Cara Kerjanya Dan Pola dasar)", desc: "Pelajari komponen utama candlestick: open, high, low, close. Pahami bagaimana candlestick menunjukkan cerita pe...", level: "Pemula", premium: false, readCount: 1, content: "Candlestick berasal dari Jepang. Setiap lilin memiliki tubuh (body) dan sumbu (wick/wick). Pola doji, hammer, engulfing dll." },
+        { id: "edu3", title: "Pengertian Liquidity", desc: "Liquidity (likuiditas) dalam Trading berarti seberapa cepat dan mudahnya sebuah pasangan mata uang bisa dibeli atau dijual...", level: "Menengah", premium: false, readCount: 0, content: "Likuiditas tinggi membuat slippage kecil. Forex adalah pasar paling likuid. Crypto memiliki likuiditas bervariasi." },
+        { id: "edu4", title: "MARKET STRUCTURE", desc: "Pengertian dari Struktur Market adalah gambaran atau struktur yang terbentuk dari pergerakan harga di market tert...", level: "Menengah", premium: false, readCount: 12, content: "Market structure: bullish, bearish, sideways. Break of structure (BOS) dan change of character (CHoCH)." },
+        { id: "edu5", title: "Pola Candle Pattrens (Bagaimana Pola Grafik Bekerja?)", desc: "Pola grafik trading adalah bentuk atau formasi spesifik yang terbentuk dalam grafik harga pasar yang sering kali ber...", level: "Lanjutan", premium: true, readCount: 1, content: "Pola candlestick lanjutan: morning star, evening star, three white soldiers. Premium content." },
+        { id: "edu6", title: "SUPPORT & RESISTANCE", desc: "Asas tentang konsep support dan resistance. Support dan resistance adalah kunci penting dalam analisis ...", level: "Pemula", premium: false, readCount: 1, content: "Support adalah level harga bawah yang cenderung ditahan, resistance adalah level atas yang menghalangi kenaikan." },
+        { id: "edu7", title: "Smart Money Concept (SMC) Advanced", desc: "Pelajari Order Block, Fair Value Gap, Liquidity Grab. Strategi institutional trading.", level: "Expert", premium: true, readCount: 8, content: "SMC mengikuti aliran bank sentral. Order block adalah area akumulasi institusi. Premium hanya untuk member premium." }
+    ];
+
     function initStorage() {
         if (!localStorage.getItem(STORAGE.USERS)) {
             localStorage.setItem(STORAGE.USERS, JSON.stringify([
@@ -290,6 +351,7 @@
         if (!localStorage.getItem(STORAGE.SIGNALS)) localStorage.setItem(STORAGE.SIGNALS, JSON.stringify(defaultSignals));
         if (!localStorage.getItem(STORAGE.JOURNALS)) localStorage.setItem(STORAGE.JOURNALS, JSON.stringify([]));
         if (!localStorage.getItem(STORAGE.ACTIVITIES)) localStorage.setItem(STORAGE.ACTIVITIES, JSON.stringify(defaultActivities));
+        if (!localStorage.getItem(STORAGE.EDU_PROGRESS)) localStorage.setItem(STORAGE.EDU_PROGRESS, JSON.stringify({}));
     }
     initStorage();
 
@@ -341,7 +403,6 @@
         attachNavEvents();
         attachPageEvents();
         if (currentPage === 'home') {
-            initChart();
             initBalanceChart();
             startLiveUpdates();
         } else {
@@ -356,7 +417,7 @@
             <div class="container" style="padding: 40px 20px;">
                 <div class="card" style="text-align:center;">
                     <h1 style="font-size: 32px; background:linear-gradient(135deg,#00FFAA,#00D4FF); -webkit-background-clip:text; background-clip:text; color:transparent;">Trader X Academy</h1>
-                    <p class="mt-2">Kalkulator Pro + Social Trading</p>
+                    <p class="mt-2">Edukasi + Kalkulator Pro</p>
                 </div>
                 <div class="card" id="authBox">
                     <h3 id="authTitle">Login</h3>
@@ -417,7 +478,7 @@
         };
     }
 
-    // ======================== HOME (INTERAKTIF) ========================
+    // ======================== HOME ========================
     function renderHome() {
         const journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
         const totalTrades = journals.length;
@@ -478,7 +539,7 @@
                     <div class="quick-btn" data-nav="calculator">🧮 Kalkulator</div>
                     <div class="quick-btn" data-nav="journal">📓 Jurnal</div>
                     <div class="quick-btn" data-nav="signals">📡 Signal</div>
-                    <div class="quick-btn" data-nav="membership">👑 Upgrade</div>
+                    <div class="quick-btn" data-nav="education">📘 Edukasi</div>
                 </div>
                 <div class="card">
                     <div class="flex-between"><span>🌍 Market Snapshot (Live)</span><span id="liveMarketTime"></span></div>
@@ -508,7 +569,6 @@
             options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } } }
         });
     }
-    function initChart() {} // dummy
 
     function startLiveUpdates() {
         if (liveInterval) clearInterval(liveInterval);
@@ -536,7 +596,7 @@
         };
     }
 
-    // ======================== KALKULATOR PRO (SESUAI GAMBAR) ========================
+    // ======================== KALKULATOR PRO ========================
     function renderCalculator() {
         return `
             <div class="container page">
@@ -571,11 +631,10 @@
         let rewardRatio = rrMatch ? parseFloat(rrMatch[2]) / parseFloat(rrMatch[1]) : 4;
         let amountAtRisk = balance * (riskPercent / 100);
         let pipValue = amountAtRisk / slPip;
-        let lots = pipValue / 10; // asumsi 1 lot = $10/pip untuk USD pair
+        let lots = pipValue / 10;
         let netStopLoss = amountAtRisk;
         let netTakeProfit = amountAtRisk * rewardRatio;
 
-        // Compounding steps
         let currentBalance = balance;
         let stepsHtml = '';
         for (let i = 1; i <= steps; i++) {
@@ -616,14 +675,91 @@
         `;
     }
 
-    // ======================== SIGNAL ========================
+    // ======================== EDUKASI PREMIUM (seperti gambar) ========================
+    function renderEducation() {
+        let eduProgress = JSON.parse(localStorage.getItem(STORAGE.EDU_PROGRESS))[currentUser.email] || {};
+        const materials = educationData.map(edu => {
+            const isLocked = edu.premium && currentUser.role !== 'premium';
+            const readCount = edu.readCount; // bisa dari progress nanti
+            return `
+                <div class="edu-card ${isLocked ? 'premium-lock' : ''}" data-id="${edu.id}">
+                    <div class="edu-title">${edu.title}</div>
+                    <div class="edu-desc">${edu.desc}</div>
+                    <div class="edu-footer">
+                        <span class="edu-badge">${edu.level}</span>
+                        <span class="edu-number">${readCount}</span>
+                    </div>
+                    ${edu.premium && currentUser.role !== 'premium' ? '<div style="margin-top:8px;"><small>🔒 Premium Content</small></div>' : ''}
+                </div>
+            `;
+        }).join('');
+        return `
+            <div class="container page">
+                <h2>📘 Materi Edukasi</h2>
+                <div id="educationList">${materials}</div>
+                <div class="card mt-2">
+                    <p class="small">✨ Upgrade ke Premium untuk akses materi eksklusif & video lengkap.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    function attachEducationEvents() {
+        document.querySelectorAll('.edu-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const id = card.dataset.id;
+                const edu = educationData.find(e => e.id === id);
+                if (!edu) return;
+                if (edu.premium && currentUser.role !== 'premium') {
+                    showToast("Upgrade ke Premium untuk membaca materi ini", true);
+                    return;
+                }
+                // Tampilkan modal detail materi
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <h3 style="color:#00FFAA;">${edu.title}</h3>
+                        <p class="mt-2">${edu.content}</p>
+                        <div class="flex-between mt-2">
+                            <button id="closeEduModal" class="btn-outline">Tutup</button>
+                            <button id="markReadBtn" class="btn-primary">Tandai Selesai +10 Poin</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                document.getElementById('closeEduModal').onclick = () => modal.remove();
+                document.getElementById('markReadBtn').onclick = () => {
+                    // update progress
+                    let progressAll = JSON.parse(localStorage.getItem(STORAGE.EDU_PROGRESS)) || {};
+                    let userProg = progressAll[currentUser.email] || { readIds: [] };
+                    if (!userProg.readIds.includes(edu.id)) {
+                        userProg.readIds.push(edu.id);
+                        progressAll[currentUser.email] = userProg;
+                        localStorage.setItem(STORAGE.EDU_PROGRESS, JSON.stringify(progressAll));
+                        // tambah poin
+                        currentUser.balance += 10; // bonus poin ke balance?
+                        saveUser(currentUser);
+                        addActivity(`Membaca materi "${edu.title}" dan mendapat +10 poin`);
+                        showToast("+10 poin edukasi");
+                        modal.remove();
+                        render();
+                    } else {
+                        showToast("Anda sudah membaca materi ini");
+                        modal.remove();
+                    }
+                };
+            });
+        });
+    }
+
+    // ======================== SIGNAL, JURNAL DLL ========================
     function renderSignals() {
         let signals = JSON.parse(localStorage.getItem(STORAGE.SIGNALS));
         signals.sort((a,b) => b.createdAt - a.createdAt);
         return `<div class="container page"><h2>📡 Signal Trading</h2>${signals.map(s => `<div class="card"><div class="flex-between"><b>${s.pair}</b>${s.premium ? '<span class="badge-premium">PREMIUM</span>' : ''}</div><div>Entry: ${s.entry} | TP: ${s.tp} | SL: ${s.sl}</div><div>Status: ${s.status}</div></div>`).join('')}</div>`;
     }
 
-    // ======================== JURNAL ========================
     function renderJournal() {
         let journals = JSON.parse(localStorage.getItem(STORAGE.JOURNALS)).filter(j => j.userEmail === currentUser.email);
         return `<div class="container page"><div class="flex-between"><h2>📓 Trading Journal</h2><button id="addJournalBtn" class="btn-primary" style="width:auto;">+</button></div><div id="journalList">${journals.slice().reverse().map(j => `<div class="card"><div class="flex-between"><b>${j.pair}</b><span class="${j.profit>=0?'profit-positive':'profit-negative'}">$${j.profit}</span></div><div class="small">${new Date(j.date).toLocaleString()}</div><button class="delJournal btn-outline" data-id="${j.id}">Hapus</button></div>`).join('')}</div></div>`;
@@ -651,9 +787,7 @@
         });
     }
 
-    // ======================== LAINNYA ========================
-    function renderEducation() { return `<div class="container page"><h2>📘 Edukasi</h2><div class="card">Forex Dasar</div><div class="card">Smart Money (Premium)</div></div>`; }
-    function renderMembership() { return `<div class="container page"><h2>👑 Membership</h2><div class="card"><h3>${currentUser.role === 'premium' ? 'Premium' : 'Free'}</h3><button id="upgradeBtn" class="btn-primary">Upgrade</button></div></div>`; }
+    function renderMembership() { return `<div class="container page"><h2>👑 Membership</h2><div class="card"><h3>${currentUser.role === 'premium' ? 'Premium' : 'Free'}</h3><button id="upgradeBtn" class="btn-primary">Upgrade Premium</button></div></div>`; }
     function attachMembershipEvents() { document.getElementById('upgradeBtn')?.addEventListener('click', () => { currentUser.role = 'premium'; saveUser(currentUser); showToast("Premium aktif!"); render(); }); }
     function renderProfile() { return `<div class="container page"><h2>⚙️ Profile</h2><div class="card"><div>Nama: ${currentUser.name}</div><div>Email: ${currentUser.email}</div><button id="logoutBtn" class="btn-outline">Logout</button></div></div>`; }
     function attachProfileEvents() { document.getElementById('logoutBtn')?.addEventListener('click', () => { localStorage.removeItem(STORAGE.CURRENT); currentUser = null; render(); }); }
@@ -665,7 +799,7 @@
             { id: 'signals', icon: '📊', label: 'Signal' },
             { id: 'journal', icon: '📓', label: 'Journal' },
             { id: 'calculator', icon: '🧮', label: 'Calc' },
-            { id: 'profile', icon: '👤', label: 'Profile' }
+            { id: 'education', icon: '📘', label: 'Edukasi' }
         ];
         return `<div class="bottom-nav">${items.map(item => `<button class="nav-item ${currentPage === item.id ? 'active' : ''}" data-nav="${item.id}"><span>${item.icon}</span><span>${item.label}</span></button>`).join('')}</div>`;
     }
@@ -682,6 +816,7 @@
         }
         if (currentPage === 'membership') attachMembershipEvents();
         if (currentPage === 'profile') attachProfileEvents();
+        if (currentPage === 'education') attachEducationEvents();
     }
     function attachPageEvents() {}
 
