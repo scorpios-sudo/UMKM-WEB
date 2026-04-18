@@ -1,670 +1,575 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Trader X Academy | Premium Fintech Platform</title>
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <!-- Font Awesome 6 (free icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Inter + Space Grotesk -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>TRADER X ACADEMY | Institutional Trading Edge</title>
+  <!-- Google Fonts + Font Awesome + Chart.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background: #0A0C10;
-            font-family: 'Inter', sans-serif;
-            color: #EFF3F8;
-            overflow-x: hidden;
-            transition: background 0.2s, color 0.2s;
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0c10;
+      color: #eef2ff;
+      scroll-behavior: smooth;
+    }
 
-        /* Theme variants - akan diubah via JS */
-        body.theme-electric-violet {
-            --primary: #9D4EDD;
-            --primary-glow: rgba(157,78,221,0.4);
-            --accent: #FF66CC;
-        }
-        body.theme-neon-mint {
-            --primary: #00E6B2;
-            --primary-glow: rgba(0,230,178,0.4);
-            --accent: #00FFAA;
-        }
-        body.theme-ocean-blue {
-            --primary: #2A6DFF;
-            --primary-glow: rgba(42,109,255,0.4);
-            --accent: #00E6B2;
-        }
-        body.theme-golden-hour {
-            --primary: #FFB347;
-            --primary-glow: rgba(255,180,71,0.4);
-            --accent: #FFD966;
-        }
-        body.theme-minimalist {
-            --primary: #6C757D;
-            --primary-glow: rgba(108,117,125,0.3);
-            --accent: #ADB5BD;
-        }
-        body.theme-classic-ledger {
-            --primary: #D4AF37;
-            --primary-glow: rgba(212,175,55,0.4);
-            --accent: #F5E6B8;
-        }
-        /* default ocean blue */
-        body {
-            --primary: #2A6DFF;
-            --primary-glow: rgba(42,109,255,0.4);
-            --accent: #00E6B2;
-        }
+    /* Glassmorphism + Neon */
+    .glass-card {
+      background: rgba(18, 22, 28, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 28px;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+      transition: all 0.2s ease;
+    }
 
-        /* Main App Container */
-        .app-container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: radial-gradient(circle at 20% 0%, #0F1219, #03050A);
-            min-height: 100vh;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            position: relative;
-            padding-top: 70px;
-            padding-bottom: 80px;
-        }
+    .glass-card:hover {
+      border-color: #00f2ff;
+      box-shadow: 0 0 18px rgba(0, 242, 255, 0.2);
+    }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: #1A1F2A; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+    .btn-primary {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(0,114,255,0.4);
+    }
 
-        /* Top Navbar (Glass) */
-        .top-navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            max-width: 500px;
-            margin: 0 auto;
-            background: rgba(12, 16, 24, 0.85);
-            backdrop-filter: blur(20px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 20px;
-            border-bottom: 1px solid rgba(42, 109, 255, 0.4);
-            z-index: 150;
-            border-radius: 0 0 28px 28px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-        }
-        .top-navbar button {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #EFF3F8;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .top-navbar button:hover { transform: scale(1.05); color: var(--primary); }
-        .logo {
-            font-weight: 800;
-            font-size: 18px;
-            background: linear-gradient(135deg, #FFFFFF, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 1px;
-        }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,114,255,0.6);
+    }
 
-        /* Sidebar (Offcanvas) */
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.75);
-            backdrop-filter: blur(8px);
-            z-index: 200;
-            display: none;
-            transition: 0.25s;
-        }
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 280px;
-            height: 100%;
-            background: rgba(14, 18, 28, 0.96);
-            backdrop-filter: blur(24px);
-            border-right: 1px solid var(--primary);
-            z-index: 201;
-            transition: left 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            padding: 32px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            box-shadow: 8px 0 40px rgba(0,0,0,0.6);
-        }
-        .sidebar.open { left: 0; }
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 17px;
-            font-weight: 600;
-            padding: 12px 18px;
-            border-radius: 60px;
-            background: transparent;
-            transition: all 0.2s;
-            cursor: pointer;
-            color: #B8C7FF;
-        }
-        .sidebar-item i { width: 28px; font-size: 20px; }
-        .sidebar-item:hover, .sidebar-item.active-sidebar {
-            background: rgba(42, 109, 255, 0.25);
-            color: white;
-            transform: translateX(8px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .upgrade-sidebar {
-            background: linear-gradient(95deg, rgba(255,180,71,0.2), rgba(255,136,0,0.1));
-            border: 1px solid #FFB347;
-            margin-top: auto;
-            color: #FFD966;
-        }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid #00c6ff;
+      color: #00c6ff;
+      border-radius: 40px;
+      padding: 10px 24px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
 
-        /* BOTTOM NAVIGATION */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            max-width: 500px;
-            margin: 0 auto;
-            background: rgba(12, 16, 24, 0.92);
-            backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 16px 22px;
-            border-top: 1px solid rgba(var(--primary), 0.3);
-            z-index: 100;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            background: transparent;
-            border: none;
-            color: #8E9AAF;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        .nav-item i { font-size: 22px; }
-        .nav-item.active { 
-            color: var(--primary); 
-            text-shadow: 0 0 8px var(--primary-glow); 
-            transform: translateY(-3px); 
-        }
+    .btn-outline:hover {
+      background: rgba(0,198,255,0.1);
+      border-color: #00f2ff;
+    }
 
-        /* Pages */
-        .page {
-            display: none;
-            padding: 20px 18px 30px;
-            animation: fadeIn 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-        .page.active-page { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    /* landing & layout */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
-        /* Glass Cards */
-        .card {
-            background: rgba(20, 26, 36, 0.65);
-            backdrop-filter: blur(8px);
-            border-radius: 28px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(var(--primary), 0.25);
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 24px 40px -12px black; border-color: var(--primary); }
+    /* scroll horizontal */
+    .scroll-x {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      scrollbar-width: thin;
+      padding-bottom: 12px;
+    }
+    .scroll-x::-webkit-scrollbar {
+      height: 6px;
+    }
 
-        .glass-btn {
-            background: linear-gradient(95deg, #1F2A44, #121A2A);
-            border: none;
-            padding: 12px 20px;
-            border-radius: 40px;
-            font-weight: 700;
-            color: white;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .glass-btn.primary {
-            background: linear-gradient(135deg, var(--primary), #0047CA);
-            box-shadow: 0 6px 14px var(--primary-glow);
-        }
-        .glass-btn.primary:hover { transform: scale(0.97); filter: brightness(1.05); }
-        .badge {
-            background: rgba(42, 109, 255, 0.2);
-            border-radius: 60px;
-            padding: 6px 14px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #6D9EFF;
-        }
-        .profit-text { color: #00E6B2; font-weight: 800; }
-        .loss-text { color: #FF4D6D; font-weight: 800; }
-        hr { border-color: #2A3448; margin: 14px 0; }
+    /* premium blur overlay */
+    .blur-content {
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+      position: relative;
+    }
+    .premium-lock {
+      position: relative;
+    }
+    .lock-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 24px;
+      gap: 8px;
+      z-index: 5;
+      font-weight: bold;
+      color: #ffd966;
+    }
 
-        /* Horizontal Scroll */
-        .scroll-x {
-            display: flex;
-            overflow-x: auto;
-            gap: 16px;
-            scroll-snap-type: x mandatory;
-            padding-bottom: 8px;
-        }
-        .video-card, .news-card-mini {
-            flex: 0 0 280px;
-            background: #11161F;
-            border-radius: 24px;
-            overflow: hidden;
-            scroll-snap-align: start;
-            border: 1px solid #2A3A55;
-        }
-        iframe { width: 100%; height: 160px; border: none; }
-        .signal-card, .module-card, .journal-item {
-            background: #0E121C;
-            border-radius: 24px;
-            padding: 16px;
-            margin-bottom: 16px;
-            transition: 0.1s;
-        }
-        .premium-blur {
-            filter: blur(6px);
-            background: #161C28;
-            pointer-events: none;
-            position: relative;
-        }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    /* dashboard sidebar */
+    .dashboard-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 260px;
+      background: rgba(10, 14, 18, 0.95);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(0,255,255,0.2);
+      padding: 28px 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .main-panel {
+      flex: 1;
+      padding: 28px 32px;
+      background: #0a0c10;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      margin: 8px 0;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #b0c4de;
+    }
+    .nav-item.active, .nav-item:hover {
+      background: rgba(0, 198, 255, 0.15);
+      color: #00f2ff;
+      border-left: 3px solid #00f2ff;
+    }
 
-        /* Toast */
-        .toast-msg {
-            position: fixed;
-            bottom: 100px;
-            left: 20px;
-            right: 20px;
-            max-width: 460px;
-            margin: 0 auto;
-            background: #1E293B;
-            backdrop-filter: blur(20px);
-            border-left: 5px solid var(--primary);
-            padding: 14px 20px;
-            border-radius: 60px;
-            font-weight: 500;
-            z-index: 300;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            animation: slideUp 0.25s ease;
-        }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    /* cards */
+    .stat-card, .feature-card, .testimonial-card, .signal-card, .module-card, .news-card {
+      background: rgba(20, 25, 35, 0.7);
+      border-radius: 24px;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(0,255,200,0.2);
+    }
 
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 500;
-        }
-        .modal-content {
-            background: #11161F;
-            border-radius: 40px;
-            width: 85%;
-            max-width: 380px;
-            padding: 28px;
-            border: 1px solid var(--primary);
-        }
-        input, select {
-            background: #0A0F18;
-            border: 1px solid #2A3A55;
-            padding: 14px 16px;
-            border-radius: 34px;
-            color: white;
-            width: 100%;
-            margin-top: 6px;
-            margin-bottom: 16px;
-            font-family: 'Inter', sans-serif;
-        }
-        input:focus { border-color: var(--primary); outline: none; }
-
-        /* Auth */
-        .auth-container {
-            max-width: 500px;
-            margin: 0 auto;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle at 30% 20%, #0B0F17, #020408);
-            padding: 24px;
-        }
-        .auth-card {
-            background: rgba(16, 22, 32, 0.9);
-            backdrop-filter: blur(20px);
-            border-radius: 48px;
-            padding: 36px 28px;
-            width: 100%;
-            border: 1px solid var(--primary);
-        }
-
-        /* Settings page styles */
-        .theme-option, .lang-option {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0,0,0,0.3);
-            border-radius: 40px;
-            padding: 10px 16px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .theme-option:hover, .lang-option:hover {
-            background: rgba(42,109,255,0.2);
-        }
-        .capital-input {
-            background: #0A0F18;
-            border: 1px solid var(--primary);
-            border-radius: 34px;
-            padding: 12px;
-            width: 100%;
-            margin-top: 8px;
-        }
-    </style>
+    @media (max-width: 768px) {
+      .dashboard-layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: relative; }
+      .main-panel { padding: 20px; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- AUTH (Login/Register) -->
-<div id="authContainer" class="auth-container">
-    <div class="auth-card" id="authCard">
-        <div style="text-align:center; margin-bottom: 32px;">
-            <i class="fas fa-chart-line fa-3x" style="color:var(--primary); filter: drop-shadow(0 0 8px var(--primary));"></i>
-            <h1 style="margin-top: 16px;">Trader X Academy</h1>
-            <p>Premium trading ecosystem</p>
-        </div>
-        <div id="loginForm">
-            <input type="email" id="loginEmail" placeholder="Email" value="demo@traderx.com">
-            <input type="password" id="loginPassword" placeholder="Password" value="123456">
-            <button class="glass-btn primary" id="doLoginBtn" style="width:100%; justify-content:center;">Login</button>
-            <p style="text-align:center; margin-top:20px;">Don't have an account? <span id="showRegisterBtn" style="color:var(--primary); cursor:pointer;">Register</span></p>
-        </div>
-        <div id="registerForm" style="display:none;">
-            <input type="text" id="regName" placeholder="Full Name">
-            <input type="email" id="regEmail" placeholder="Email">
-            <input type="password" id="regPassword" placeholder="Password">
-            <button class="glass-btn primary" id="doRegisterBtn" style="width:100%; justify-content:center;">Create Account</button>
-            <p style="text-align:center; margin-top:20px;">Already have an account? <span id="showLoginBtn" style="color:var(--primary); cursor:pointer;">Login</span></p>
-        </div>
-    </div>
-</div>
-
-<!-- MAIN APP -->
-<div id="mainApp" style="display: none;">
-    <div class="app-container">
-        <div class="top-navbar">
-            <button id="menuToggleBtn"><i class="fas fa-bars"></i></button>
-            <div class="logo">TRADER X ACADEMY</div>
-            <button id="notifBellBtn"><i class="fas fa-bell"></i></button>
-        </div>
-
-        <!-- Sidebar -->
-        <div id="sidebarOverlay" class="sidebar-overlay"></div>
-        <div id="sidebar" class="sidebar">
-            <div style="margin-bottom: 10px;"><i class="fas fa-crown" style="color: #FFB347; font-size: 34px;"></i><h3 style="margin-top: 8px;" data-i18n="menu">Menu</h3></div>
-            <div class="sidebar-item" data-page="dashboard"><i class="fas fa-home"></i> <span data-i18n="dashboard">Dashboard</span></div>
-            <div class="sidebar-item" data-page="signal"><i class="fas fa-chart-line"></i> <span data-i18n="signals">Signals</span></div>
-            <div class="sidebar-item" data-page="education"><i class="fas fa-graduation-cap"></i> <span data-i18n="education">Education</span></div>
-            <div class="sidebar-item" data-page="journal"><i class="fas fa-book-open"></i> <span data-i18n="journal">Journal Trading</span></div>
-            <div class="sidebar-item" data-page="calculator"><i class="fas fa-calculator"></i> <span data-i18n="calculator">Calculator</span></div>
-            <div class="sidebar-item" data-page="news"><i class="fas fa-newspaper"></i> <span data-i18n="news">News</span></div>
-            <div class="sidebar-item" data-page="profile"><i class="fas fa-user"></i> <span data-i18n="profile">Profile</span></div>
-            <div class="sidebar-item" data-page="settings"><i class="fas fa-sliders-h"></i> <span data-i18n="settings">Settings</span></div>
-            <div class="sidebar-item upgrade-sidebar" id="sidebarMembership"><i class="fas fa-gem"></i> <span data-i18n="membership">Membership</span></div>
-        </div>
-
-        <!-- PAGES -->
-        <div id="dashboardPage" class="page active-page"></div>
-        <div id="signalPage" class="page"></div>
-        <div id="educationPage" class="page"></div>
-        <div id="journalPage" class="page"></div>
-        <div id="calculatorPage" class="page"></div>
-        <div id="newsPage" class="page"></div>
-        <div id="profilePage" class="page"></div>
-        <div id="membershipPage" class="page"></div>
-        <div id="settingsPage" class="page"></div>
-
-        <!-- BOTTOM NAV -->
-        <div class="bottom-nav">
-            <button class="nav-item" data-nav="dashboard"><i class="fas fa-home"></i><span data-i18n="home">Home</span></button>
-            <button class="nav-item" data-nav="signal"><i class="fas fa-chart-line"></i><span data-i18n="signals">Signals</span></button>
-            <button class="nav-item" data-nav="journal"><i class="fas fa-book-open"></i><span data-i18n="journal">Journal</span></button>
-            <button class="nav-item" data-nav="news"><i class="fas fa-newspaper"></i><span data-i18n="news">News</span></button>
-            <button class="nav-item" data-nav="profile"><i class="fas fa-user"></i><span data-i18n="profile">Profile</span></button>
-        </div>
-    </div>
-</div>
+<div id="app-root"></div>
 
 <script>
-    // ---------- GLOBAL STATE ----------
-    let currentUser = null;
-    let users = [];
-    let signals = [];
-    let educationModules = [];
-    let newsArticles = [];
-    let activityFeed = [];
-    let chartInstance = null;
-    let baseCapital = 10000; // dapat diubah di settings
-    let currentLanguage = 'en';
-    let currentTheme = 'ocean-blue';
+  // ---------- STORAGE KEYS ----------
+  const STORAGE_USERS = "traderx_users";
+  const STORAGE_SESSION = "traderx_session";
+  const STORAGE_JOURNALS = "traderx_journals";
 
-    // Translation dictionary (20 languages)
-    const translations = {
-        en: { home:"Home", signals:"Signals", journal:"Journal", news:"News", profile:"Profile", dashboard:"Dashboard", education:"Education", calculator:"Calculator", settings:"Settings", membership:"Membership", menu:"Menu", addTrade:"Add Trade", save:"Save", upgrade:"Upgrade", logout:"Logout", welcome:"Welcome back", balance:"Total Balance", todayPnL:"Today P&L", weeklyReturn:"Weekly Return", fomo:"FOMO Updates", mentor:"Mentor Section", activity:"Live Activity", signalsPage:"Live Trading Signals", educationPage:"Trader X Academy", calculatorPage:"Forex Calculator", newsPage:"Latest News", profilePage:"Profile Settings", settingsPage:"App Settings", theme:"Theme", language:"Language", capital:"Starting Capital", backup:"Backup & Restore" },
-        id: { home:"Beranda", signals:"Sinyal", journal:"Jurnal", news:"Berita", profile:"Profil", dashboard:"Dasbor", education:"Pendidikan", calculator:"Kalkulator", settings:"Pengaturan", membership:"Keanggotaan", menu:"Menu", addTrade:"Tambah Trade", save:"Simpan", upgrade:"Tingkatkan", logout:"Keluar", welcome:"Selamat datang", balance:"Total Saldo", todayPnL:"P&L Hari Ini", weeklyReturn:"Return Mingguan", fomo:"Update FOMO", mentor:"Bagian Mentor", activity:"Aktivitas Langsung", signalsPage:"Sinyal Trading Langsung", educationPage:"Akademi Trader X", calculatorPage:"Kalkulator Forex", newsPage:"Berita Terkini", profilePage:"Pengaturan Profil", settingsPage:"Pengaturan Aplikasi", theme:"Tema", language:"Bahasa", capital:"Modal Awal", backup:"Cadangan & Restore" },
-        ja: { home:"ホーム", signals:"シグナル", journal:"ジャーナル", news:"ニュース", profile:"プロフィール", dashboard:"ダッシュボード", education:"教育", calculator:"計算機", settings:"設定", membership:"メンバーシップ", menu:"メニュー", addTrade:"トレード追加", save:"保存", upgrade:"アップグレード", logout:"ログアウト", welcome:"おかえりなさい", balance:"総残高", todayPnL:"本日の損益", weeklyReturn:"週間リターン", fomo:"FOMO最新情報", mentor:"メンターセクション", activity:"ライブアクティビティ", signalsPage:"ライブトレードシグナル", educationPage:"トレーダーXアカデミー", calculatorPage:"FX計算機", newsPage:"最新ニュース", profilePage:"プロフィール設定", settingsPage:"アプリ設定", theme:"テーマ", language:"言語", capital:"初期資本", backup:"バックアップと復元" },
-        it: { home:"Home", signals:"Segnali", journal:"Diario", news:"Notizie", profile:"Profilo", dashboard:"Cruscotto", education:"Educazione", calculator:"Calcolatrice", settings:"Impostazioni", membership:"Abbonamento", menu:"Menu", addTrade:"Aggiungi Trade", save:"Salva", upgrade:"Aggiorna", logout:"Esci", welcome:"Bentornato", balance:"Saldo Totale", todayPnL:"P&L Oggi", weeklyReturn:"Rendimento Settimanale", fomo:"Aggiornamenti FOMO", mentor:"Sezione Mentor", activity:"Attività Live", signalsPage:"Segnali Trading Live", educationPage:"Accademia Trader X", calculatorPage:"Calcolatore Forex", newsPage:"Ultime Notizie", profilePage:"Impostazioni Profilo", settingsPage:"Impostazioni App", theme:"Tema", language:"Lingua", capital:"Capitale Iniziale", backup:"Backup e Ripristino" },
-        ru: { home:"Главная", signals:"Сигналы", journal:"Журнал", news:"Новости", profile:"Профиль", dashboard:"Панель", education:"Обучение", calculator:"Калькулятор", settings:"Настройки", membership:"Членство", menu:"Меню", addTrade:"Добавить сделку", save:"Сохранить", upgrade:"Обновить", logout:"Выйти", welcome:"С возвращением", balance:"Общий баланс", todayPnL:"P&L сегодня", weeklyReturn:"Недельная доходность", fomo:"Обновления FOMO", mentor:"Наставник", activity:"Активность", signalsPage:"Живые сигналы", educationPage:"Академия Treider X", calculatorPage:"Калькулятор Forex", newsPage:"Новости", profilePage:"Настройки профиля", settingsPage:"Настройки приложения", theme:"Тема", language:"Язык", capital:"Начальный капитал", backup:"Резервное копирование" },
-        zh: { home:"首页", signals:"信号", journal:"日志", news:"新闻", profile:"个人资料", dashboard:"仪表板", education:"教育", calculator:"计算器", settings:"设置", membership:"会员", menu:"菜单", addTrade:"添加交易", save:"保存", upgrade:"升级", logout:"退出", welcome:"欢迎回来", balance:"总余额", todayPnL:"今日盈亏", weeklyReturn:"周回报率", fomo:"FOMO更新", mentor:"导师专区", activity:"实时动态", signalsPage:"实时交易信号", educationPage:"交易者X学院", calculatorPage:"外汇计算器", newsPage:"最新新闻", profilePage:"个人设置", settingsPage:"应用设置", theme:"主题", language:"语言", capital:"起始资金", backup:"备份与恢复" }
-        // Untuk singkat, kita tambahkan 14 bahasa lainnya dengan fallback ke English. Tapi agar kode tidak terlalu panjang, kita buat 5+ fallback.
+  // ---------- MOCK DATA ----------
+  const demoSignals = [
+    { id: 1, type: "free", pair: "BTC/USD", direction: "LONG", entry: "68450", tp: "71200", sl: "67200", reason: "Breakout + volume", confidence: 88, status: "Active", timerEnd: Date.now() + 2*60*60*1000, premiumOnly: false },
+    { id: 2, type: "premium", pair: "ETH/USD", direction: "SHORT", entry: "3620", tp: "3450", sl: "3710", reason: "Resistance rejection + OI drop", confidence: 94, status: "High Conviction", timerEnd: Date.now() + 5*60*60*1000, premiumOnly: true }
+  ];
+
+  const educationModules = [
+    { id: 1, title: "Candlestick Mastery", desc: "Learn patterns & psychology", free: true, content: "Video + PDF: 12 patterns explained." },
+    { id: 2, title: "Liquidity Grabs (Institutional)", desc: "Advanced smart money", free: false, content: "Full module: Order blocks + FVG" },
+    { id: 3, title: "Risk Management Blueprint", desc: "Position sizing core", free: true, content: "Free guide: 1% rule, drawdown control" },
+    { id: 4, title: "Algorithmic Edge", desc: "Quant strategies", free: false, content: "Premium algo signals & backtests" }
+  ];
+
+  const newsArticles = [
+    { img: "https://picsum.photos/id/26/400/200", title: "Fed Rate Pivot Incoming?", desc: "Market repricing risk assets – volatility spikes." },
+    { img: "https://picsum.photos/id/30/400/200", title: "BTC Institutional Inflows", desc: "ETFs record $450M weekly inflow." },
+    { img: "https://picsum.photos/id/48/400/200", title: "Altseason Metrics", desc: "Dominance shift, capital rotation." }
+  ];
+
+  // helpers
+  function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_USERS) || "[]"); }
+  function saveUsers(users) { localStorage.setItem(STORAGE_USERS, JSON.stringify(users)); }
+  function getSession() { return JSON.parse(localStorage.getItem(STORAGE_SESSION) || "null"); }
+  function setSession(user) { localStorage.setItem(STORAGE_SESSION, JSON.stringify(user)); }
+  function clearSession() { localStorage.removeItem(STORAGE_SESSION); }
+  function getJournalEntries(userId) { return JSON.parse(localStorage.getItem(`${STORAGE_JOURNALS}_${userId}`) || "[]"); }
+  function saveJournalEntries(userId, entries) { localStorage.setItem(`${STORAGE_JOURNALS}_${userId}`, JSON.stringify(entries)); }
+
+  let currentView = "dashboard";
+  let currentUser = null;
+  let appContainer = document.getElementById("app-root");
+  let chartInstance = null;
+
+  // initialize demo users
+  function initStorage() {
+    let users = getUsers();
+    if (users.length === 0) {
+      users.push({ id: "u1", username: "TraderAlpha", email: "alpha@example.com", password: "pass123", membership: "free", createdAt: Date.now() });
+      saveUsers(users);
+    }
+    const session = getSession();
+    if (session) currentUser = session;
+  }
+
+  function loginUser(email, password) {
+    const users = getUsers();
+    const found = users.find(u => u.email === email && u.password === password);
+    if (found) {
+      setSession(found);
+      currentUser = found;
+      renderApp();
+      return true;
+    }
+    return false;
+  }
+
+  function registerUser(username, email, password) {
+    let users = getUsers();
+    if (users.find(u => u.email === email)) return false;
+    const newUser = { id: "u"+Date.now(), username, email, password, membership: "free", createdAt: Date.now() };
+    users.push(newUser);
+    saveUsers(users);
+    return true;
+  }
+
+  function upgradeMembership() {
+    if (!currentUser) return;
+    const users = getUsers();
+    const idx = users.findIndex(u => u.id === currentUser.id);
+    if (idx !== -1) {
+      users[idx].membership = "premium";
+      saveUsers(users);
+      currentUser.membership = "premium";
+      setSession(currentUser);
+      renderApp(); // refresh UI unlock
+    }
+  }
+
+  function updateProfile(username) {
+    if (!currentUser) return;
+    const users = getUsers();
+    const idx = users.findIndex(u => u.id === currentUser.id);
+    if (idx !== -1) {
+      users[idx].username = username;
+      saveUsers(users);
+      currentUser.username = username;
+      setSession(currentUser);
+      renderApp();
+    }
+  }
+
+  function logout() {
+    clearSession();
+    currentUser = null;
+    renderApp();
+  }
+
+  // journal logic
+  function addTrade(trade) {
+    if (!currentUser) return;
+    let entries = getJournalEntries(currentUser.id);
+    const newTrade = { id: Date.now(), ...trade, timestamp: new Date().toISOString() };
+    entries.push(newTrade);
+    saveJournalEntries(currentUser.id, entries);
+    renderDashboardContent(); // refresh journal view if active
+  }
+
+  function calculatePnL(trade) {
+    let diff = trade.exitPrice - trade.entryPrice;
+    if (trade.direction === "short") diff = trade.entryPrice - trade.exitPrice;
+    const pnl = diff * trade.quantity;
+    return pnl;
+  }
+
+  function getTotalPnL() {
+    if (!currentUser) return 0;
+    const entries = getJournalEntries(currentUser.id);
+    let total = 0;
+    entries.forEach(t => { if (t.exitPrice) total += calculatePnL(t); });
+    return total;
+  }
+
+  // helper: timer formatting
+  function formatTimer(ms) {
+    const diff = ms - Date.now();
+    if (diff <= 0) return "Expired";
+    const hours = Math.floor(diff / (1000*60*60));
+    const minutes = Math.floor((diff % (3600000))/60000);
+    return `${hours}h ${minutes}m`;
+  }
+
+  // main render
+  function renderApp() {
+    if (!appContainer) return;
+    if (!currentUser) {
+      renderLandingPage();
+    } else {
+      renderDashboardLayout();
+    }
+  }
+
+  function renderLandingPage() {
+    appContainer.innerHTML = `
+      <div class="container" style="padding-top: 2rem;">
+        <!-- Hero -->
+        <div style="text-align:center; margin: 60px 0 40px; position:relative;">
+          <div style="position:absolute; top:-50px; left:10%; width:300px; height:300px; background:radial-gradient(circle, rgba(0,242,255,0.2), transparent); filter:blur(60px);"></div>
+          <h1 style="font-size: 3.5rem; font-weight:800; background: linear-gradient(135deg,#FFFFFF,#00f2ff); -webkit-background-clip:text; background-clip:text; color:transparent;">Master Trading Like Institutions</h1>
+          <p style="font-size:1.3rem; margin:20px 0; color:#b9d9ff;">Join 500+ traders improving consistency</p>
+          <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn-primary" id="landingJoinBtn">Join Now</button>
+            <button class="btn-outline" id="landingSignalsBtn">View Signals</button>
+          </div>
+        </div>
+        <!-- Trust Stats -->
+        <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin:60px 0;">
+          <div class="glass-card" style="padding:20px 30px; text-align:center;"><i class="fas fa-users" style="font-size:2rem; color:#00f2ff;"></i><h3>500+</h3><p>Active Members</p></div>
+          <div class="glass-card" style="padding:20px 30px; text-align:center;"><i class="fas fa-chart-line" style="font-size:2rem; color:#00f2ff;"></i><h3>92%</h3><p>Winrate Strategy</p></div>
+          <div class="glass-card" style="padding:20px 30px; text-align:center;"><i class="fas fa-medal" style="font-size:2rem; color:#00f2ff;"></i><h3>7+ Years</h3><p>Experience</p></div>
+        </div>
+        <!-- Features Cards -->
+        <h2 style="font-size:2rem; margin:60px 0 30px;">Powerful tools for traders</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:24px;">
+          ${["Trading Signals","Education Modules","Trading Journal","Risk Calculator","Community Access"].map(f => `<div class="feature-card"><i class="fas fa-chart-simple" style="font-size:2rem; color:#00c6ff;"></i><h3>${f}</h3><p>Professional edge</p></div>`).join('')}
+        </div>
+        <!-- Video Horizontal Scroll -->
+        <h2 style="margin:60px 0 20px;">Video Library</h2>
+        <div class="scroll-x">
+          ${[1,2,3].map(i => `<div class="glass-card" style="min-width:300px; padding:12px;"><div style="background:#111; height:160px; border-radius:20px; display:flex; align-items:center; justify-content:center;"><i class="fab fa-youtube" style="font-size:4rem; color:red;"></i></div><p style="margin-top:12px;">Strategy #${i}: Smart Money Concepts</p></div>`).join('')}
+        </div>
+        <!-- Testimonials -->
+        <h2 style="margin:60px 0 20px;">Real results</h2>
+        <div class="scroll-x">
+          <div class="testimonial-card" style="min-width:260px;"><div style="display:flex; gap:12px;"><i class="fas fa-user-circle" style="font-size:3rem;"></i><div><b>@cryptofox</b><p>Profit +$4,200</p></div></div><p>Signals are insane! 10/10</p></div>
+          <div class="testimonial-card" style="min-width:260px;"><div style="display:flex; gap:12px;"><i class="fas fa-user-circle" style="font-size:3rem;"></i><div><b>@ellie_trader</b><p>+32% in 2 weeks</p></div></div><p>Education changed my trading life</p></div>
+          <div class="testimonial-card" style="min-width:260px;"><div style="display:flex; gap:12px;"><i class="fas fa-user-circle" style="font-size:3rem;"></i><div><b>@mike_wyc</b><p>+$11k profit</p></div></div><p>Premium signals worth every $</p></div>
+        </div>
+        <!-- Pricing -->
+        <h2 style="margin:60px 0 30px;">Plans for every trader</h2>
+        <div style="display:flex; gap:30px; flex-wrap:wrap; justify-content:center;">
+          <div class="glass-card" style="flex:1; min-width:250px; text-align:center; padding:30px;"><h3>Free</h3><p style="font-size:2rem;">$0</p><p>Basic signals / Journal</p><button class="btn-outline" id="freeSignupBtn">Get Started</button></div>
+          <div class="glass-card" style="flex:1; min-width:250px; border:2px solid #00f2ff; text-align:center; padding:30px;"><h3>Premium 🔥</h3><p style="font-size:2rem;">$49<span style="font-size:1rem;">/mo</span></p><p>Full signals + Education + Priority</p><button class="btn-primary" id="premiumUpgradeLanding">Upgrade Now</button><p style="margin-top:8px;">Lifetime access $399</p></div>
+        </div>
+        <!-- Final CTA -->
+        <div style="margin:80px 0; text-align:center; background: linear-gradient(145deg,#0a1f2e,#02121c); border-radius:60px; padding:60px 20px;">
+          <h2>Start Your Trading Journey Now</h2><button class="btn-primary" id="finalCtaBtn" style="margin-top:20px;">Join Trader X</button>
+        </div>
+      </div>
+    `;
+    document.getElementById("landingJoinBtn")?.addEventListener("click",()=>showAuthModal('login'));
+    document.getElementById("landingSignalsBtn")?.addEventListener("click",()=>showAuthModal('login'));
+    document.getElementById("freeSignupBtn")?.addEventListener("click",()=>showAuthModal('register'));
+    document.getElementById("premiumUpgradeLanding")?.addEventListener("click",()=>showAuthModal('register'));
+    document.getElementById("finalCtaBtn")?.addEventListener("click",()=>showAuthModal('register'));
+  }
+
+  function showAuthModal(mode) {
+    const modalHtml = `
+      <div id="authOverlay" style="position:fixed; top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;">
+        <div class="glass-card" style="width:400px; max-width:90%; padding:30px;">
+          <h2>${mode === 'login' ? 'Sign In' : 'Create Account'}</h2>
+          <input type="text" id="authName" placeholder="Username" style="width:100%; margin:12px 0; padding:12px; border-radius:30px; background:#1e2a3a; border:none; color:white;" ${mode === 'login' ? '' : 'required'}>
+          <input type="email" id="authEmail" placeholder="Email" style="width:100%; margin:12px 0; padding:12px; border-radius:30px; background:#1e2a3a; border:none;">
+          <input type="password" id="authPassword" placeholder="Password" style="width:100%; margin:12px 0; padding:12px; border-radius:30px; background:#1e2a3a;">
+          <button class="btn-primary" id="authSubmitBtn" style="width:100%;">${mode === 'login' ? 'Login' : 'Register'}</button>
+          <p style="margin-top:16px;">${mode === 'login' ? "Don't have account?" : "Already have account?"} <span id="switchAuthMode" style="color:#00f2ff;cursor:pointer;">${mode === 'login' ? 'Register' : 'Login'}</span></p>
+          <button id="closeModalBtn" style="margin-top:12px; background:none; border:none; color:#aaa;">Close</button>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const overlay = document.getElementById('authOverlay');
+    const switchBtn = document.getElementById('switchAuthMode');
+    const submitBtn = document.getElementById('authSubmitBtn');
+    const close = document.getElementById('closeModalBtn');
+    const nameField = document.getElementById('authName');
+    const emailField = document.getElementById('authEmail');
+    const passField = document.getElementById('authPassword');
+    let currentMode = mode;
+
+    function handleAuth() {
+      const email = emailField.value.trim();
+      const pass = passField.value.trim();
+      if (!email || !pass) return alert("Fill credentials");
+      if (currentMode === 'login') {
+        if (loginUser(email, pass)) { overlay.remove(); renderApp(); }
+        else alert("Invalid credentials");
+      } else {
+        const username = nameField.value.trim();
+        if (!username) return alert("Username required");
+        if (registerUser(username, email, pass)) { alert("Registered! Please login"); currentMode='login'; nameField.style.display='block'; submitBtn.innerText='Login'; switchBtn.innerText='Register'; }
+        else alert("User exists");
+      }
+    }
+    submitBtn.onclick = handleAuth;
+    switchBtn.onclick = () => {
+      currentMode = currentMode === 'login' ? 'register' : 'login';
+      nameField.style.display = currentMode === 'login' ? 'none' : 'block';
+      submitBtn.innerText = currentMode === 'login' ? 'Login' : 'Register';
+      switchBtn.innerText = currentMode === 'login' ? 'Register' : 'Login';
     };
-    // Fallback untuk bahasa lain (Spanish, French, German, Portuguese, Arabic, Hindi, Korean, Dutch, Polish, Turkish, Vietnamese, Thai, Swedish, Greek)
-    const langList = ['en','id','ja','it','ru','zh','es','fr','de','pt','ar','hi','ko','nl','pl','tr','vi','th','sv','el'];
-    langList.forEach(lang => { if(!translations[lang]) translations[lang] = translations['en']; });
+    if(mode === 'login') nameField.style.display = 'none';
+    close.onclick = () => overlay.remove();
+  }
 
-    function t(key) { return (translations[currentLanguage]?.[key]) || translations['en'][key] || key; }
+  // DASHBOARD LAYOUT
+  function renderDashboardLayout() {
+    const premiumBadge = currentUser.membership === 'premium' ? '<span style="background:gold; color:black; padding:4px 12px; border-radius:40px;">⭐ PREMIUM</span>' : '<span style="background:#2c3e66;">FREE MEMBER</span>';
+    appContainer.innerHTML = `
+      <div class="dashboard-layout">
+        <div class="sidebar">
+          <div style="font-size:1.8rem; font-weight:800; margin-bottom:30px;">TRADER X</div>
+          <div class="nav-item ${currentView === 'dashboard' ? 'active' : ''}" data-view="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</div>
+          <div class="nav-item ${currentView === 'signals' ? 'active' : ''}" data-view="signals"><i class="fas fa-bullhorn"></i> Signals</div>
+          <div class="nav-item ${currentView === 'education' ? 'active' : ''}" data-view="education"><i class="fas fa-graduation-cap"></i> Education</div>
+          <div class="nav-item ${currentView === 'journal' ? 'active' : ''}" data-view="journal"><i class="fas fa-book"></i> Journal</div>
+          <div class="nav-item ${currentView === 'calculator' ? 'active' : ''}" data-view="calculator"><i class="fas fa-calculator"></i> Risk Calc</div>
+          <div class="nav-item ${currentView === 'news' ? 'active' : ''}" data-view="news"><i class="fas fa-newspaper"></i> News</div>
+          <div class="nav-item ${currentView === 'profile' ? 'active' : ''}" data-view="profile"><i class="fas fa-user"></i> Profile</div>
+          <hr style="margin:20px 0; border-color:#2a3a55;">
+          <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</div>
+        </div>
+        <div class="main-panel" id="dynamicPanel"></div>
+      </div>
+    `;
+    document.querySelectorAll('.nav-item[data-view]').forEach(el => {
+      el.addEventListener('click', (e) => { currentView = el.dataset.view; renderDashboardLayout(); });
+    });
+    document.getElementById('logoutBtn')?.addEventListener('click', () => logout());
+    renderDashboardContent();
+  }
 
-    // Apply theme
-    function applyTheme(theme) {
-        currentTheme = theme;
-        document.body.className = `theme-${theme}`;
-        localStorage.setItem('traderx_theme', theme);
-        // Update CSS variables secara manual
-        const themesMap = {
-            'electric-violet': { primary: '#9D4EDD', accent: '#FF66CC' },
-            'neon-mint': { primary: '#00E6B2', accent: '#00FFAA' },
-            'ocean-blue': { primary: '#2A6DFF', accent: '#00E6B2' },
-            'golden-hour': { primary: '#FFB347', accent: '#FFD966' },
-            'minimalist': { primary: '#6C757D', accent: '#ADB5BD' },
-            'classic-ledger': { primary: '#D4AF37', accent: '#F5E6B8' }
-        };
-        const themeStyle = themesMap[theme] || themesMap['ocean-blue'];
-        document.documentElement.style.setProperty('--primary', themeStyle.primary);
-        document.documentElement.style.setProperty('--accent', themeStyle.accent);
-        document.documentElement.style.setProperty('--primary-glow', `rgba(${parseInt(themeStyle.primary.slice(1,3),16)},${parseInt(themeStyle.primary.slice(3,5),16)},${parseInt(themeStyle.primary.slice(5,7),16)},0.4)`);
+  function renderDashboardContent() {
+    const panel = document.getElementById('dynamicPanel');
+    if (!panel) return;
+    if (currentView === 'dashboard') renderDashboardHome(panel);
+    else if (currentView === 'signals') renderSignalsView(panel);
+    else if (currentView === 'education') renderEducationView(panel);
+    else if (currentView === 'journal') renderJournalView(panel);
+    else if (currentView === 'calculator') renderCalculatorView(panel);
+    else if (currentView === 'news') renderNewsView(panel);
+    else if (currentView === 'profile') renderProfileView(panel);
+  }
+
+  function renderDashboardHome(container) {
+    const totalPnL = getTotalPnL();
+    container.innerHTML = `
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin-bottom:32px;">
+        <div class="glass-card"><h3>💰 Balance</h3><p style="font-size:2rem;">$12,450</p><small>Demo capital</small></div>
+        <div class="glass-card"><h3>📈 Total P/L</h3><p style="font-size:2rem; color:${totalPnL>=0 ? '#0f0' : '#f44'};">${totalPnL>=0?'+':''}${totalPnL.toFixed(2)}</p></div>
+        <div class="glass-card"><h3>⚡ Winrate</h3><p style="font-size:2rem;">68%</p></div>
+      </div>
+      <div class="glass-card" style="margin-bottom:32px;"><canvas id="equityChart" height="100"></canvas></div>
+      <div class="glass-card"><h3>🔥 Activity Feed</h3><p>🔥 23 traders joined today</p><p>⚡ Last signal profit +$320</p><p>📊 New premium signal: ETH SHORT</p><p>${totalPnL !==0 ? `Journal profit ${totalPnL>0?'up':'down'} ${Math.abs(totalPnL).toFixed(2)}` : 'No trades yet'}</p></div>
+    `;
+    const ctx = document.getElementById('equityChart')?.getContext('2d');
+    if (ctx) {
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx, { type: 'line', data: { labels: ['Jan','Feb','Mar','Apr','May'], datasets: [{ label: 'Equity', data: [9800,10200,11800,12200,12450], borderColor: '#00f2ff', tension: 0.3 }] } });
     }
+  }
 
-    // Init data
-    function initNewsData() {
-        newsArticles = [
-            { id: 1, title: "Gold declines ahead of ceasefire deadline", date: "Apr 07, 2026, 04:27", source: "Kitco Commentaries", category: "Economy", image: "https://picsum.photos/id/26/100/100" },
-            { id: 2, title: "Gold's demand drivers 'should once again reassert themselves' after Iran war shock fades – Merrill's Avioli", date: "Apr 07, 2026, 01:41", source: "Kitco News", category: "Metals", image: "https://picsum.photos/id/29/100/100" },
-            { id: 3, title: "Monday's charts for gold, silver, platinum and palladium, April 6", date: "Apr 06, 2026, 23:35", source: "Kitco Commentaries", category: "Metals", image: "https://picsum.photos/id/35/100/100" },
-            { id: 4, title: "Gold slightly up, silver slightly down amid conflicting fundamentals", date: "Apr 06, 2026, 23:25", source: "Kitco News", category: "Metals", image: "https://picsum.photos/id/20/100/100" },
-            { id: 5, title: "Bank of France sells its 129-tonne US gold reserve, then buys it back in Europe for tidy $15 billion profit", date: "Apr 06, 2026, 22:39", source: "Kitco News", category: "Markets", image: "https://picsum.photos/id/0/100/100" },
-            { id: 6, title: "Spot gold at $4,667/oz after ISM Services PMI falls to 54 in March as Iran price shocks raise concern", date: "Apr 06, 2026, 21:01", source: "Kitco News", category: "Metals", image: "https://picsum.photos/id/42/100/100" }
-        ];
-    }
-    function initData() {
-        signals = [
-            { id: 1, pair: "BTC/USD", entry: 68420, tp: 69500, sl: 67800, confidence: 87, status: "Running", timeLeft: "2h", premium: false },
-            { id: 2, pair: "EUR/USD", entry: 1.0925, tp: 1.0980, sl: 1.0880, confidence: 92, status: "TP Hit", timeLeft: "Closed", premium: false },
-            { id: 3, pair: "XAU/USD", entry: 2365, tp: 2385, sl: 2345, confidence: 78, status: "Running", timeLeft: "5h", premium: true },
-            { id: 4, pair: "ETH/USD", entry: 3250, tp: 3400, sl: 3170, confidence: 84, status: "Running", timeLeft: "3h", premium: true }
-        ];
-        educationModules = [
-            { id: 1, title: "Smart Money Concepts", desc: "Institutional order flow basics", premium: false, videoId: "dQw4w9WgXcQ" },
-            { id: 2, title: "Risk Management 101", desc: "Position sizing & drawdown", premium: false, videoId: "JfVOs4VSpmA" },
-            { id: 3, title: "Advanced Entry Precision", desc: "Supply/demand + FVG", premium: true, videoId: "3nXLaO--DqM" }
-        ];
-        initNewsData();
-        for(let i=0;i<5;i++) activityFeed.push(`📊 Market update: ${Math.random() > 0.5 ? 'Volatility increasing' : 'Liquidity sweep'}`);
-    }
+  function renderSignalsView(container) {
+    const isPremium = currentUser.membership === 'premium';
+    let signalsHtml = `<h2>Live Trading Signals</h2><div style="display:flex;flex-direction:column;gap:24px;">`;
+    demoSignals.forEach(sig => {
+      const isLocked = sig.premiumOnly && !isPremium;
+      const timerVal = formatTimer(sig.timerEnd);
+      signalsHtml += `<div class="signal-card" style="position:relative;">
+        <div style="display:flex; justify-content:space-between;"><span><b>${sig.pair} ${sig.direction}</b> <span class="badge" style="background:#1e2a3a;">Confidence ${sig.confidence}%</span></span><span>⏱️ ${timerVal}</span></div>
+        ${!isLocked ? `<div>Entry: ${sig.entry} | TP: ${sig.tp} | SL: ${sig.sl}<br>Reason: ${sig.reason}</div>` : `<div class="blur-content" style="filter:blur(6px);">Entry: xxx | TP: xxx | SL: xxx<br>Reason: hidden</div>`}
+        <div>Status: ${sig.status}</div>
+        ${isLocked ? `<div class="lock-overlay" style="position:absolute; inset:0; background:rgba(0,0,0,0.7); border-radius:24px; display:flex; justify-content:center; align-items:center; gap:8px;"><i class="fas fa-lock"></i> 🔒 Premium Only <button class="btn-primary" style="padding:6px 12px;" id="unlockUpgradeBtn">Unlock Signal</button></div>` : ''}
+      </div>`;
+    });
+    signalsHtml += `</div>`;
+    container.innerHTML = signalsHtml;
+    document.querySelectorAll('#unlockUpgradeBtn').forEach(btn => btn.addEventListener('click', () => { upgradeMembership(); }));
+  }
 
-    // Load settings
-    function loadSettings() {
-        const savedTheme = localStorage.getItem('traderx_theme');
-        if(savedTheme) applyTheme(savedTheme);
-        const savedLang = localStorage.getItem('traderx_lang');
-        if(savedLang && langList.includes(savedLang)) currentLanguage = savedLang;
-        const savedCapital = localStorage.getItem('traderx_baseCapital');
-        if(savedCapital) baseCapital = parseFloat(savedCapital);
-    }
+  function renderEducationView(container) {
+    const isPremium = currentUser.membership === 'premium';
+    let modulesHtml = `<h2>🎓 Smart Money Education</h2><div class="grid" style="display:grid;gap:24px;">`;
+    educationModules.forEach(mod => {
+      const locked = !mod.free && !isPremium;
+      modulesHtml += `<div class="module-card" style="position:relative;"><h3>${mod.title}</h3><p>${mod.desc}</p>${locked ? `<div class="lock-overlay" style="position:absolute; inset:0; border-radius:24px; background:rgba(0,0,0,0.75); display:flex; justify-content:center; align-items:center;"><i class="fas fa-crown"></i> Unlock Full Access <button class="btn-primary" id="eduUpgradeBtn" style="margin-left:10px;">Upgrade</button></div>` : `<p>${mod.content}</p>`}</div>`;
+    });
+    container.innerHTML = modulesHtml;
+    document.querySelectorAll('#eduUpgradeBtn').forEach(btn => btn.addEventListener('click', upgradeMembership));
+  }
 
-    // Journal & Balance functions
-    function getTotalPnL() { if(!currentUser?.journalEntries) return 0; return currentUser.journalEntries.reduce((s,e)=>s+e.profit,0); }
-    function getCurrentBalance() { return baseCapital + getTotalPnL(); }
-    function getTodayPnL() { if(!currentUser?.journalEntries) return 0; const today=new Date().toDateString(); return currentUser.journalEntries.filter(e=>new Date(e.date).toDateString()===today).reduce((s,e)=>s+e.profit,0); }
-    function getWeeklyReturn() { const total=getTotalPnL(); return ((total/baseCapital)*100).toFixed(1); }
-    function getEquityCurve() { let cum=baseCapital; let points=[{label:'Start',balance:cum}]; if(currentUser?.journalEntries){[...currentUser.journalEntries].reverse().forEach(e=>{cum+=e.profit; points.push({label:e.pair,balance:cum});})} return points; }
+  function renderJournalView(container) {
+    const entries = getJournalEntries(currentUser.id);
+    let historyHtml = entries.map(t => `<div class="glass-card" style="margin:8px 0;"><b>${t.instrument}</b> (${t.direction}) | Entry ${t.entryPrice} | Exit ${t.exitPrice} | Qty ${t.quantity} | PnL: ${calculatePnL(t).toFixed(2)}</div>`).join('');
+    container.innerHTML = `
+      <h2>📓 Trading Journal</h2>
+      <div class="glass-card"><h3>Add Trade</h3><input id="journalInstrument" placeholder="BTC/USD"><select id="journalDir"><option>long</option><option>short</option></select><input id="journalEntry" placeholder="Entry price"><input id="journalExit" placeholder="Exit price"><input id="journalQty" placeholder="Quantity"><button class="btn-primary" id="addTradeBtn">Add</button></div>
+      <h3>Trade History</h3><div id="historyList">${historyHtml || '<p>No trades yet</p>'}</div>
+    `;
+    document.getElementById('addTradeBtn')?.addEventListener('click', () => {
+      const instrument = document.getElementById('journalInstrument').value;
+      const direction = document.getElementById('journalDir').value;
+      const entryPrice = parseFloat(document.getElementById('journalEntry').value);
+      const exitPrice = parseFloat(document.getElementById('journalExit').value);
+      const quantity = parseFloat(document.getElementById('journalQty').value);
+      if (isNaN(entryPrice) || isNaN(exitPrice) || isNaN(quantity)) return alert("Valid numbers");
+      addTrade({ instrument, direction, entryPrice, exitPrice, quantity });
+      renderJournalView(container);
+    });
+  }
 
-    // Render functions (ringkas)
-    function renderDashboardPage() { /* sama seperti sebelumnya dengan i18n */ 
-        const container = document.getElementById("dashboardPage");
-        const balance = getCurrentBalance(), todayPnL = getTodayPnL(), weeklyReturn = getWeeklyReturn();
-        const premiumBadge = currentUser?.premium ? '<span class="badge" style="background:#FFB34720;color:#FFB347;"><i class="fas fa-crown"></i> PREMIUM</span>' : '<span class="badge">FREE</span>';
-        const activityHtml = activityFeed.slice(0,4).map(a=>`<div class="flex-between"><span>🔔 ${a}</span></div>`).join('');
-        container.innerHTML = `
-            <div class="card"><div class="flex-between"><div><h2>${t('welcome')}, ${currentUser?.name}</h2>${premiumBadge}</div><i class="fas fa-chart-line" style="font-size:32px;color:var(--primary);"></i></div></div>
-            <div class="card"><div class="flex-between"><span>💰 ${t('balance')}</span><span class="profit-text">$${balance.toFixed(2)}</span></div>
-            <div class="flex-between"><span>📈 ${t('todayPnL')}</span><span class="${todayPnL>=0?'profit-text':'loss-text'}">${todayPnL>=0?'+':''}$${todayPnL.toFixed(2)}</span></div>
-            <div class="flex-between"><span>📊 ${t('weeklyReturn')}</span><span class="${weeklyReturn>=0?'profit-text':'loss-text'}">${weeklyReturn}%</span></div><hr>
-            <canvas id="equityCanvas" height="150"></canvas></div>
-            <div class="card"><h3>🔥 ${t('fomo')}</h3><div>🚀 23 traders joined today</div><div>⚡ Last signal profit +$320</div></div>
-            <div class="card"><h3>📺 ${t('mentor')}</h3><div class="scroll-x" id="mentorVideos"></div></div>
-            <div class="card"><h3>⚡ ${t('activity')}</h3>${activityHtml}</div>
-            <div class="grid-2"><button class="glass-btn primary" id="quickJournalBtn"><i class="fas fa-plus-circle"></i> ${t('addTrade')}</button>
-            <button class="glass-btn" id="quickSignalBtn"><i class="fas fa-chart-line"></i> ${t('signals')}</button></div>`;
-        const mentorVideos = [{ id: "dQw4w9WgXcQ", title: "Smart Money" }];
-        document.getElementById("mentorVideos").innerHTML = mentorVideos.map(v=>`<div class="video-card"><iframe src="https://www.youtube.com/embed/${v.id}?autoplay=0&mute=1"></iframe><div>${v.title}</div></div>`).join('');
-        renderDashboardChart();
-        document.getElementById("quickJournalBtn")?.addEventListener("click",()=>switchPage("journal"));
-        document.getElementById("quickSignalBtn")?.addEventListener("click",()=>switchPage("signal"));
-    }
-    function renderDashboardChart() { const canvas=document.getElementById("equityCanvas"); if(!canvas) return; const data=getEquityCurve(); if(chartInstance) chartInstance.destroy(); chartInstance=new Chart(canvas,{type:'line',data:{labels:data.map(p=>p.label),datasets:[{label:'Equity',data:data.map(p=>p.balance),borderColor:'#00E6B2',fill:true}]}});}
-    function renderSignalPage() { /* similar, skip for brevity but keep original */ }
-    function renderEducationPage() { /* existing */ }
-    function renderJournalPage() { /* existing */ }
-    function renderCalculatorPage() { /* existing forex calculator */ }
-    function renderNewsPage() { /* existing kitco style */ }
-    function renderProfilePage() { /* existing */ }
-    function renderMembershipPage() { /* existing */ }
-    
-    // SETTINGS PAGE
-    function renderSettingsPage() {
-        const container = document.getElementById("settingsPage");
-        const themes = ['ocean-blue','electric-violet','neon-mint','golden-hour','minimalist','classic-ledger'];
-        const languages = [
-            {code:'en',name:'English'},{code:'id',name:'Bahasa Indonesia'},{code:'ja',name:'日本語'},{code:'it',name:'Italiano'},{code:'ru',name:'Русский'},{code:'zh',name:'中文'},
-            {code:'es',name:'Español'},{code:'fr',name:'Français'},{code:'de',name:'Deutsch'},{code:'pt',name:'Português'},{code:'ar',name:'العربية'},{code:'hi',name:'हिन्दी'},
-            {code:'ko',name:'한국어'},{code:'nl',name:'Nederlands'},{code:'pl',name:'Polski'},{code:'tr',name:'Türkçe'},{code:'vi',name:'Tiếng Việt'},{code:'th',name:'ไทย'},
-            {code:'sv',name:'Svenska'},{code:'el',name:'Ελληνικά'}
-        ];
-        let themeHtml = themes.map(th => `<div class="theme-option" data-theme="${th}"><span>${th.replace('-',' ').toUpperCase()}</span> ${currentTheme===th ? '✅' : ''}</div>`).join('');
-        let langHtml = languages.map(lg => `<div class="lang-option" data-lang="${lg.code}"><span>${lg.name}</span> ${currentLanguage===lg.code ? '✅' : ''}</div>`).join('');
-        container.innerHTML = `
-            <div class="card"><h3>🎨 ${t('theme')}</h3>${themeHtml}</div>
-            <div class="card"><h3>🌐 ${t('language')}</h3>${langHtml}</div>
-            <div class="card"><h3>💰 ${t('capital')}</h3><input type="number" id="setCapitalInput" class="capital-input" value="${baseCapital}" step="100"><button class="glass-btn primary" id="saveCapitalBtn" style="margin-top:12px;">${t('save')}</button></div>
-            <div class="card"><h3>📦 ${t('backup')}</h3><button class="glass-btn" id="exportBackupBtn">Export Backup</button><button class="glass-btn" id="importBackupBtn" style="margin-left:8px;">Import Backup</button><input type="file" id="importFile" style="display:none;"></div>
-        `;
-        document.querySelectorAll('.theme-option').forEach(el => el.addEventListener('click',()=>{ applyTheme(el.dataset.theme); renderSettingsPage(); renderAllPages(); }));
-        document.querySelectorAll('.lang-option').forEach(el => el.addEventListener('click',()=>{ currentLanguage = el.dataset.lang; localStorage.setItem('traderx_lang',currentLanguage); renderAllPages(); }));
-        document.getElementById('saveCapitalBtn')?.addEventListener('click',()=>{ let newCap = parseFloat(document.getElementById('setCapitalInput').value); if(!isNaN(newCap) && newCap>0) { baseCapital = newCap; localStorage.setItem('traderx_baseCapital',baseCapital); renderDashboardPage(); renderJournalPage(); showToast('Capital updated'); } });
-        document.getElementById('exportBackupBtn')?.addEventListener('click',()=>{ let data = JSON.stringify({users, currentUser, baseCapital, journalEntries: currentUser?.journalEntries}); let blob = new Blob([data],{type:'application/json'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='traderx_backup.json'; a.click(); });
-        document.getElementById('importBackupBtn')?.addEventListener('click',()=>{ document.getElementById('importFile').click(); });
-        document.getElementById('importFile')?.addEventListener('change',(e)=>{ let file=e.target.files[0]; if(!file) return; let reader=new FileReader(); reader.onload=function(ev){ try{ let d=JSON.parse(ev.target.result); if(d.users) users=d.users; if(d.baseCapital) baseCapital=d.baseCapital; if(d.currentUser) currentUser=d.currentUser; saveUsers(); localStorage.setItem('traderx_baseCapital',baseCapital); saveCurrentUser(); showToast('Backup restored'); renderAllPages(); }catch(e){ showToast('Invalid backup'); } }; reader.readAsText(file); });
-    }
+  function renderCalculatorView(container) {
+    container.innerHTML = `
+      <h2>📐 Position Size Calculator</h2>
+      <div class="glass-card"><div><label>Balance ($)</label><input id="calcBalance" type="number" value="10000"></div>
+      <div><label>Risk %</label><input id="calcRisk" type="number" value="1"></div>
+      <div><label>Stop Loss (pips/points)</label><input id="calcSL" type="number" value="100"></div>
+      <button class="btn-primary" id="calcBtn">Calculate</button>
+      <h3>Results:</h3><p id="lotSizeOutput">Lot size: --</p><p id="riskAmountOutput">Risk amount: --</p></div>
+    `;
+    document.getElementById('calcBtn')?.addEventListener('click', () => {
+      const balance = parseFloat(document.getElementById('calcBalance').value);
+      const riskPct = parseFloat(document.getElementById('calcRisk').value);
+      const slPoints = parseFloat(document.getElementById('calcSL').value);
+      if (balance && riskPct && slPoints) {
+        const riskAmount = balance * (riskPct/100);
+        const lotSize = riskAmount / slPoints;
+        document.getElementById('lotSizeOutput').innerHTML = `Lot size: ${lotSize.toFixed(3)}`;
+        document.getElementById('riskAmountOutput').innerHTML = `Risk amount: $${riskAmount.toFixed(2)}`;
+      }
+    });
+  }
 
-    function renderAllPages() { renderDashboardPage(); renderSignalPage(); renderEducationPage(); renderJournalPage(); renderCalculatorPage(); renderNewsPage(); renderProfilePage(); renderMembershipPage(); renderSettingsPage(); applyTextDirection(); }
-    function applyTextDirection() { document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if(key) el.innerText = t(key); }); }
+  function renderNewsView(container) {
+    container.innerHTML = `<h2>📰 Market News</h2><div style="display:grid; gap:24px;">${newsArticles.map(a => `<div class="news-card"><img src="${a.img}" style="width:100%; height:150px; object-fit:cover; border-radius:20px;"><h3>${a.title}</h3><p>${a.desc}</p></div>`).join('')}</div>`;
+  }
 
-    // Auth & other functions (existing)
-    function loadUsers() { const stored = localStorage.getItem("traderx_users"); if(stored) users = JSON.parse(stored); else users = [{ id: 1, name: "Alex Trader", email: "demo@traderx.com", password: "123456", premium: false, journalEntries: [] }]; saveUsers(); }
-    function saveUsers() { localStorage.setItem("traderx_users", JSON.stringify(users)); }
-    function saveCurrentUser() { localStorage.setItem("traderx_currentUser", JSON.stringify(currentUser)); }
-    function loadCurrentSession() { const sess = localStorage.getItem("traderx_currentUser"); if(sess) { currentUser = JSON.parse(sess); const found = users.find(u => u.id === currentUser.id); if(found) currentUser = found; else currentUser = null; } }
-    function updateUserInArray(updatedUser) { const idx = users.findIndex(u => u.id === updatedUser.id); if(idx !== -1) users[idx] = updatedUser; saveUsers(); if(currentUser && currentUser.id === updatedUser.id) currentUser = updatedUser; saveCurrentUser(); }
-    function addJournalEntry(pair, entry, exit, lots) { if(!currentUser) return; const profit = (exit - entry) * lots * 100; const newEntry = { id: Date.now(), pair, entry, exit, lots, profit, date: new Date().toISOString() }; if(!currentUser.journalEntries) currentUser.journalEntries = []; currentUser.journalEntries.unshift(newEntry); updateUserInArray(currentUser); renderJournalPage(); renderDashboardPage(); showToast(`Trade added: ${profit>=0?'+':''}$${profit.toFixed(2)}`); }
-    function deleteJournalEntry(id) { if(!currentUser) return; currentUser.journalEntries = currentUser.journalEntries.filter(e => e.id !== id); updateUserInArray(currentUser); renderJournalPage(); renderDashboardPage(); }
-    function showToast(msg) { const t = document.createElement("div"); t.className = "toast-msg"; t.innerHTML = `<i class="fas fa-bell"></i> ${msg}`; document.body.appendChild(t); setTimeout(() => t.remove(), 2500); }
-    function switchPage(pageId) { document.querySelectorAll(".page").forEach(p => p.classList.remove("active-page")); document.getElementById(`${pageId}Page`).classList.add("active-page"); document.querySelectorAll(".nav-item").forEach(btn => btn.classList.remove("active")); const activeNav = document.querySelector(`.nav-item[data-nav="${pageId}"]`); if(activeNav) activeNav.classList.add("active"); if(pageId === "dashboard") renderDashboardPage(); else if(pageId === "signal") renderSignalPage(); else if(pageId === "education") renderEducationPage(); else if(pageId === "journal") renderJournalPage(); else if(pageId === "calculator") renderCalculatorPage(); else if(pageId === "news") renderNewsPage(); else if(pageId === "profile") renderProfilePage(); else if(pageId === "membership") renderMembershipPage(); else if(pageId === "settings") renderSettingsPage(); closeSidebar(); }
-    function closeSidebar() { document.getElementById("sidebar").classList.remove("open"); document.getElementById("sidebarOverlay").style.display = "none"; }
-    function openSidebar() { document.getElementById("sidebar").classList.add("open"); document.getElementById("sidebarOverlay").style.display = "block"; }
-    function afterLogin(user) { currentUser = user; saveCurrentUser(); document.getElementById("authContainer").style.display = "none"; document.getElementById("mainApp").style.display = "block"; initData(); renderAllPages(); switchPage("dashboard"); startActivitySimulation(); }
-    let activityInterval; function startActivitySimulation() { if(activityInterval) clearInterval(activityInterval); activityInterval = setInterval(() => { const msgs = ["🔥 23 traders joined today", "⚡ Last signal profit +$320"]; activityFeed.unshift(msgs[Math.floor(Math.random()*msgs.length)]); if(activityFeed.length>6) activityFeed.pop(); renderDashboardPage(); }, 8000); }
-    document.getElementById("doLoginBtn")?.addEventListener("click", () => { const email = document.getElementById("loginEmail").value, pwd = document.getElementById("loginPassword").value; const user = users.find(u => u.email === email && u.password === pwd); if(user) afterLogin(user); else showToast("Invalid credentials"); });
-    document.getElementById("doRegisterBtn")?.addEventListener("click", () => { const name = document.getElementById("regName").value, email = document.getElementById("regEmail").value, pwd = document.getElementById("regPassword").value; if(!name||!email||!pwd) return showToast("Fill all fields"); if(users.find(u=>u.email===email)) return showToast("Email exists"); const newUser = { id: Date.now(), name, email, password: pwd, premium: false, journalEntries: [] }; users.push(newUser); saveUsers(); afterLogin(newUser); });
-    document.getElementById("showRegisterBtn")?.addEventListener("click", () => { document.getElementById("loginForm").style.display = "none"; document.getElementById("registerForm").style.display = "block"; });
-    document.getElementById("showLoginBtn")?.addEventListener("click", () => { document.getElementById("registerForm").style.display = "none"; document.getElementById("loginForm").style.display = "block"; });
-    document.getElementById("menuToggleBtn")?.addEventListener("click", openSidebar);
-    document.getElementById("sidebarOverlay")?.addEventListener("click", closeSidebar);
-    document.getElementById("notifBellBtn")?.addEventListener("click", () => showToast("🔔 New signal: BTC breakout"));
-    document.querySelectorAll(".sidebar-item[data-page]").forEach(el => el.addEventListener("click", () => switchPage(el.dataset.page)));
-    document.getElementById("sidebarMembership")?.addEventListener("click", () => switchPage("membership"));
-    document.querySelectorAll(".nav-item").forEach(btn => btn.addEventListener("click", () => switchPage(btn.dataset.nav)));
-    loadUsers(); loadCurrentSession(); loadSettings();
-    if(currentUser) { document.getElementById("authContainer").style.display = "none"; document.getElementById("mainApp").style.display = "block"; initData(); renderAllPages(); switchPage("dashboard"); startActivitySimulation(); }
-    else { document.getElementById("authContainer").style.display = "flex"; document.getElementById("mainApp").style.display = "none"; }
-    // Simplified render functions for missing pages (signal, education, journal, calculator, news, profile, membership) reuse previous logic but must exist.
-    window.renderSignalPage = function() { document.getElementById("signalPage").innerHTML = `<div class="card"><h2>📡 ${t('signalsPage')}</h2><p>Premium signals coming</p></div>`; };
-    window.renderEducationPage = function() { document.getElementById("educationPage").innerHTML = `<div class="card"><h3>📚 ${t('educationPage')}</h3><p>Modules</p></div>`; };
-    window.renderJournalPage = function() { /* reuse */ };
-    window.renderCalculatorPage = function() { /* reuse calculator */ };
-    window.renderNewsPage = function() { /* reuse news kitco */ };
-    window.renderProfilePage = function() { /* reuse profile */ };
-    window.renderMembershipPage = function() { /* reuse membership */ };
-    // quick fixes to avoid undefined
-    function renderSignalPage() { document.getElementById("signalPage").innerHTML = `<div class="card"><h2>📡 ${t('signalsPage')}</h2><p>Upgrade to premium for full signals</p></div>`; }
-    function renderEducationPage() { document.getElementById("educationPage").innerHTML = `<div class="card"><h3>📚 ${t('educationPage')}</h3><p>Free & premium modules</p></div>`; }
-    function renderJournalPage() { document.getElementById("journalPage").innerHTML = `<div class="card"><h3>📓 ${t('journal')}</h3><p>Use +Add Trade</p></div>`; }
-    function renderCalculatorPage() { document.getElementById("calculatorPage").innerHTML = `<div class="card"><h3>🧮 ${t('calculatorPage')}</h3><p>Calculator ready</p></div>`; }
-    function renderNewsPage() { document.getElementById("newsPage").innerHTML = `<div class="card"><h3>📰 ${t('newsPage')}</h3><p>Latest financial news</p></div>`; }
-    function renderProfilePage() { document.getElementById("profilePage").innerHTML = `<div class="card"><h3>👤 ${t('profilePage')}</h3><p>${currentUser?.name}</p><button class="glass-btn" id="logoutBtn">${t('logout')}</button></div>`; document.getElementById("logoutBtn")?.addEventListener("click",()=>{ localStorage.removeItem("traderx_currentUser"); window.location.reload(); }); }
-    function renderMembershipPage() { document.getElementById("membershipPage").innerHTML = `<div class="card"><h3>💎 ${t('membership')}</h3><button class="glass-btn primary" id="upgradeMemBtn">${t('upgrade')}</button></div>`; document.getElementById("upgradeMemBtn")?.addEventListener("click",()=>{ if(currentUser) { currentUser.premium=true; updateUserInArray(currentUser); showToast("Premium Activated!"); renderAllPages(); } }); }
+  function renderProfileView(container) {
+    container.innerHTML = `
+      <div class="glass-card" style="max-width:500px;"><h2>👤 Profile</h2><p><strong>Username:</strong> <span id="profileUsername">${currentUser.username}</span></p><p><strong>Email:</strong> ${currentUser.email}</p><p><strong>Membership:</strong> ${currentUser.membership.toUpperCase()} ${currentUser.membership !== 'premium' ? '<button class="btn-primary" id="upgradeNowBtn">Upgrade to Premium</button>' : '✅ Active'}</p>
+      <input id="editUsernameInput" placeholder="New username" value="${currentUser.username}"><button id="saveUsernameBtn">Save</button><hr><button class="btn-outline" id="logoutProfileBtn">Logout</button></div>
+    `;
+    document.getElementById('saveUsernameBtn')?.addEventListener('click', () => {
+      const newName = document.getElementById('editUsernameInput').value;
+      if(newName) updateProfile(newName);
+    });
+    document.getElementById('upgradeNowBtn')?.addEventListener('click', upgradeMembership);
+    document.getElementById('logoutProfileBtn')?.addEventListener('click', logout);
+  }
+
+  initStorage();
+  renderApp();
 </script>
 </body>
 </html>
