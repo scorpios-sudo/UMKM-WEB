@@ -1,575 +1,351 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>TRADER X ACADEMY | Institutional Trading Edge</title>
-  <!-- Google Fonts + Font Awesome + Chart.js -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0a0c10;
-      color: #eef2ff;
-      scroll-behavior: smooth;
-    }
-
-    /* Glassmorphism + Neon */
-    .glass-card {
-      background: rgba(18, 22, 28, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 255, 255, 0.2);
-      border-radius: 28px;
-      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
-      transition: all 0.2s ease;
-    }
-
-    .glass-card:hover {
-      border-color: #00f2ff;
-      box-shadow: 0 0 18px rgba(0, 242, 255, 0.2);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      border: none;
-      color: white;
-      font-weight: 700;
-      padding: 12px 28px;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 14px rgba(0,114,255,0.4);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,114,255,0.6);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1.5px solid #00c6ff;
-      color: #00c6ff;
-      border-radius: 40px;
-      padding: 10px 24px;
-      font-weight: 600;
-      transition: 0.2s;
-    }
-
-    .btn-outline:hover {
-      background: rgba(0,198,255,0.1);
-      border-color: #00f2ff;
-    }
-
-    /* landing & layout */
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* scroll horizontal */
-    .scroll-x {
-      display: flex;
-      overflow-x: auto;
-      gap: 20px;
-      scrollbar-width: thin;
-      padding-bottom: 12px;
-    }
-    .scroll-x::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    /* premium blur overlay */
-    .blur-content {
-      filter: blur(5px);
-      pointer-events: none;
-      user-select: none;
-      position: relative;
-    }
-    .premium-lock {
-      position: relative;
-    }
-    .lock-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(4px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-radius: 24px;
-      gap: 8px;
-      z-index: 5;
-      font-weight: bold;
-      color: #ffd966;
-    }
-
-    /* dashboard sidebar */
-    .dashboard-layout {
-      display: flex;
-      min-height: 100vh;
-    }
-    .sidebar {
-      width: 260px;
-      background: rgba(10, 14, 18, 0.95);
-      backdrop-filter: blur(10px);
-      border-right: 1px solid rgba(0,255,255,0.2);
-      padding: 28px 16px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-    }
-    .main-panel {
-      flex: 1;
-      padding: 28px 32px;
-      background: #0a0c10;
-    }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 16px;
-      margin: 8px 0;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: 0.2s;
-      color: #b0c4de;
-    }
-    .nav-item.active, .nav-item:hover {
-      background: rgba(0, 198, 255, 0.15);
-      color: #00f2ff;
-      border-left: 3px solid #00f2ff;
-    }
-
-    /* cards */
-    .stat-card, .feature-card, .testimonial-card, .signal-card, .module-card, .news-card {
-      background: rgba(20, 25, 35, 0.7);
-      border-radius: 24px;
-      padding: 20px;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(0,255,200,0.2);
-    }
-
-    @media (max-width: 768px) {
-      .dashboard-layout { flex-direction: column; }
-      .sidebar { width: 100%; height: auto; position: relative; }
-      .main-panel { padding: 20px; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MAXPAIN FADE SHORT SIGNAL (Editable)</title>
+<style>
+  body {
+    background: #000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ddd;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #444;
+    border-radius: 8px;
+  }
+  h1 {
+    font-weight: 900;
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 0;
+  }
+  .header {
+    background: #111;
+    border: 2px solid #ff2020;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .important-text {
+    color: #ff2020;
+  }
+  .subheader {
+    color: #fdd835;
+    font-weight: 700;
+  }
+  label {
+    display: block;
+    margin-top: 0.5em;
+    font-weight: 600;
+    color: #fdd835;
+  }
+  input[type=text], input[type=number], textarea {
+    width: 100%;
+    background: #222;
+    border: 1px solid #444;
+    color: #ddd;
+    font-size: 1rem;
+    padding: 6px 8px;
+    margin-top: 4px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  input[type=number] {
+    max-width: 150px;
+  }
+  .flex-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .box {
+    border: 1px solid #333;
+    background: #121212;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    flex: 1 1 45%;
+  }
+  .checklist {
+    margin-top: 8px;
+    border-top: 1px solid #333;
+    padding-top: 10px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+  }
+  .checklist span {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .checklist .check-true {
+    color: #4caf50;
+  }
+  .checklist .check-false {
+    color: #888;
+    text-decoration: line-through;
+  }
+  .progress-bar {
+    background: #444;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 20px;
+    margin-top: 6px;
+  }
+  .progress-fill {
+    background: #fdd835;
+    height: 100%;
+    width: 46%; /* This should be dynamic based on confluence */
+  }
+  .valid-text {
+    color: #4caf50;
+    font-weight: 700;
+  }
+  .trade-setup {
+    border: 1px solid #800000;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #ff4040;
+    font-family: monospace;
+  }
+  .trade-setup-green {
+    color: #4caf50;
+  }
+  .trade-setup-yellow {
+    color: #fdd835;
+  }
+  .trade-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .warning-box {
+    background: #330000;
+    border: 1px solid #ffcc00;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 14px;
+    font-size: 0.9rem;
+  }
+  .warning-header {
+    font-weight: 700;
+    color: #ffcc00;
+    margin-bottom: 6px;
+  }
+  .footer-warning {
+    color: #fdd835;
+    text-align: center;
+    padding: 6px;
+    border-top: 1px solid #444;
+    font-weight: 700;
+  }
+  button {
+    background: #fdd835;
+    border: none;
+    padding: 10px 16px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  button:hover {
+    background: #ffea00;
+  }
+</style>
 </head>
 <body>
 
-<div id="app-root"></div>
+<div class="header">
+  <h1>⚠️ 🎯 SIGNAL: <input id="signalType" type="text" value="MAXPAIN FADE SHORT" style="width:200px; color:#ff2020; font-weight:700; border:none; background:transparent; text-align:center;"/></h1>
+  <div style="text-align:center; font-weight:600; color:#ccc;">[<input id="signalPotential" type="text" value="POTENTIAL" style="width:100px; border:none; background:transparent; text-align:center; color:#ddd; font-weight:600;"/></div>
+</div>
+
+<div class="flex-row">
+  <div class="box">
+    <span class="subheader"><strong><label for="commodity">Gold (GC)</label></strong></span>
+    <input id="commodity" type="text" value="G2WF6" />
+    <!-- Confluence -->
+    <label for="confluence">CONFLUENCE: <span id="confluencePercent">46%</span></label>
+    <div class="progress-bar">
+      <div id="confluenceBar" class="progress-fill" style="width: 46%;"></div>
+    </div>
+    <span class="valid-text">[<input id="validText" type="text" value="VALID" style="width:60px; color:#4caf50; font-weight:bold; border:none; background:transparent; text-align:center;"/></span>]
+  </div>
+
+  <div class="box trade-setup" contenteditable="false">
+    <strong>🎯 TRADE SETUP (R:R 3.0:1)</strong><br />
+    <div class="trade-row"><label for="type">TYPE :</label> <input id="type" type="text" value="MAXPAIN FADE SHORT" /></div>
+    <div class="trade-row"><label for="direction">DIRECTION :</label> <input id="direction" type="text" value="SHORT" style="width:70px;"/> <span>📉</span></div>
+    <div style="border:1px solid #800000; padding:8px; margin-top:8px; border-radius:6px; color:#ff4040;">
+      <div><label for="entry">ENTRY :</label> <input id="entry" type="text" value="4,620.00 - 4,625.00" style="color:#ff4040; border:none; background:transparent; width:150px;"></div>
+      <div><label for="stopLoss">STOP LOSS :</label> <input id="stopLoss" type="text" value="4,675.00 pts" style="color:#ff4040; border:none; background:transparent; width:120px;"></div>
+      <div><label for="risk">RISK :</label> <input id="risk" type="text" value="52.50 pts" style="color:#ff4040; border:none; background:transparent; width:90px;"></div>
+    </div>
+    <div style="border:1px solid #4caf50; padding:8px; margin-top:8px; border-radius:6px; color:#4caf50;">
+      <div><label for="target1">TARGET 1 :</label> <input id="target1" type="text" value="4,465.00 pts" style="color:#4caf50; border:none; background:transparent; width:120px;"></div>
+      <div><label for="reward1">REWARD :</label> <input id="reward1" type="text" value="157.50 pts" style="color:#4caf50; border:none; background:transparent; width:120px;"></div>
+      <div><label for="rr1">R:R :</label> <input id="rr1" type="text" value="3.0:1" style="color:#4caf50; border:none; background:transparent; width:60px;"></div>
+    </div>
+    <div style="border:1px solid #4caf50; padding:8px; margin-top:8px; border-radius:6px; color:#4caf50;">
+      <div><label for="target2">TARGET 2 :</label> <input id="target2" type="text" value="4,386.25 pts" style="color:#4caf50; border:none; background:transparent; width:120px;"></div>
+      <div><label for="reward2">REWARD :</label> <input id="reward2" type="text" value="236.25 pts" style="color:#4caf50; border:none; background:transparent; width:120px;"></div>
+      <div><label for="rr2">R:R :</label> <input id="rr2" type="text" value="4.9:1" style="color:#4caf50; border:none; background:transparent; width:60px;"></div>
+    </div>
+  </div>
+</div>
+
+<div class="flex-row">
+  <div class="box">
+    <div class="subheader">SIGNAL BREAKDOWN</div>
+    <div class="checklist">
+      <span><input type="checkbox" id="chkPriceVol" checked> <label for="chkPriceVol">Price+Vol :</label> <input id="priceVolVal" type="text" value="+35" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> Strong rally +0.56%, Vol dropping</span>
+      <span><input type="checkbox" id="chkPosition" checked> <label for="chkPosition">Position :</label> <input id="positionVal" type="text" value="+20" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> Above Max Pain, room to 4,650</span>
+      <span><input type="checkbox" id="chkOIPattern"> <label for="chkOIPattern">OI Pattern :</label> <input id="oiPatternVal" type="text" value="0" style="width:50px; background:#000; border:none; color:#ccc;"> STRADDLE BUILDING</span>
+      <span><input type="checkbox" id="chkGamma" checked> <label for="chkGamma">Gamma :</label> <input id="gammaVal" type="text" value="+10" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> Long Gamma = Mean revert favored</span>
+      <span><input type="checkbox" id="chkPCR"> <label for="chkPCR">PCR :</label> <input id="pcrVal" type="text" value="0" style="width:50px; background:#000; border:none; color:#ccc;"> PCR 1.23 = Normal range</span>
+      <span><input type="checkbox" id="chkDTE" checked> <label for="chkDTE">DTE :</label> <input id="dteVal" type="text" value="+15" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> ODTE - Price 0.5% from Max Pain, ex</span>
+    </div>
+    <hr style="border-color:#333;">
+    <div><strong>TOTAL: </strong><input id="totalVal" type="text" value="+80" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> / 175 = <input id="totalPercent" type="text" value="46%" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"></div>
+    <div><strong>ALIGNED: </strong><input id="alignedSignals" type="text" value="4" style="width:30px; background:#000; border:none; color:#4caf50; font-weight:bold;"> / 6 signals</div>
+  </div>
+
+  <div class="box">
+    <div class="subheader">📊 EXPECTED MOVE (68% prob)</div>
+    <div style="color:#4caf50; font-weight:700;">+<input id="expectedPts" type="text" value="21.37" style="width:70px; background:#000; border:none; color:#4caf50;"> pts (<input id="expectedPercent" type="text" value="0.46" style="width:50px; background:#000; border:none; color:#4caf50;">%)</div>
+    <div>Range: <input id="expectedRangeMin" type="text" value="4603.63" style="width:100px; background:#000; border:none; color:#ccc;"> - <input id="expectedRangeMax" type="text" value="4646.37" style="width:100px; background:#000; border:none; color:#ccc;"></div>
+  </div>
+</div>
+
+<div class="flex-row">
+  <div class="box">
+    <div class="subheader">🌐 MARKET CONTEXT</div>
+    <div><strong>GEX Regime :</strong> <input id="gexRegime" type="text" value="LONG GAMMA" style="background:#000; border:none; color:#4caf50; font-weight:bold;"></div>
+    <div><strong>PCR :</strong> <input id="marketPCR" type="text" value="1.23" style="background:#000; border:none; color:#ccc;"></div>
+    <div><strong>Vol Change :</strong> <input id="volChange" type="text" value="-1.76" style="background:#000; border:none; color:#ff5722;"></div>
+    <div><strong>DTE :</strong> <input id="marketDTE" type="text" value="ODTE (0.11)" style="background:#000; border:none; color:#fdd835; font-weight:bold;"></div>
+  </div>
+
+  <div class="box">
+    <div class="warning-box">
+      <div class="warning-header">⚠️ RISK MANAGEMENT</div>
+      <ul>
+        <li>SELALU gunakan Stop Loss - WAJIB!</li>
+        <li>Position size: MAX 2% equity at risk</li>
+        <li>Jika SL hit, JANGAN re-entry arah sama</li>
+        <li>News/catalyst bisa invalidate setup</li>
+      </ul>
+    </div>
+
+    <div class="warning-box" style="margin-top:12px;">
+      <div class="warning-header">⚠️ DISCLAIMER:</div>
+      Ini BUKAN financial advice.<br />
+      Trading futures/options sangat berisiko. DYOR & manage risk!
+    </div>
+  </div>
+</div>
+
+<div class="footer-warning">
+  ⚠️ Not fully valid: <input id="footerConfluence" type="text" value="confluence" style="width:120px; background:#000; border:none; color:#fdd835; font-weight:bold;">
+</div>
+
+<button onclick="saveData()">Save Changes</button>
 
 <script>
-  // ---------- STORAGE KEYS ----------
-  const STORAGE_USERS = "traderx_users";
-  const STORAGE_SESSION = "traderx_session";
-  const STORAGE_JOURNALS = "traderx_journals";
+  function saveData() {
+    // Kumpulkan semua data input
+    const data = {
+      signalType: document.getElementById('signalType').value,
+      signalPotential: document.getElementById('signalPotential').value,
+      commodity: document.getElementById('commodity').value,
+      confluencePercent: document.getElementById('confluencePercent').textContent,
+      validText: document.getElementById('validText').value,
+      type: document.getElementById('type').value,
+      direction: document.getElementById('direction').value,
+      entry: document.getElementById('entry').value,
+      stopLoss: document.getElementById('stopLoss').value,
+      risk: document.getElementById('risk').value,
+      target1: document.getElementById('target1').value,
+      reward1: document.getElementById('reward1').value,
+      rr1: document.getElementById('rr1').value,
+      target2: document.getElementById('target2').value,
+      reward2: document.getElementById('reward2').value,
+      rr2: document.getElementById('rr2').value,
 
-  // ---------- MOCK DATA ----------
-  const demoSignals = [
-    { id: 1, type: "free", pair: "BTC/USD", direction: "LONG", entry: "68450", tp: "71200", sl: "67200", reason: "Breakout + volume", confidence: 88, status: "Active", timerEnd: Date.now() + 2*60*60*1000, premiumOnly: false },
-    { id: 2, type: "premium", pair: "ETH/USD", direction: "SHORT", entry: "3620", tp: "3450", sl: "3710", reason: "Resistance rejection + OI drop", confidence: 94, status: "High Conviction", timerEnd: Date.now() + 5*60*60*1000, premiumOnly: true }
-  ];
+      chkPriceVol: document.getElementById('chkPriceVol').checked,
+      priceVolVal: document.getElementById('priceVolVal').value,
+      chkPosition: document.getElementById('chkPosition').checked,
+      positionVal: document.getElementById('positionVal').value,
+      chkOIPattern: document.getElementById('chkOIPattern').checked,
+      oiPatternVal: document.getElementById('oiPatternVal').value,
+      chkGamma: document.getElementById('chkGamma').checked,
+      gammaVal: document.getElementById('gammaVal').value,
+      chkPCR: document.getElementById('chkPCR').checked,
+      pcrVal: document.getElementById('pcrVal').value,
+      chkDTE: document.getElementById('chkDTE').checked,
+      dteVal: document.getElementById('dteVal').value,
 
-  const educationModules = [
-    { id: 1, title: "Candlestick Mastery", desc: "Learn patterns & psychology", free: true, content: "Video + PDF: 12 patterns explained." },
-    { id: 2, title: "Liquidity Grabs (Institutional)", desc: "Advanced smart money", free: false, content: "Full module: Order blocks + FVG" },
-    { id: 3, title: "Risk Management Blueprint", desc: "Position sizing core", free: true, content: "Free guide: 1% rule, drawdown control" },
-    { id: 4, title: "Algorithmic Edge", desc: "Quant strategies", free: false, content: "Premium algo signals & backtests" }
-  ];
+      totalVal: document.getElementById('totalVal').value,
+      totalPercent: document.getElementById('totalPercent').value,
+      alignedSignals: document.getElementById('alignedSignals').value,
 
-  const newsArticles = [
-    { img: "https://picsum.photos/id/26/400/200", title: "Fed Rate Pivot Incoming?", desc: "Market repricing risk assets – volatility spikes." },
-    { img: "https://picsum.photos/id/30/400/200", title: "BTC Institutional Inflows", desc: "ETFs record $450M weekly inflow." },
-    { img: "https://picsum.photos/id/48/400/200", title: "Altseason Metrics", desc: "Dominance shift, capital rotation." }
-  ];
+      expectedPts: document.getElementById('expectedPts').value,
+      expectedPercent: document.getElementById('expectedPercent').value,
+      expectedRangeMin: document.getElementById('expectedRangeMin').value,
+      expectedRangeMax: document.getElementById('expectedRangeMax').value,
 
-  // helpers
-  function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_USERS) || "[]"); }
-  function saveUsers(users) { localStorage.setItem(STORAGE_USERS, JSON.stringify(users)); }
-  function getSession() { return JSON.parse(localStorage.getItem(STORAGE_SESSION) || "null"); }
-  function setSession(user) { localStorage.setItem(STORAGE_SESSION, JSON.stringify(user)); }
-  function clearSession() { localStorage.removeItem(STORAGE_SESSION); }
-  function getJournalEntries(userId) { return JSON.parse(localStorage.getItem(`${STORAGE_JOURNALS}_${userId}`) || "[]"); }
-  function saveJournalEntries(userId, entries) { localStorage.setItem(`${STORAGE_JOURNALS}_${userId}`, JSON.stringify(entries)); }
-
-  let currentView = "dashboard";
-  let currentUser = null;
-  let appContainer = document.getElementById("app-root");
-  let chartInstance = null;
-
-  // initialize demo users
-  function initStorage() {
-    let users = getUsers();
-    if (users.length === 0) {
-      users.push({ id: "u1", username: "TraderAlpha", email: "alpha@example.com", password: "pass123", membership: "free", createdAt: Date.now() });
-      saveUsers(users);
-    }
-    const session = getSession();
-    if (session) currentUser = session;
-  }
-
-  function loginUser(email, password) {
-    const users = getUsers();
-    const found = users.find(u => u.email === email && u.password === password);
-    if (found) {
-      setSession(found);
-      currentUser = found;
-      renderApp();
-      return true;
-    }
-    return false;
-  }
-
-  function registerUser(username, email, password) {
-    let users = getUsers();
-    if (users.find(u => u.email === email)) return false;
-    const newUser = { id: "u"+Date.now(), username, email, password, membership: "free", createdAt: Date.now() };
-    users.push(newUser);
-    saveUsers(users);
-    return true;
-  }
-
-  function upgradeMembership() {
-    if (!currentUser) return;
-    const users = getUsers();
-    const idx = users.findIndex(u => u.id === currentUser.id);
-    if (idx !== -1) {
-      users[idx].membership = "premium";
-      saveUsers(users);
-      currentUser.membership = "premium";
-      setSession(currentUser);
-      renderApp(); // refresh UI unlock
-    }
-  }
-
-  function updateProfile(username) {
-    if (!currentUser) return;
-    const users = getUsers();
-    const idx = users.findIndex(u => u.id === currentUser.id);
-    if (idx !== -1) {
-      users[idx].username = username;
-      saveUsers(users);
-      currentUser.username = username;
-      setSession(currentUser);
-      renderApp();
-    }
-  }
-
-  function logout() {
-    clearSession();
-    currentUser = null;
-    renderApp();
-  }
-
-  // journal logic
-  function addTrade(trade) {
-    if (!currentUser) return;
-    let entries = getJournalEntries(currentUser.id);
-    const newTrade = { id: Date.now(), ...trade, timestamp: new Date().toISOString() };
-    entries.push(newTrade);
-    saveJournalEntries(currentUser.id, entries);
-    renderDashboardContent(); // refresh journal view if active
-  }
-
-  function calculatePnL(trade) {
-    let diff = trade.exitPrice - trade.entryPrice;
-    if (trade.direction === "short") diff = trade.entryPrice - trade.exitPrice;
-    const pnl = diff * trade.quantity;
-    return pnl;
-  }
-
-  function getTotalPnL() {
-    if (!currentUser) return 0;
-    const entries = getJournalEntries(currentUser.id);
-    let total = 0;
-    entries.forEach(t => { if (t.exitPrice) total += calculatePnL(t); });
-    return total;
-  }
-
-  // helper: timer formatting
-  function formatTimer(ms) {
-    const diff = ms - Date.now();
-    if (diff <= 0) return "Expired";
-    const hours = Math.floor(diff / (1000*60*60));
-    const minutes = Math.floor((diff % (3600000))/60000);
-    return `${hours}h ${minutes}m`;
-  }
-
-  // main render
-  function renderApp() {
-    if (!appContainer) return;
-    if (!currentUser) {
-      renderLandingPage();
-    } else {
-      renderDashboardLayout();
-    }
-  }
-
-  function renderLandingPage() {
-    appContainer.innerHTML = `
-      <div class="container" style="padding-top: 2rem;">
-        <!-- Hero -->
-        <div style="text-align:center; margin: 60px 0 40px; position:relative;">
-          <div style="position:absolute; top:-50px; left:10%; width:300px; height:300px; background:radial-gradient(circle, rgba(0,242,255,0.2), transparent); filter:blur(60px);"></div>
-          <h1 style="font-size: 3.5rem; font-weight:800; background: linear-gradient(135deg,#FFFFFF,#00f2ff); -webkit-background-clip:text; background-clip:text; color:transparent;">Master Trading Like Institutions</h1>
-          <p style="font-size:1.3rem; margin:20px 0; color:#b9d9ff;">Join 500+ traders improving consistency</p>
-          <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
-            <button class="btn-primary" id="landingJoinBtn">Join Now</button>
-            <button class="btn-outline" id="landingSignalsBtn">View Signals</button>
-          </div>
-        </div>
-        <!-- Trust Stats -->
-        <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin:60px 0;">
-          <div class="glass-card" style="padding:20px 30px; text-align:center;"><i class="fas fa-users" style="font-size:2rem; color:#00f2ff;"></i><h3>500+</h3><p>Active Members</p></div>
-          <div class="glass-card" style="padding:20px 30px; text-align:center;"><i class="fas fa-chart-line" style="font-size:2rem; color:#00f2ff;"></i><h3>92%</h3><p>Winrate Strategy</p></div>
-          <div class="glass-card" style="padding:20px 30px; text-align:center;"><i class="fas fa-medal" style="font-size:2rem; color:#00f2ff;"></i><h3>7+ Years</h3><p>Experience</p></div>
-        </div>
-        <!-- Features Cards -->
-        <h2 style="font-size:2rem; margin:60px 0 30px;">Powerful tools for traders</h2>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:24px;">
-          ${["Trading Signals","Education Modules","Trading Journal","Risk Calculator","Community Access"].map(f => `<div class="feature-card"><i class="fas fa-chart-simple" style="font-size:2rem; color:#00c6ff;"></i><h3>${f}</h3><p>Professional edge</p></div>`).join('')}
-        </div>
-        <!-- Video Horizontal Scroll -->
-        <h2 style="margin:60px 0 20px;">Video Library</h2>
-        <div class="scroll-x">
-          ${[1,2,3].map(i => `<div class="glass-card" style="min-width:300px; padding:12px;"><div style="background:#111; height:160px; border-radius:20px; display:flex; align-items:center; justify-content:center;"><i class="fab fa-youtube" style="font-size:4rem; color:red;"></i></div><p style="margin-top:12px;">Strategy #${i}: Smart Money Concepts</p></div>`).join('')}
-        </div>
-        <!-- Testimonials -->
-        <h2 style="margin:60px 0 20px;">Real results</h2>
-        <div class="scroll-x">
-          <div class="testimonial-card" style="min-width:260px;"><div style="display:flex; gap:12px;"><i class="fas fa-user-circle" style="font-size:3rem;"></i><div><b>@cryptofox</b><p>Profit +$4,200</p></div></div><p>Signals are insane! 10/10</p></div>
-          <div class="testimonial-card" style="min-width:260px;"><div style="display:flex; gap:12px;"><i class="fas fa-user-circle" style="font-size:3rem;"></i><div><b>@ellie_trader</b><p>+32% in 2 weeks</p></div></div><p>Education changed my trading life</p></div>
-          <div class="testimonial-card" style="min-width:260px;"><div style="display:flex; gap:12px;"><i class="fas fa-user-circle" style="font-size:3rem;"></i><div><b>@mike_wyc</b><p>+$11k profit</p></div></div><p>Premium signals worth every $</p></div>
-        </div>
-        <!-- Pricing -->
-        <h2 style="margin:60px 0 30px;">Plans for every trader</h2>
-        <div style="display:flex; gap:30px; flex-wrap:wrap; justify-content:center;">
-          <div class="glass-card" style="flex:1; min-width:250px; text-align:center; padding:30px;"><h3>Free</h3><p style="font-size:2rem;">$0</p><p>Basic signals / Journal</p><button class="btn-outline" id="freeSignupBtn">Get Started</button></div>
-          <div class="glass-card" style="flex:1; min-width:250px; border:2px solid #00f2ff; text-align:center; padding:30px;"><h3>Premium 🔥</h3><p style="font-size:2rem;">$49<span style="font-size:1rem;">/mo</span></p><p>Full signals + Education + Priority</p><button class="btn-primary" id="premiumUpgradeLanding">Upgrade Now</button><p style="margin-top:8px;">Lifetime access $399</p></div>
-        </div>
-        <!-- Final CTA -->
-        <div style="margin:80px 0; text-align:center; background: linear-gradient(145deg,#0a1f2e,#02121c); border-radius:60px; padding:60px 20px;">
-          <h2>Start Your Trading Journey Now</h2><button class="btn-primary" id="finalCtaBtn" style="margin-top:20px;">Join Trader X</button>
-        </div>
-      </div>
-    `;
-    document.getElementById("landingJoinBtn")?.addEventListener("click",()=>showAuthModal('login'));
-    document.getElementById("landingSignalsBtn")?.addEventListener("click",()=>showAuthModal('login'));
-    document.getElementById("freeSignupBtn")?.addEventListener("click",()=>showAuthModal('register'));
-    document.getElementById("premiumUpgradeLanding")?.addEventListener("click",()=>showAuthModal('register'));
-    document.getElementById("finalCtaBtn")?.addEventListener("click",()=>showAuthModal('register'));
-  }
-
-  function showAuthModal(mode) {
-    const modalHtml = `
-      <div id="authOverlay" style="position:fixed; top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;">
-        <div class="glass-card" style="width:400px; max-width:90%; padding:30px;">
-          <h2>${mode === 'login' ? 'Sign In' : 'Create Account'}</h2>
-          <input type="text" id="authName" placeholder="Username" style="width:100%; margin:12px 0; padding:12px; border-radius:30px; background:#1e2a3a; border:none; color:white;" ${mode === 'login' ? '' : 'required'}>
-          <input type="email" id="authEmail" placeholder="Email" style="width:100%; margin:12px 0; padding:12px; border-radius:30px; background:#1e2a3a; border:none;">
-          <input type="password" id="authPassword" placeholder="Password" style="width:100%; margin:12px 0; padding:12px; border-radius:30px; background:#1e2a3a;">
-          <button class="btn-primary" id="authSubmitBtn" style="width:100%;">${mode === 'login' ? 'Login' : 'Register'}</button>
-          <p style="margin-top:16px;">${mode === 'login' ? "Don't have account?" : "Already have account?"} <span id="switchAuthMode" style="color:#00f2ff;cursor:pointer;">${mode === 'login' ? 'Register' : 'Login'}</span></p>
-          <button id="closeModalBtn" style="margin-top:12px; background:none; border:none; color:#aaa;">Close</button>
-        </div>
-      </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', modalHtml);
-    const overlay = document.getElementById('authOverlay');
-    const switchBtn = document.getElementById('switchAuthMode');
-    const submitBtn = document.getElementById('authSubmitBtn');
-    const close = document.getElementById('closeModalBtn');
-    const nameField = document.getElementById('authName');
-    const emailField = document.getElementById('authEmail');
-    const passField = document.getElementById('authPassword');
-    let currentMode = mode;
-
-    function handleAuth() {
-      const email = emailField.value.trim();
-      const pass = passField.value.trim();
-      if (!email || !pass) return alert("Fill credentials");
-      if (currentMode === 'login') {
-        if (loginUser(email, pass)) { overlay.remove(); renderApp(); }
-        else alert("Invalid credentials");
-      } else {
-        const username = nameField.value.trim();
-        if (!username) return alert("Username required");
-        if (registerUser(username, email, pass)) { alert("Registered! Please login"); currentMode='login'; nameField.style.display='block'; submitBtn.innerText='Login'; switchBtn.innerText='Register'; }
-        else alert("User exists");
-      }
-    }
-    submitBtn.onclick = handleAuth;
-    switchBtn.onclick = () => {
-      currentMode = currentMode === 'login' ? 'register' : 'login';
-      nameField.style.display = currentMode === 'login' ? 'none' : 'block';
-      submitBtn.innerText = currentMode === 'login' ? 'Login' : 'Register';
-      switchBtn.innerText = currentMode === 'login' ? 'Register' : 'Login';
+      gexRegime: document.getElementById('gexRegime').value,
+      marketPCR: document.getElementById('marketPCR').value,
+      volChange: document.getElementById('volChange').value,
+      marketDTE: document.getElementById('marketDTE').value,
+      footerConfluence: document.getElementById('footerConfluence').value,
     };
-    if(mode === 'login') nameField.style.display = 'none';
-    close.onclick = () => overlay.remove();
-  }
+    console.log('Saved data:', data);
 
-  // DASHBOARD LAYOUT
-  function renderDashboardLayout() {
-    const premiumBadge = currentUser.membership === 'premium' ? '<span style="background:gold; color:black; padding:4px 12px; border-radius:40px;">⭐ PREMIUM</span>' : '<span style="background:#2c3e66;">FREE MEMBER</span>';
-    appContainer.innerHTML = `
-      <div class="dashboard-layout">
-        <div class="sidebar">
-          <div style="font-size:1.8rem; font-weight:800; margin-bottom:30px;">TRADER X</div>
-          <div class="nav-item ${currentView === 'dashboard' ? 'active' : ''}" data-view="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</div>
-          <div class="nav-item ${currentView === 'signals' ? 'active' : ''}" data-view="signals"><i class="fas fa-bullhorn"></i> Signals</div>
-          <div class="nav-item ${currentView === 'education' ? 'active' : ''}" data-view="education"><i class="fas fa-graduation-cap"></i> Education</div>
-          <div class="nav-item ${currentView === 'journal' ? 'active' : ''}" data-view="journal"><i class="fas fa-book"></i> Journal</div>
-          <div class="nav-item ${currentView === 'calculator' ? 'active' : ''}" data-view="calculator"><i class="fas fa-calculator"></i> Risk Calc</div>
-          <div class="nav-item ${currentView === 'news' ? 'active' : ''}" data-view="news"><i class="fas fa-newspaper"></i> News</div>
-          <div class="nav-item ${currentView === 'profile' ? 'active' : ''}" data-view="profile"><i class="fas fa-user"></i> Profile</div>
-          <hr style="margin:20px 0; border-color:#2a3a55;">
-          <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</div>
-        </div>
-        <div class="main-panel" id="dynamicPanel"></div>
-      </div>
-    `;
-    document.querySelectorAll('.nav-item[data-view]').forEach(el => {
-      el.addEventListener('click', (e) => { currentView = el.dataset.view; renderDashboardLayout(); });
-    });
-    document.getElementById('logoutBtn')?.addEventListener('click', () => logout());
-    renderDashboardContent();
-  }
+    alert('Data saved! Check console for details.');
 
-  function renderDashboardContent() {
-    const panel = document.getElementById('dynamicPanel');
-    if (!panel) return;
-    if (currentView === 'dashboard') renderDashboardHome(panel);
-    else if (currentView === 'signals') renderSignalsView(panel);
-    else if (currentView === 'education') renderEducationView(panel);
-    else if (currentView === 'journal') renderJournalView(panel);
-    else if (currentView === 'calculator') renderCalculatorView(panel);
-    else if (currentView === 'news') renderNewsView(panel);
-    else if (currentView === 'profile') renderProfileView(panel);
+    // Contoh simpan ke backend: POST ke API Node.js Anda
+    /* 
+    fetch('/save-signal', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data),
+    }).then(res => res.json())
+    .then(resJson => alert('Server response: ' + resJson.message));
+    */
   }
-
-  function renderDashboardHome(container) {
-    const totalPnL = getTotalPnL();
-    container.innerHTML = `
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin-bottom:32px;">
-        <div class="glass-card"><h3>💰 Balance</h3><p style="font-size:2rem;">$12,450</p><small>Demo capital</small></div>
-        <div class="glass-card"><h3>📈 Total P/L</h3><p style="font-size:2rem; color:${totalPnL>=0 ? '#0f0' : '#f44'};">${totalPnL>=0?'+':''}${totalPnL.toFixed(2)}</p></div>
-        <div class="glass-card"><h3>⚡ Winrate</h3><p style="font-size:2rem;">68%</p></div>
-      </div>
-      <div class="glass-card" style="margin-bottom:32px;"><canvas id="equityChart" height="100"></canvas></div>
-      <div class="glass-card"><h3>🔥 Activity Feed</h3><p>🔥 23 traders joined today</p><p>⚡ Last signal profit +$320</p><p>📊 New premium signal: ETH SHORT</p><p>${totalPnL !==0 ? `Journal profit ${totalPnL>0?'up':'down'} ${Math.abs(totalPnL).toFixed(2)}` : 'No trades yet'}</p></div>
-    `;
-    const ctx = document.getElementById('equityChart')?.getContext('2d');
-    if (ctx) {
-      if (chartInstance) chartInstance.destroy();
-      chartInstance = new Chart(ctx, { type: 'line', data: { labels: ['Jan','Feb','Mar','Apr','May'], datasets: [{ label: 'Equity', data: [9800,10200,11800,12200,12450], borderColor: '#00f2ff', tension: 0.3 }] } });
-    }
-  }
-
-  function renderSignalsView(container) {
-    const isPremium = currentUser.membership === 'premium';
-    let signalsHtml = `<h2>Live Trading Signals</h2><div style="display:flex;flex-direction:column;gap:24px;">`;
-    demoSignals.forEach(sig => {
-      const isLocked = sig.premiumOnly && !isPremium;
-      const timerVal = formatTimer(sig.timerEnd);
-      signalsHtml += `<div class="signal-card" style="position:relative;">
-        <div style="display:flex; justify-content:space-between;"><span><b>${sig.pair} ${sig.direction}</b> <span class="badge" style="background:#1e2a3a;">Confidence ${sig.confidence}%</span></span><span>⏱️ ${timerVal}</span></div>
-        ${!isLocked ? `<div>Entry: ${sig.entry} | TP: ${sig.tp} | SL: ${sig.sl}<br>Reason: ${sig.reason}</div>` : `<div class="blur-content" style="filter:blur(6px);">Entry: xxx | TP: xxx | SL: xxx<br>Reason: hidden</div>`}
-        <div>Status: ${sig.status}</div>
-        ${isLocked ? `<div class="lock-overlay" style="position:absolute; inset:0; background:rgba(0,0,0,0.7); border-radius:24px; display:flex; justify-content:center; align-items:center; gap:8px;"><i class="fas fa-lock"></i> 🔒 Premium Only <button class="btn-primary" style="padding:6px 12px;" id="unlockUpgradeBtn">Unlock Signal</button></div>` : ''}
-      </div>`;
-    });
-    signalsHtml += `</div>`;
-    container.innerHTML = signalsHtml;
-    document.querySelectorAll('#unlockUpgradeBtn').forEach(btn => btn.addEventListener('click', () => { upgradeMembership(); }));
-  }
-
-  function renderEducationView(container) {
-    const isPremium = currentUser.membership === 'premium';
-    let modulesHtml = `<h2>🎓 Smart Money Education</h2><div class="grid" style="display:grid;gap:24px;">`;
-    educationModules.forEach(mod => {
-      const locked = !mod.free && !isPremium;
-      modulesHtml += `<div class="module-card" style="position:relative;"><h3>${mod.title}</h3><p>${mod.desc}</p>${locked ? `<div class="lock-overlay" style="position:absolute; inset:0; border-radius:24px; background:rgba(0,0,0,0.75); display:flex; justify-content:center; align-items:center;"><i class="fas fa-crown"></i> Unlock Full Access <button class="btn-primary" id="eduUpgradeBtn" style="margin-left:10px;">Upgrade</button></div>` : `<p>${mod.content}</p>`}</div>`;
-    });
-    container.innerHTML = modulesHtml;
-    document.querySelectorAll('#eduUpgradeBtn').forEach(btn => btn.addEventListener('click', upgradeMembership));
-  }
-
-  function renderJournalView(container) {
-    const entries = getJournalEntries(currentUser.id);
-    let historyHtml = entries.map(t => `<div class="glass-card" style="margin:8px 0;"><b>${t.instrument}</b> (${t.direction}) | Entry ${t.entryPrice} | Exit ${t.exitPrice} | Qty ${t.quantity} | PnL: ${calculatePnL(t).toFixed(2)}</div>`).join('');
-    container.innerHTML = `
-      <h2>📓 Trading Journal</h2>
-      <div class="glass-card"><h3>Add Trade</h3><input id="journalInstrument" placeholder="BTC/USD"><select id="journalDir"><option>long</option><option>short</option></select><input id="journalEntry" placeholder="Entry price"><input id="journalExit" placeholder="Exit price"><input id="journalQty" placeholder="Quantity"><button class="btn-primary" id="addTradeBtn">Add</button></div>
-      <h3>Trade History</h3><div id="historyList">${historyHtml || '<p>No trades yet</p>'}</div>
-    `;
-    document.getElementById('addTradeBtn')?.addEventListener('click', () => {
-      const instrument = document.getElementById('journalInstrument').value;
-      const direction = document.getElementById('journalDir').value;
-      const entryPrice = parseFloat(document.getElementById('journalEntry').value);
-      const exitPrice = parseFloat(document.getElementById('journalExit').value);
-      const quantity = parseFloat(document.getElementById('journalQty').value);
-      if (isNaN(entryPrice) || isNaN(exitPrice) || isNaN(quantity)) return alert("Valid numbers");
-      addTrade({ instrument, direction, entryPrice, exitPrice, quantity });
-      renderJournalView(container);
-    });
-  }
-
-  function renderCalculatorView(container) {
-    container.innerHTML = `
-      <h2>📐 Position Size Calculator</h2>
-      <div class="glass-card"><div><label>Balance ($)</label><input id="calcBalance" type="number" value="10000"></div>
-      <div><label>Risk %</label><input id="calcRisk" type="number" value="1"></div>
-      <div><label>Stop Loss (pips/points)</label><input id="calcSL" type="number" value="100"></div>
-      <button class="btn-primary" id="calcBtn">Calculate</button>
-      <h3>Results:</h3><p id="lotSizeOutput">Lot size: --</p><p id="riskAmountOutput">Risk amount: --</p></div>
-    `;
-    document.getElementById('calcBtn')?.addEventListener('click', () => {
-      const balance = parseFloat(document.getElementById('calcBalance').value);
-      const riskPct = parseFloat(document.getElementById('calcRisk').value);
-      const slPoints = parseFloat(document.getElementById('calcSL').value);
-      if (balance && riskPct && slPoints) {
-        const riskAmount = balance * (riskPct/100);
-        const lotSize = riskAmount / slPoints;
-        document.getElementById('lotSizeOutput').innerHTML = `Lot size: ${lotSize.toFixed(3)}`;
-        document.getElementById('riskAmountOutput').innerHTML = `Risk amount: $${riskAmount.toFixed(2)}`;
-      }
-    });
-  }
-
-  function renderNewsView(container) {
-    container.innerHTML = `<h2>📰 Market News</h2><div style="display:grid; gap:24px;">${newsArticles.map(a => `<div class="news-card"><img src="${a.img}" style="width:100%; height:150px; object-fit:cover; border-radius:20px;"><h3>${a.title}</h3><p>${a.desc}</p></div>`).join('')}</div>`;
-  }
-
-  function renderProfileView(container) {
-    container.innerHTML = `
-      <div class="glass-card" style="max-width:500px;"><h2>👤 Profile</h2><p><strong>Username:</strong> <span id="profileUsername">${currentUser.username}</span></p><p><strong>Email:</strong> ${currentUser.email}</p><p><strong>Membership:</strong> ${currentUser.membership.toUpperCase()} ${currentUser.membership !== 'premium' ? '<button class="btn-primary" id="upgradeNowBtn">Upgrade to Premium</button>' : '✅ Active'}</p>
-      <input id="editUsernameInput" placeholder="New username" value="${currentUser.username}"><button id="saveUsernameBtn">Save</button><hr><button class="btn-outline" id="logoutProfileBtn">Logout</button></div>
-    `;
-    document.getElementById('saveUsernameBtn')?.addEventListener('click', () => {
-      const newName = document.getElementById('editUsernameInput').value;
-      if(newName) updateProfile(newName);
-    });
-    document.getElementById('upgradeNowBtn')?.addEventListener('click', upgradeMembership);
-    document.getElementById('logoutProfileBtn')?.addEventListener('click', logout);
-  }
-
-  initStorage();
-  renderApp();
 </script>
+
+<!--
+Contoh Server Node.js (Express) untuk menerima data POST:
+
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+
+app.post('/save-signal', (req, res) => {
+  console.log('Data received from client:', req.body);
+  // Simpan data ke db, file, dsb di sini
+  res.json({message: 'Signal data saved successfully!'});
+});
+
+app.listen(port, () => {
+  console.log(`Node.js server running at http://localhost:${port}`);
+});
+
+Jalankan dengan:
+npm init -y
+npm install express
+node server.js
+
+Kemudian akses file HTML di browser (bisa pakai live-server atau membuka file langsung).
+
+-->
+
 </body>
 </html>
