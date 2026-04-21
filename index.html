@@ -2,350 +2,575 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MAXPAIN FADE SHORT SIGNAL (Editable)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<title>MAXPAIN FADE SHORT SIGNAL - Trading Signal Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   body {
-    background: #000;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #ddd;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 15px;
-    border: 1px solid #444;
-    border-radius: 8px;
+    background: #0a0a0a;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e0e0e0;
+    padding: 24px 16px;
   }
+
+  /* Container untuk screenshot/PDF */
+  #reportContainer {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #0d0d0d;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    border: 1px solid #2a2a2a;
+  }
+
   h1 {
-    font-weight: 900;
-    color: #fff;
-    font-size: 1.5rem;
-    text-align: center;
-    margin-bottom: 0;
+    font-weight: 800;
+    color: #ffffff;
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
   }
+
   .header {
-    background: #111;
-    border: 2px solid #ff2020;
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin-bottom: 12px;
+    background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
+    border: 2px solid #ff3333;
+    padding: 16px 20px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    text-align: center;
   }
+
   .important-text {
-    color: #ff2020;
-  }
-  .subheader {
-    color: #fdd835;
+    color: #ff4444;
     font-weight: 700;
   }
-  label {
-    display: block;
-    margin-top: 0.5em;
-    font-weight: 600;
-    color: #fdd835;
+
+  .subheader {
+    color: #ffd966;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
   }
-  input[type=text], input[type=number], textarea {
-    width: 100%;
-    background: #222;
-    border: 1px solid #444;
-    color: #ddd;
-    font-size: 1rem;
-    padding: 6px 8px;
-    margin-top: 4px;
-    border-radius: 4px;
-    font-family: monospace;
-  }
-  input[type=number] {
-    max-width: 150px;
-  }
+
   .flex-row {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 20px;
+    margin-bottom: 20px;
   }
+
   .box {
-    border: 1px solid #333;
+    flex: 1;
+    min-width: 250px;
     background: #121212;
-    padding: 10px 12px;
-    border-radius: 6px;
-    margin-bottom: 12px;
-    flex: 1 1 45%;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 16px 18px;
+    transition: all 0.2s;
   }
-  .checklist {
-    margin-top: 8px;
-    border-top: 1px solid #333;
-    padding-top: 10px;
-    font-size: 0.9rem;
-    line-height: 1.3rem;
-  }
-  .checklist span {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-  }
-  .checklist .check-true {
-    color: #4caf50;
-  }
-  .checklist .check-false {
-    color: #888;
-    text-decoration: line-through;
-  }
-  .progress-bar {
-    background: #444;
-    border-radius: 6px;
-    overflow: hidden;
-    height: 20px;
-    margin-top: 6px;
-  }
-  .progress-fill {
-    background: #fdd835;
-    height: 100%;
-    width: 46%; /* This should be dynamic based on confluence */
-  }
-  .valid-text {
-    color: #4caf50;
-    font-weight: 700;
-  }
+
   .trade-setup {
-    border: 1px solid #800000;
-    padding: 8px 12px;
-    border-radius: 6px;
-    color: #ff4040;
-    font-family: monospace;
+    border: 1px solid #b33;
+    background: #1a0f0f;
   }
-  .trade-setup-green {
-    color: #4caf50;
-  }
-  .trade-setup-yellow {
-    color: #fdd835;
-  }
+
   .trade-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 4px;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
-  .warning-box {
-    background: #330000;
-    border: 1px solid #ffcc00;
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin-top: 14px;
-    font-size: 0.9rem;
+
+  .trade-row label {
+    font-weight: 600;
+    color: #ffaa66;
+    font-size: 0.85rem;
   }
-  .warning-header {
-    font-weight: 700;
-    color: #ffcc00;
-    margin-bottom: 6px;
-  }
-  .footer-warning {
-    color: #fdd835;
-    text-align: center;
-    padding: 6px;
-    border-top: 1px solid #444;
-    font-weight: 700;
-  }
-  button {
-    background: #fdd835;
+
+  .value-input {
+    background: transparent;
     border: none;
-    padding: 10px 16px;
+    color: #ff8888;
     font-weight: 700;
+    font-family: monospace;
+    font-size: 0.9rem;
+    text-align: right;
+    width: auto;
+    min-width: 100px;
+    padding: 4px 8px;
     border-radius: 6px;
-    cursor: pointer;
-    margin-top: 20px;
   }
-  button:hover {
-    background: #ffea00;
+
+  .value-input-green {
+    color: #4caf50;
+  }
+
+  .value-input-white {
+    color: #ddd;
+  }
+
+  .progress-bar {
+    background: #2a2a2a;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 8px;
+    margin: 8px 0;
+  }
+
+  .progress-fill {
+    background: #ffd966;
+    height: 100%;
+    width: 46%;
+    border-radius: 20px;
+  }
+
+  .checklist {
+    margin-top: 12px;
+  }
+
+  .checklist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .checklist-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .badge {
+    background: #2a2a2a;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .warning-box {
+    background: #1a0f0f;
+    border-left: 4px solid #ffcc00;
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-top: 12px;
+  }
+
+  .warning-header {
+    font-weight: 800;
+    color: #ffcc00;
+    margin-bottom: 8px;
+  }
+
+  .footer-warning {
+    text-align: center;
+    padding: 16px;
+    border-top: 1px solid #2a2a2a;
+    margin-top: 20px;
+    color: #ffd966;
+    font-weight: 600;
+  }
+
+  .action-buttons {
+    position: sticky;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    z-index: 100;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 40px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .btn-primary {
+    background: #ffd966;
+    color: #1a1a1a;
+  }
+
+  .btn-primary:hover {
+    background: #ffea80;
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: #2a2a2a;
+    color: white;
+    border: 1px solid #ffd966;
+  }
+
+  .btn-secondary:hover {
+    background: #3a3a3a;
+    transform: translateY(-2px);
+  }
+
+  hr {
+    border-color: #2a2a2a;
+    margin: 12px 0;
+  }
+
+  @media (max-width: 700px) {
+    #reportContainer {
+      padding: 16px;
+    }
+    .flex-row {
+      flex-direction: column;
+      gap: 16px;
+    }
+    .trade-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .value-input {
+      text-align: left;
+      width: 100%;
+    }
+    .checklist-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  /* styling untuk tampilan lebih premium */
+  .stat-number {
+    font-size: 1.6rem;
+    font-weight: 800;
+    font-family: monospace;
+  }
+
+  .text-gold {
+    color: #ffd966;
   }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>⚠️ 🎯 SIGNAL: <input id="signalType" type="text" value="MAXPAIN FADE SHORT" style="width:200px; color:#ff2020; font-weight:700; border:none; background:transparent; text-align:center;"/></h1>
-  <div style="text-align:center; font-weight:600; color:#ccc;">[<input id="signalPotential" type="text" value="POTENTIAL" style="width:100px; border:none; background:transparent; text-align:center; color:#ddd; font-weight:600;"/></div>
+<div id="reportContainer">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>⚠️ 🎯 SIGNAL: <span id="signalType">MAXPAIN FADE SHORT</span></h1>
+    <div style="font-weight: 600; color: #aaa; margin-top: 6px;">[ <span id="signalPotential">POTENTIAL</span> ]</div>
+  </div>
+
+  <!-- ROW 1: Commodity + Confluence + Trade Setup -->
+  <div class="flex-row">
+    <div class="box">
+      <div class="subheader">📌 GOLD (GC)</div>
+      <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 12px;"><span id="commodity">G2WF6</span></div>
+      
+      <div class="subheader" style="margin-top: 8px;">🔗 CONFLUENCE</div>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+        <span>Alignment Score</span>
+        <span><strong id="confluencePercent">46</strong>%</span>
+      </div>
+      <div class="progress-bar">
+        <div id="confluenceBar" class="progress-fill" style="width: 46%;"></div>
+      </div>
+      <div style="margin-top: 10px;">
+        <span class="badge">🟢 STATUS: <span id="validText">VALID</span></span>
+      </div>
+    </div>
+
+    <div class="box trade-setup">
+      <div class="subheader">🎯 TRADE SETUP (R:R 3.0:1)</div>
+      <div class="trade-row">
+        <label>TYPE :</label>
+        <span id="typeDisplay" class="value-input">MAXPAIN FADE SHORT</span>
+      </div>
+      <div class="trade-row">
+        <label>DIRECTION :</label>
+        <span id="directionDisplay" class="value-input" style="color:#ff8888;">SHORT</span> <span>📉</span>
+      </div>
+      <div style="border:1px solid #b33; padding:12px; border-radius:12px; margin:12px 0; background:#1a0a0a;">
+        <div class="trade-row"><label>ENTRY :</label> <span id="entryDisplay" class="value-input">4,620.00 - 4,625.00</span></div>
+        <div class="trade-row"><label>STOP LOSS :</label> <span id="stopLossDisplay" class="value-input">4,675.00 pts</span></div>
+        <div class="trade-row"><label>RISK :</label> <span id="riskDisplay" class="value-input">52.50 pts</span></div>
+      </div>
+      <div style="border:1px solid #4caf50; padding:12px; border-radius:12px; margin:12px 0; background:#0f1a0f;">
+        <div class="trade-row"><label>TARGET 1 :</label> <span id="target1Display" class="value-input" style="color:#4caf50;">4,465.00 pts</span></div>
+        <div class="trade-row"><label>REWARD :</label> <span id="reward1Display" class="value-input" style="color:#4caf50;">157.50 pts</span></div>
+        <div class="trade-row"><label>R:R :</label> <span id="rr1Display" class="value-input" style="color:#4caf50;">3.0:1</span></div>
+      </div>
+      <div style="border:1px solid #4caf50; padding:12px; border-radius:12px; background:#0f1a0f;">
+        <div class="trade-row"><label>TARGET 2 :</label> <span id="target2Display" class="value-input" style="color:#4caf50;">4,386.25 pts</span></div>
+        <div class="trade-row"><label>REWARD :</label> <span id="reward2Display" class="value-input" style="color:#4caf50;">236.25 pts</span></div>
+        <div class="trade-row"><label>R:R :</label> <span id="rr2Display" class="value-input" style="color:#4caf50;">4.9:1</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2: Signal Breakdown + Expected Move -->
+  <div class="flex-row">
+    <div class="box">
+      <div class="subheader">📊 SIGNAL BREAKDOWN</div>
+      <div class="checklist" id="checklistContainer">
+        <!-- Dynamic checklist items akan diisi JS -->
+      </div>
+      <hr />
+      <div><strong>TOTAL: </strong><span id="totalVal">+80</span> / 175 = <strong id="totalPercent">46</strong>%</div>
+      <div><strong>ALIGNED: </strong><span id="alignedSignals">4</span> / 6 signals</div>
+    </div>
+
+    <div class="box">
+      <div class="subheader">📈 EXPECTED MOVE (68% prob)</div>
+      <div style="font-size: 1.6rem; font-weight: 800; color:#4caf50;">+<span id="expectedPts">21.37</span> pts (<span id="expectedPercent">0.46</span>%)</div>
+      <div style="margin-top: 12px;">Range: <span id="expectedRangeMin">4603.63</span> - <span id="expectedRangeMax">4646.37</span></div>
+    </div>
+  </div>
+
+  <!-- ROW 3: Market Context + Risk -->
+  <div class="flex-row">
+    <div class="box">
+      <div class="subheader">🌐 MARKET CONTEXT</div>
+      <div class="trade-row"><strong>GEX Regime :</strong> <span id="gexRegime" style="color:#4caf50;">LONG GAMMA</span></div>
+      <div class="trade-row"><strong>PCR :</strong> <span id="marketPCR">1.23</span></div>
+      <div class="trade-row"><strong>Vol Change :</strong> <span id="volChange" style="color:#ff8a5c;">-1.76%</span></div>
+      <div class="trade-row"><strong>DTE :</strong> <span id="marketDTE" style="color:#ffd966;">ODTE (0.11)</span></div>
+    </div>
+
+    <div class="box">
+      <div class="warning-box">
+        <div class="warning-header">⚠️ RISK MANAGEMENT</div>
+        <ul style="margin-left: 20px;">
+          <li>SELALU gunakan Stop Loss - WAJIB!</li>
+          <li>Position size: MAX 2% equity at risk</li>
+          <li>Jika SL hit, JANGAN re-entry arah sama</li>
+          <li>News/catalyst bisa invalidate setup</li>
+        </ul>
+      </div>
+      <div class="warning-box" style="margin-top:12px;">
+        <div class="warning-header">⚠️ DISCLAIMER:</div>
+        Ini BUKAN financial advice. Trading futures/options sangat berisiko. DYOR & manage risk!
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-warning">
+    ⚠️ Not fully valid: <span id="footerConfluence">confluence 46%</span>
+  </div>
 </div>
 
-<div class="flex-row">
-  <div class="box">
-    <span class="subheader"><strong><label for="commodity">Gold (GC)</label></strong></span>
-    <input id="commodity" type="text" value="G2WF6" />
-    <!-- Confluence -->
-    <label for="confluence">CONFLUENCE: <span id="confluencePercent">46%</span></label>
-    <div class="progress-bar">
-      <div id="confluenceBar" class="progress-fill" style="width: 46%;"></div>
-    </div>
-    <span class="valid-text">[<input id="validText" type="text" value="VALID" style="width:60px; color:#4caf50; font-weight:bold; border:none; background:transparent; text-align:center;"/></span>]
-  </div>
-
-  <div class="box trade-setup" contenteditable="false">
-    <strong>🎯 TRADE SETUP (R:R 3.0:1)</strong><br />
-    <div class="trade-row"><label for="type">TYPE :</label> <input id="type" type="text" value="MAXPAIN FADE SHORT" /></div>
-    <div class="trade-row"><label for="direction">DIRECTION :</label> <input id="direction" type="text" value="SHORT" style="width:70px;"/> <span>📉</span></div>
-    <div style="border:1px solid #800000; padding:8px; margin-top:8px; border-radius:6px; color:#ff4040;">
-      <div><label for="entry">ENTRY :</label> <input id="entry" type="text" value="4,620.00 - 4,625.00" style="color:#ff4040; border:none; background:transparent; width:150px;"></div>
-      <div><label for="stopLoss">STOP LOSS :</label> <input id="stopLoss" type="text" value="4,675.00 pts" style="color:#ff4040; border:none; background:transparent; width:120px;"></div>
-      <div><label for="risk">RISK :</label> <input id="risk" type="text" value="52.50 pts" style="color:#ff4040; border:none; background:transparent; width:90px;"></div>
-    </div>
-    <div style="border:1px solid #4caf50; padding:8px; margin-top:8px; border-radius:6px; color:#4caf50;">
-      <div><label for="target1">TARGET 1 :</label> <input id="target1" type="text" value="4,465.00 pts" style="color:#4caf50; border:none; background:transparent; width:120px;"></div>
-      <div><label for="reward1">REWARD :</label> <input id="reward1" type="text" value="157.50 pts" style="color:#4caf50; border:none; background:transparent; width:120px;"></div>
-      <div><label for="rr1">R:R :</label> <input id="rr1" type="text" value="3.0:1" style="color:#4caf50; border:none; background:transparent; width:60px;"></div>
-    </div>
-    <div style="border:1px solid #4caf50; padding:8px; margin-top:8px; border-radius:6px; color:#4caf50;">
-      <div><label for="target2">TARGET 2 :</label> <input id="target2" type="text" value="4,386.25 pts" style="color:#4caf50; border:none; background:transparent; width:120px;"></div>
-      <div><label for="reward2">REWARD :</label> <input id="reward2" type="text" value="236.25 pts" style="color:#4caf50; border:none; background:transparent; width:120px;"></div>
-      <div><label for="rr2">R:R :</label> <input id="rr2" type="text" value="4.9:1" style="color:#4caf50; border:none; background:transparent; width:60px;"></div>
-    </div>
-  </div>
+<!-- Tombol Aksi -->
+<div class="action-buttons">
+  <button class="btn btn-primary" id="saveAsImageBtn">📸 Simpan sebagai Gambar (PNG)</button>
+  <button class="btn btn-secondary" id="saveAsPdfBtn">📄 Simpan sebagai PDF</button>
 </div>
-
-<div class="flex-row">
-  <div class="box">
-    <div class="subheader">SIGNAL BREAKDOWN</div>
-    <div class="checklist">
-      <span><input type="checkbox" id="chkPriceVol" checked> <label for="chkPriceVol">Price+Vol :</label> <input id="priceVolVal" type="text" value="+35" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> Strong rally +0.56%, Vol dropping</span>
-      <span><input type="checkbox" id="chkPosition" checked> <label for="chkPosition">Position :</label> <input id="positionVal" type="text" value="+20" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> Above Max Pain, room to 4,650</span>
-      <span><input type="checkbox" id="chkOIPattern"> <label for="chkOIPattern">OI Pattern :</label> <input id="oiPatternVal" type="text" value="0" style="width:50px; background:#000; border:none; color:#ccc;"> STRADDLE BUILDING</span>
-      <span><input type="checkbox" id="chkGamma" checked> <label for="chkGamma">Gamma :</label> <input id="gammaVal" type="text" value="+10" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> Long Gamma = Mean revert favored</span>
-      <span><input type="checkbox" id="chkPCR"> <label for="chkPCR">PCR :</label> <input id="pcrVal" type="text" value="0" style="width:50px; background:#000; border:none; color:#ccc;"> PCR 1.23 = Normal range</span>
-      <span><input type="checkbox" id="chkDTE" checked> <label for="chkDTE">DTE :</label> <input id="dteVal" type="text" value="+15" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> ODTE - Price 0.5% from Max Pain, ex</span>
-    </div>
-    <hr style="border-color:#333;">
-    <div><strong>TOTAL: </strong><input id="totalVal" type="text" value="+80" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"> / 175 = <input id="totalPercent" type="text" value="46%" style="width:50px; background:#000; border:none; color:#4caf50; font-weight:bold;"></div>
-    <div><strong>ALIGNED: </strong><input id="alignedSignals" type="text" value="4" style="width:30px; background:#000; border:none; color:#4caf50; font-weight:bold;"> / 6 signals</div>
-  </div>
-
-  <div class="box">
-    <div class="subheader">📊 EXPECTED MOVE (68% prob)</div>
-    <div style="color:#4caf50; font-weight:700;">+<input id="expectedPts" type="text" value="21.37" style="width:70px; background:#000; border:none; color:#4caf50;"> pts (<input id="expectedPercent" type="text" value="0.46" style="width:50px; background:#000; border:none; color:#4caf50;">%)</div>
-    <div>Range: <input id="expectedRangeMin" type="text" value="4603.63" style="width:100px; background:#000; border:none; color:#ccc;"> - <input id="expectedRangeMax" type="text" value="4646.37" style="width:100px; background:#000; border:none; color:#ccc;"></div>
-  </div>
-</div>
-
-<div class="flex-row">
-  <div class="box">
-    <div class="subheader">🌐 MARKET CONTEXT</div>
-    <div><strong>GEX Regime :</strong> <input id="gexRegime" type="text" value="LONG GAMMA" style="background:#000; border:none; color:#4caf50; font-weight:bold;"></div>
-    <div><strong>PCR :</strong> <input id="marketPCR" type="text" value="1.23" style="background:#000; border:none; color:#ccc;"></div>
-    <div><strong>Vol Change :</strong> <input id="volChange" type="text" value="-1.76" style="background:#000; border:none; color:#ff5722;"></div>
-    <div><strong>DTE :</strong> <input id="marketDTE" type="text" value="ODTE (0.11)" style="background:#000; border:none; color:#fdd835; font-weight:bold;"></div>
-  </div>
-
-  <div class="box">
-    <div class="warning-box">
-      <div class="warning-header">⚠️ RISK MANAGEMENT</div>
-      <ul>
-        <li>SELALU gunakan Stop Loss - WAJIB!</li>
-        <li>Position size: MAX 2% equity at risk</li>
-        <li>Jika SL hit, JANGAN re-entry arah sama</li>
-        <li>News/catalyst bisa invalidate setup</li>
-      </ul>
-    </div>
-
-    <div class="warning-box" style="margin-top:12px;">
-      <div class="warning-header">⚠️ DISCLAIMER:</div>
-      Ini BUKAN financial advice.<br />
-      Trading futures/options sangat berisiko. DYOR & manage risk!
-    </div>
-  </div>
-</div>
-
-<div class="footer-warning">
-  ⚠️ Not fully valid: <input id="footerConfluence" type="text" value="confluence" style="width:120px; background:#000; border:none; color:#fdd835; font-weight:bold;">
-</div>
-
-<button onclick="saveData()">Save Changes</button>
 
 <script>
-  function saveData() {
-    // Kumpulkan semua data input
-    const data = {
-      signalType: document.getElementById('signalType').value,
-      signalPotential: document.getElementById('signalPotential').value,
-      commodity: document.getElementById('commodity').value,
-      confluencePercent: document.getElementById('confluencePercent').textContent,
-      validText: document.getElementById('validText').value,
-      type: document.getElementById('type').value,
-      direction: document.getElementById('direction').value,
-      entry: document.getElementById('entry').value,
-      stopLoss: document.getElementById('stopLoss').value,
-      risk: document.getElementById('risk').value,
-      target1: document.getElementById('target1').value,
-      reward1: document.getElementById('reward1').value,
-      rr1: document.getElementById('rr1').value,
-      target2: document.getElementById('target2').value,
-      reward2: document.getElementById('reward2').value,
-      rr2: document.getElementById('rr2').value,
+  // ----- Data Dinamis (bisa diedit sesuai keinginan) -----
+  // Saya buat object agar mudah diedit dan langsung apply ke DOM
+  const signalData = {
+    signalType: "MAXPAIN FADE SHORT",
+    signalPotential: "POTENTIAL",
+    commodity: "G2WF6",
+    confluencePercent: 46,
+    validText: "VALID",
+    type: "MAXPAIN FADE SHORT",
+    direction: "SHORT",
+    entry: "4,620.00 - 4,625.00",
+    stopLoss: "4,675.00 pts",
+    risk: "52.50 pts",
+    target1: "4,465.00 pts",
+    reward1: "157.50 pts",
+    rr1: "3.0:1",
+    target2: "4,386.25 pts",
+    reward2: "236.25 pts",
+    rr2: "4.9:1",
+    // checklist items
+    checklist: [
+      { label: "Price+Vol :", value: "+35", checked: true, desc: "Strong rally +0.56%, Vol dropping" },
+      { label: "Position :", value: "+20", checked: true, desc: "Above Max Pain, room to 4,650" },
+      { label: "OI Pattern :", value: "0", checked: false, desc: "STRADDLE BUILDING" },
+      { label: "Gamma :", value: "+10", checked: true, desc: "Long Gamma = Mean revert favored" },
+      { label: "PCR :", value: "0", checked: false, desc: "PCR 1.23 = Normal range" },
+      { label: "DTE :", value: "+15", checked: true, desc: "ODTE - Price 0.5% from Max Pain, ex" }
+    ],
+    totalScore: 80,
+    totalMax: 175,
+    totalPercent: 46,
+    alignedCount: 4,
+    expectedPts: 21.37,
+    expectedPercent: 0.46,
+    expectedRangeMin: 4603.63,
+    expectedRangeMax: 4646.37,
+    gexRegime: "LONG GAMMA",
+    marketPCR: "1.23",
+    volChange: "-1.76%",
+    marketDTE: "ODTE (0.11)",
+    footerConfluence: "confluence 46%"
+  };
 
-      chkPriceVol: document.getElementById('chkPriceVol').checked,
-      priceVolVal: document.getElementById('priceVolVal').value,
-      chkPosition: document.getElementById('chkPosition').checked,
-      positionVal: document.getElementById('positionVal').value,
-      chkOIPattern: document.getElementById('chkOIPattern').checked,
-      oiPatternVal: document.getElementById('oiPatternVal').value,
-      chkGamma: document.getElementById('chkGamma').checked,
-      gammaVal: document.getElementById('gammaVal').value,
-      chkPCR: document.getElementById('chkPCR').checked,
-      pcrVal: document.getElementById('pcrVal').value,
-      chkDTE: document.getElementById('chkDTE').checked,
-      dteVal: document.getElementById('dteVal').value,
-
-      totalVal: document.getElementById('totalVal').value,
-      totalPercent: document.getElementById('totalPercent').value,
-      alignedSignals: document.getElementById('alignedSignals').value,
-
-      expectedPts: document.getElementById('expectedPts').value,
-      expectedPercent: document.getElementById('expectedPercent').value,
-      expectedRangeMin: document.getElementById('expectedRangeMin').value,
-      expectedRangeMax: document.getElementById('expectedRangeMax').value,
-
-      gexRegime: document.getElementById('gexRegime').value,
-      marketPCR: document.getElementById('marketPCR').value,
-      volChange: document.getElementById('volChange').value,
-      marketDTE: document.getElementById('marketDTE').value,
-      footerConfluence: document.getElementById('footerConfluence').value,
-    };
-    console.log('Saved data:', data);
-
-    alert('Data saved! Check console for details.');
-
-    // Contoh simpan ke backend: POST ke API Node.js Anda
-    /* 
-    fetch('/save-signal', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data),
-    }).then(res => res.json())
-    .then(resJson => alert('Server response: ' + resJson.message));
-    */
+  // Fungsi untuk render semua data ke DOM
+  function renderData() {
+    document.getElementById('signalType').innerText = signalData.signalType;
+    document.getElementById('signalPotential').innerText = signalData.signalPotential;
+    document.getElementById('commodity').innerText = signalData.commodity;
+    document.getElementById('confluencePercent').innerText = signalData.confluencePercent;
+    document.getElementById('confluenceBar').style.width = signalData.confluencePercent + '%';
+    document.getElementById('validText').innerText = signalData.validText;
+    
+    document.getElementById('typeDisplay').innerText = signalData.type;
+    document.getElementById('directionDisplay').innerText = signalData.direction;
+    document.getElementById('entryDisplay').innerText = signalData.entry;
+    document.getElementById('stopLossDisplay').innerText = signalData.stopLoss;
+    document.getElementById('riskDisplay').innerText = signalData.risk;
+    document.getElementById('target1Display').innerText = signalData.target1;
+    document.getElementById('reward1Display').innerText = signalData.reward1;
+    document.getElementById('rr1Display').innerText = signalData.rr1;
+    document.getElementById('target2Display').innerText = signalData.target2;
+    document.getElementById('reward2Display').innerText = signalData.reward2;
+    document.getElementById('reward2Display').innerText = signalData.reward2;
+    document.getElementById('rr2Display').innerText = signalData.rr2;
+    
+    // Render checklist
+    const container = document.getElementById('checklistContainer');
+    container.innerHTML = '';
+    signalData.checklist.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'checklist-item';
+      div.innerHTML = `
+        <div class="checklist-label">
+          <span style="color: ${item.checked ? '#4caf50' : '#888'};">${item.checked ? '✅' : '⬜'}</span>
+          <strong>${item.label}</strong>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="badge" style="background: #1e1e1e;">${item.value}</span>
+          <span style="font-size:0.8rem; color:#aaa;">${item.desc}</span>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+    
+    document.getElementById('totalVal').innerText = signalData.totalScore;
+    document.getElementById('totalPercent').innerText = signalData.totalPercent;
+    document.getElementById('alignedSignals').innerText = signalData.alignedCount;
+    document.getElementById('expectedPts').innerText = signalData.expectedPts;
+    document.getElementById('expectedPercent').innerText = signalData.expectedPercent;
+    document.getElementById('expectedRangeMin').innerText = signalData.expectedRangeMin;
+    document.getElementById('expectedRangeMax').innerText = signalData.expectedRangeMax;
+    document.getElementById('gexRegime').innerText = signalData.gexRegime;
+    document.getElementById('marketPCR').innerText = signalData.marketPCR;
+    document.getElementById('volChange').innerText = signalData.volChange;
+    document.getElementById('marketDTE').innerText = signalData.marketDTE;
+    document.getElementById('footerConfluence').innerText = signalData.footerConfluence;
   }
+  
+  // ========== FITUR SAVE AS IMAGE (PNG) ==========
+  async function saveAsImage() {
+    const element = document.getElementById('reportContainer');
+    if (!element) return;
+    
+    // Tampilkan loading sebentar
+    const originalBtn = document.getElementById('saveAsImageBtn');
+    const originalText = originalBtn.innerText;
+    originalBtn.innerText = '⏳ Memproses...';
+    originalBtn.disabled = true;
+    
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        backgroundColor: '#0d0d0d',
+        logging: false,
+        useCORS: false
+      });
+      const link = document.createElement('a');
+      const timestamp = new Date().toISOString().slice(0,19).replace(/:/g, '-');
+      link.download = `Trading_Signal_${signalData.signalType}_${timestamp}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      console.error('Gagal generate gambar:', err);
+      alert('Gagal menyimpan gambar. Coba lagi.');
+    } finally {
+      originalBtn.innerText = originalText;
+      originalBtn.disabled = false;
+    }
+  }
+  
+  // ========== FITUR SAVE AS PDF ==========
+  async function saveAsPdf() {
+    const element = document.getElementById('reportContainer');
+    if (!element) return;
+    
+    const btn = document.getElementById('saveAsPdfBtn');
+    const originalText = btn.innerText;
+    btn.innerText = '⏳ Membuat PDF...';
+    btn.disabled = true;
+    
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2.5,
+        backgroundColor: '#0d0d0d',
+        logging: false
+      });
+      const imgData = canvas.toDataURL('image/png');
+      const { jsPDF } = window.jspdf;
+      // orientasi landscape agar lebih muat
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+      });
+      const imgWidth = 280; // mm (A4 landscape lebar ~297, dikasih margin)
+      const pageHeight = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let position = 0;
+      
+      pdf.addImage(imgData, 'PNG', 8, position, imgWidth, imgHeight);
+      // jika lebih dari 1 halaman (opsional)
+      pdf.save(`Signal_${signalData.signalType}_${Date.now()}.pdf`);
+    } catch (err) {
+      console.error('PDF gagal:', err);
+      alert('Gagal membuat PDF. Coba lagi.');
+    } finally {
+      btn.innerText = originalText;
+      btn.disabled = false;
+    }
+  }
+  
+  // Event listeners
+  document.getElementById('saveAsImageBtn').addEventListener('click', saveAsImage);
+  document.getElementById('saveAsPdfBtn').addEventListener('click', saveAsPdf);
+  
+  // Render awal
+  renderData();
+  
+  // ========== FUNGSI EDIT DATA (optional: biar user bisa ubah value langsung di console) ==========
+  window.updateSignalData = function(newData) {
+    Object.assign(signalData, newData);
+    renderData();
+    console.log('Data sinyal diperbarui:', signalData);
+  };
+  
+  console.log('✅ Siap digunakan! Gunakan window.updateSignalData({field: value}) untuk mengedit data.');
+  console.log('Contoh: window.updateSignalData({ signalType: "GOLD SHORT", expectedPts: 30 })');
 </script>
-
-<!--
-Contoh Server Node.js (Express) untuk menerima data POST:
-
-const express = require('express');
-const app = express();
-const port = 3000;
-
-app.use(express.json());
-
-app.post('/save-signal', (req, res) => {
-  console.log('Data received from client:', req.body);
-  // Simpan data ke db, file, dsb di sini
-  res.json({message: 'Signal data saved successfully!'});
-});
-
-app.listen(port, () => {
-  console.log(`Node.js server running at http://localhost:${port}`);
-});
-
-Jalankan dengan:
-npm init -y
-npm install express
-node server.js
-
-Kemudian akses file HTML di browser (bisa pakai live-server atau membuka file langsung).
-
--->
-
 </body>
 </html>
