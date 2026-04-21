@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-<title>MAXPAIN FADE SHORT SIGNAL - Trading Signal Report</title>
+<title>MAXPAIN FADE SHORT - Trading Signal Editor</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -16,20 +16,21 @@
 
   body {
     background: #0a0a0a;
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
     color: #e0e0e0;
     padding: 24px 16px;
   }
 
-  /* Container untuk screenshot/PDF */
+  /* Container persegi / kotak dengan rasio yang enak */
   #reportContainer {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     background: #0d0d0d;
-    border-radius: 24px;
-    padding: 24px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    border-radius: 28px;
+    padding: 28px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
     border: 1px solid #2a2a2a;
+    aspect-ratio: auto; /* tidak dipaksa, tapi bentuknya persegi panjang premium */
   }
 
   h1 {
@@ -43,22 +44,17 @@
     background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
     border: 2px solid #ff3333;
     padding: 16px 20px;
-    border-radius: 16px;
+    border-radius: 20px;
     margin-bottom: 24px;
     text-align: center;
-  }
-
-  .important-text {
-    color: #ff4444;
-    font-weight: 700;
   }
 
   .subheader {
     color: #ffd966;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     margin-bottom: 12px;
   }
 
@@ -71,11 +67,11 @@
 
   .box {
     flex: 1;
-    min-width: 250px;
+    min-width: 260px;
     background: #121212;
     border: 1px solid #2a2a2a;
-    border-radius: 16px;
-    padding: 16px 18px;
+    border-radius: 20px;
+    padding: 18px 20px;
     transition: all 0.2s;
   }
 
@@ -88,7 +84,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
     gap: 8px;
   }
@@ -99,26 +95,30 @@
     font-size: 0.85rem;
   }
 
-  .value-input {
-    background: transparent;
-    border: none;
-    color: #ff8888;
-    font-weight: 700;
-    font-family: monospace;
-    font-size: 0.9rem;
-    text-align: right;
+  /* Style input editable */
+  .editable-input {
+    background: #1e1e1e;
+    border: 1px solid #3a3a3a;
+    border-radius: 10px;
+    padding: 6px 12px;
+    color: #ffd966;
+    font-weight: 500;
+    font-family: 'Inter', monospace;
+    font-size: 0.85rem;
     width: auto;
-    min-width: 100px;
-    padding: 4px 8px;
-    border-radius: 6px;
+    min-width: 120px;
+    text-align: right;
+    transition: all 0.2s;
   }
 
-  .value-input-green {
+  .editable-input:focus {
+    outline: none;
+    border-color: #ffd966;
+    background: #2a2a2a;
+  }
+
+  .value-green {
     color: #4caf50;
-  }
-
-  .value-input-white {
-    color: #ddd;
   }
 
   .progress-bar {
@@ -126,7 +126,7 @@
     border-radius: 20px;
     overflow: hidden;
     height: 8px;
-    margin: 8px 0;
+    margin: 12px 0;
   }
 
   .progress-fill {
@@ -136,28 +136,26 @@
     border-radius: 20px;
   }
 
-  .checklist {
-    margin-top: 12px;
-  }
-
   .checklist-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     font-size: 0.85rem;
     flex-wrap: wrap;
     gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #222;
   }
 
   .checklist-label {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
 
   .badge {
-    background: #2a2a2a;
+    background: #1e1e1e;
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 0.75rem;
@@ -168,7 +166,7 @@
     background: #1a0f0f;
     border-left: 4px solid #ffcc00;
     padding: 14px 16px;
-    border-radius: 12px;
+    border-radius: 16px;
     margin-top: 12px;
   }
 
@@ -193,7 +191,7 @@
     display: flex;
     justify-content: center;
     gap: 16px;
-    margin-top: 24px;
+    margin-top: 28px;
     flex-wrap: wrap;
     z-index: 100;
   }
@@ -236,54 +234,42 @@
     margin: 12px 0;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 750px) {
     #reportContainer {
-      padding: 16px;
+      padding: 18px;
     }
     .flex-row {
       flex-direction: column;
-      gap: 16px;
     }
     .trade-row {
       flex-direction: column;
       align-items: flex-start;
     }
-    .value-input {
-      text-align: left;
+    .editable-input {
       width: 100%;
+      text-align: left;
     }
     .checklist-item {
       flex-direction: column;
       align-items: flex-start;
     }
   }
-
-  /* styling untuk tampilan lebih premium */
-  .stat-number {
-    font-size: 1.6rem;
-    font-weight: 800;
-    font-family: monospace;
-  }
-
-  .text-gold {
-    color: #ffd966;
-  }
 </style>
 </head>
 <body>
 
 <div id="reportContainer">
-  <!-- HEADER -->
+  <!-- HEADER bisa edit -->
   <div class="header">
-    <h1>⚠️ 🎯 SIGNAL: <span id="signalType">MAXPAIN FADE SHORT</span></h1>
-    <div style="font-weight: 600; color: #aaa; margin-top: 6px;">[ <span id="signalPotential">POTENTIAL</span> ]</div>
+    <h1>⚠️ 🎯 SIGNAL: <input type="text" id="signalTypeInput" value="MAXPAIN FADE SHORT" class="editable-input" style="width:220px; text-align:center; background:#1e1e1e; color:#ff8888; font-weight:800;"></h1>
+    <div style="font-weight: 600; color: #aaa; margin-top: 6px;">[ <input type="text" id="signalPotentialInput" value="POTENTIAL" class="editable-input" style="width:120px; text-align:center; background:#1e1e1e; color:#ffd966;"> ]</div>
   </div>
 
-  <!-- ROW 1: Commodity + Confluence + Trade Setup -->
+  <!-- ROW 1: Kiri (Commodity + Confluence) + Kanan (Trade Setup) -->
   <div class="flex-row">
     <div class="box">
-      <div class="subheader">📌 GOLD (GC)</div>
-      <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 12px;"><span id="commodity">G2WF6</span></div>
+      <div class="subheader">📌 GOLD (XAU/USD)</div>
+      <input type="text" id="commodityInput" value="OANDA" class="editable-input" style="font-size:1.2rem; font-weight:700; margin-bottom:12px; width:100%;">
       
       <div class="subheader" style="margin-top: 8px;">🔗 CONFLUENCE</div>
       <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
@@ -293,66 +279,60 @@
       <div class="progress-bar">
         <div id="confluenceBar" class="progress-fill" style="width: 46%;"></div>
       </div>
-      <div style="margin-top: 10px;">
-        <span class="badge">🟢 STATUS: <span id="validText">VALID</span></span>
+      <div style="margin-top: 12px;">
+        <span class="badge">🟢 STATUS: <input type="text" id="validTextInput" value="VALID" class="editable-input" style="width:70px; text-align:center; background:#1e1e1e; color:#4caf50;"></span>
       </div>
     </div>
 
     <div class="box trade-setup">
       <div class="subheader">🎯 TRADE SETUP (R:R 3.0:1)</div>
-      <div class="trade-row">
-        <label>TYPE :</label>
-        <span id="typeDisplay" class="value-input">MAXPAIN FADE SHORT</span>
+      <div class="trade-row"><label>TYPE :</label> <input type="text" id="typeInput" value="MAXPAIN FADE SHORT" class="editable-input"></div>
+      <div class="trade-row"><label>DIRECTION :</label> <input type="text" id="directionInput" value="SHORT" class="editable-input" style="color:#ff8888;"> <span>📉</span></div>
+      <div style="border:1px solid #b33; padding:12px; border-radius:16px; margin:12px 0; background:#1a0a0a;">
+        <div class="trade-row"><label>ENTRY :</label> <input type="text" id="entryInput" value="4,620.00 - 4,625.00" class="editable-input"></div>
+        <div class="trade-row"><label>STOP LOSS :</label> <input type="text" id="stopLossInput" value="4,675.00 pts" class="editable-input"></div>
+        <div class="trade-row"><label>RISK :</label> <input type="text" id="riskInput" value="52.50 pts" class="editable-input"></div>
       </div>
-      <div class="trade-row">
-        <label>DIRECTION :</label>
-        <span id="directionDisplay" class="value-input" style="color:#ff8888;">SHORT</span> <span>📉</span>
+      <div style="border:1px solid #4caf50; padding:12px; border-radius:16px; margin:12px 0; background:#0f1a0f;">
+        <div class="trade-row"><label>TARGET 1 :</label> <input type="text" id="target1Input" value="4,465.00 pts" class="editable-input value-green"></div>
+        <div class="trade-row"><label>REWARD :</label> <input type="text" id="reward1Input" value="157.50 pts" class="editable-input value-green"></div>
+        <div class="trade-row"><label>R:R :</label> <input type="text" id="rr1Input" value="3.0:1" class="editable-input value-green"></div>
       </div>
-      <div style="border:1px solid #b33; padding:12px; border-radius:12px; margin:12px 0; background:#1a0a0a;">
-        <div class="trade-row"><label>ENTRY :</label> <span id="entryDisplay" class="value-input">4,620.00 - 4,625.00</span></div>
-        <div class="trade-row"><label>STOP LOSS :</label> <span id="stopLossDisplay" class="value-input">4,675.00 pts</span></div>
-        <div class="trade-row"><label>RISK :</label> <span id="riskDisplay" class="value-input">52.50 pts</span></div>
-      </div>
-      <div style="border:1px solid #4caf50; padding:12px; border-radius:12px; margin:12px 0; background:#0f1a0f;">
-        <div class="trade-row"><label>TARGET 1 :</label> <span id="target1Display" class="value-input" style="color:#4caf50;">4,465.00 pts</span></div>
-        <div class="trade-row"><label>REWARD :</label> <span id="reward1Display" class="value-input" style="color:#4caf50;">157.50 pts</span></div>
-        <div class="trade-row"><label>R:R :</label> <span id="rr1Display" class="value-input" style="color:#4caf50;">3.0:1</span></div>
-      </div>
-      <div style="border:1px solid #4caf50; padding:12px; border-radius:12px; background:#0f1a0f;">
-        <div class="trade-row"><label>TARGET 2 :</label> <span id="target2Display" class="value-input" style="color:#4caf50;">4,386.25 pts</span></div>
-        <div class="trade-row"><label>REWARD :</label> <span id="reward2Display" class="value-input" style="color:#4caf50;">236.25 pts</span></div>
-        <div class="trade-row"><label>R:R :</label> <span id="rr2Display" class="value-input" style="color:#4caf50;">4.9:1</span></div>
+      <div style="border:1px solid #4caf50; padding:12px; border-radius:16px; background:#0f1a0f;">
+        <div class="trade-row"><label>TARGET 2 :</label> <input type="text" id="target2Input" value="4,386.25 pts" class="editable-input value-green"></div>
+        <div class="trade-row"><label>REWARD :</label> <input type="text" id="reward2Input" value="236.25 pts" class="editable-input value-green"></div>
+        <div class="trade-row"><label>R:R :</label> <input type="text" id="rr2Input" value="4.9:1" class="editable-input value-green"></div>
       </div>
     </div>
   </div>
 
-  <!-- ROW 2: Signal Breakdown + Expected Move -->
+  <!-- ROW 2: Signal Breakdown + Expected Move (EDITABLE checklist & angka) -->
   <div class="flex-row">
     <div class="box">
       <div class="subheader">📊 SIGNAL BREAKDOWN</div>
-      <div class="checklist" id="checklistContainer">
-        <!-- Dynamic checklist items akan diisi JS -->
+      <div id="checklistContainer">
+        <!-- Checklist items yang bisa diubah -->
       </div>
       <hr />
-      <div><strong>TOTAL: </strong><span id="totalVal">+80</span> / 175 = <strong id="totalPercent">46</strong>%</div>
-      <div><strong>ALIGNED: </strong><span id="alignedSignals">4</span> / 6 signals</div>
+      <div><strong>TOTAL: </strong><input type="number" id="totalScoreInput" value="80" class="editable-input" style="width:70px;"> / 175 = <strong id="totalPercentDisplay">46</strong>%</div>
+      <div><strong>ALIGNED: </strong><input type="number" id="alignedCountInput" value="4" class="editable-input" style="width:60px;"> / 6 signals</div>
     </div>
 
     <div class="box">
       <div class="subheader">📈 EXPECTED MOVE (68% prob)</div>
-      <div style="font-size: 1.6rem; font-weight: 800; color:#4caf50;">+<span id="expectedPts">21.37</span> pts (<span id="expectedPercent">0.46</span>%)</div>
-      <div style="margin-top: 12px;">Range: <span id="expectedRangeMin">4603.63</span> - <span id="expectedRangeMax">4646.37</span></div>
+      <div style="font-size: 1.5rem; font-weight: 800; color:#4caf50;">+<input type="text" id="expectedPtsInput" value="21.37" class="editable-input" style="width:80px;"> pts (<input type="text" id="expectedPercentInput" value="0.46" class="editable-input" style="width:60px;">%)</div>
+      <div style="margin-top: 12px;">Range: <input type="text" id="rangeMinInput" value="4603.63" class="editable-input" style="width:100px;"> - <input type="text" id="rangeMaxInput" value="4646.37" class="editable-input" style="width:100px;"></div>
     </div>
   </div>
 
-  <!-- ROW 3: Market Context + Risk -->
+  <!-- ROW 3: Market Context + Risk Management -->
   <div class="flex-row">
     <div class="box">
       <div class="subheader">🌐 MARKET CONTEXT</div>
-      <div class="trade-row"><strong>GEX Regime :</strong> <span id="gexRegime" style="color:#4caf50;">LONG GAMMA</span></div>
-      <div class="trade-row"><strong>PCR :</strong> <span id="marketPCR">1.23</span></div>
-      <div class="trade-row"><strong>Vol Change :</strong> <span id="volChange" style="color:#ff8a5c;">-1.76%</span></div>
-      <div class="trade-row"><strong>DTE :</strong> <span id="marketDTE" style="color:#ffd966;">ODTE (0.11)</span></div>
+      <div class="trade-row"><strong>GEX Regime :</strong> <input type="text" id="gexRegimeInput" value="LONG GAMMA" class="editable-input" style="color:#4caf50;"></div>
+      <div class="trade-row"><strong>PCR :</strong> <input type="text" id="marketPCRInput" value="1.23" class="editable-input"></div>
+      <div class="trade-row"><strong>Vol Change :</strong> <input type="text" id="volChangeInput" value="-1.76%" class="editable-input" style="color:#ff8a5c;"></div>
+      <div class="trade-row"><strong>DTE :</strong> <input type="text" id="marketDTEInput" value="ODTE (0.11)" class="editable-input" style="color:#ffd966;"></div>
     </div>
 
     <div class="box">
@@ -373,7 +353,7 @@
   </div>
 
   <div class="footer-warning">
-    ⚠️ Not fully valid: <span id="footerConfluence">confluence 46%</span>
+    ⚠️ Not fully valid: <input type="text" id="footerConfluenceInput" value="confluence 46%" class="editable-input" style="width:150px; background:#1e1e1e; text-align:center;">
   </div>
 </div>
 
@@ -384,193 +364,146 @@
 </div>
 
 <script>
-  // ----- Data Dinamis (bisa diedit sesuai keinginan) -----
-  // Saya buat object agar mudah diedit dan langsung apply ke DOM
-  const signalData = {
-    signalType: "MAXPAIN FADE SHORT",
-    signalPotential: "POTENTIAL",
-    commodity: "G2WF6",
-    confluencePercent: 46,
-    validText: "VALID",
-    type: "MAXPAIN FADE SHORT",
-    direction: "SHORT",
-    entry: "4,620.00 - 4,625.00",
-    stopLoss: "4,675.00 pts",
-    risk: "52.50 pts",
-    target1: "4,465.00 pts",
-    reward1: "157.50 pts",
-    rr1: "3.0:1",
-    target2: "4,386.25 pts",
-    reward2: "236.25 pts",
-    rr2: "4.9:1",
-    // checklist items
-    checklist: [
-      { label: "Price+Vol :", value: "+35", checked: true, desc: "Strong rally +0.56%, Vol dropping" },
-      { label: "Position :", value: "+20", checked: true, desc: "Above Max Pain, room to 4,650" },
-      { label: "OI Pattern :", value: "0", checked: false, desc: "STRADDLE BUILDING" },
-      { label: "Gamma :", value: "+10", checked: true, desc: "Long Gamma = Mean revert favored" },
-      { label: "PCR :", value: "0", checked: false, desc: "PCR 1.23 = Normal range" },
-      { label: "DTE :", value: "+15", checked: true, desc: "ODTE - Price 0.5% from Max Pain, ex" }
-    ],
-    totalScore: 80,
-    totalMax: 175,
-    totalPercent: 46,
-    alignedCount: 4,
-    expectedPts: 21.37,
-    expectedPercent: 0.46,
-    expectedRangeMin: 4603.63,
-    expectedRangeMax: 4646.37,
-    gexRegime: "LONG GAMMA",
-    marketPCR: "1.23",
-    volChange: "-1.76%",
-    marketDTE: "ODTE (0.11)",
-    footerConfluence: "confluence 46%"
-  };
-
-  // Fungsi untuk render semua data ke DOM
-  function renderData() {
-    document.getElementById('signalType').innerText = signalData.signalType;
-    document.getElementById('signalPotential').innerText = signalData.signalPotential;
-    document.getElementById('commodity').innerText = signalData.commodity;
-    document.getElementById('confluencePercent').innerText = signalData.confluencePercent;
-    document.getElementById('confluenceBar').style.width = signalData.confluencePercent + '%';
-    document.getElementById('validText').innerText = signalData.validText;
-    
-    document.getElementById('typeDisplay').innerText = signalData.type;
-    document.getElementById('directionDisplay').innerText = signalData.direction;
-    document.getElementById('entryDisplay').innerText = signalData.entry;
-    document.getElementById('stopLossDisplay').innerText = signalData.stopLoss;
-    document.getElementById('riskDisplay').innerText = signalData.risk;
-    document.getElementById('target1Display').innerText = signalData.target1;
-    document.getElementById('reward1Display').innerText = signalData.reward1;
-    document.getElementById('rr1Display').innerText = signalData.rr1;
-    document.getElementById('target2Display').innerText = signalData.target2;
-    document.getElementById('reward2Display').innerText = signalData.reward2;
-    document.getElementById('reward2Display').innerText = signalData.reward2;
-    document.getElementById('rr2Display').innerText = signalData.rr2;
-    
-    // Render checklist
+  // ========== DATA CHECKLIST DINAMIS (BISA DIEDIT LANGSUNG DI HTML) ==========
+  // kita buat array checklist agar user bisa mengubah nilai, checked status, dan deskripsi via input fields.
+  // Tapi biar lebih fleksibel, saya buat div checklist yang isinya input field semua.
+  function buildChecklist() {
     const container = document.getElementById('checklistContainer');
+    // Data awal checklist (bisa diubah oleh user nanti)
+    const items = [
+      { label: "Price+Vol :", val: "+35", checked: true, desc: "Strong rally +0.56%, Vol dropping" },
+      { label: "Position :", val: "+20", checked: true, desc: "Above Max Pain, room to 4,650" },
+      { label: "OI Pattern :", val: "0", checked: false, desc: "STRADDLE BUILDING" },
+      { label: "Gamma :", val: "+10", checked: true, desc: "Long Gamma = Mean revert favored" },
+      { label: "PCR :", val: "0", checked: false, desc: "PCR 1.23 = Normal range" },
+      { label: "DTE :", val: "+15", checked: true, desc: "ODTE - Price 0.5% from Max Pain, ex" }
+    ];
+
     container.innerHTML = '';
-    signalData.checklist.forEach(item => {
+    items.forEach((item, idx) => {
       const div = document.createElement('div');
       div.className = 'checklist-item';
       div.innerHTML = `
         <div class="checklist-label">
-          <span style="color: ${item.checked ? '#4caf50' : '#888'};">${item.checked ? '✅' : '⬜'}</span>
+          <input type="checkbox" id="chk_${idx}" ${item.checked ? 'checked' : ''} style="width:18px; height:18px; cursor:pointer;">
           <strong>${item.label}</strong>
         </div>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <span class="badge" style="background: #1e1e1e;">${item.value}</span>
-          <span style="font-size:0.8rem; color:#aaa;">${item.desc}</span>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap:wrap;">
+          <input type="text" id="val_${idx}" value="${item.val}" class="editable-input" style="width:70px; text-align:center;">
+          <input type="text" id="desc_${idx}" value="${item.desc}" class="editable-input" style="min-width:180px;">
         </div>
       `;
       container.appendChild(div);
     });
+  }
+
+  // Panggil untuk render checklist
+  buildChecklist();
+
+  // ========== UPDATE FUNGSI UNTUK MENGHUBUNGKAN INPUT KE TAMPILAN LAIN ==========
+  // Karena ada beberapa field yang saling terkait (confluence %, total %, dll)
+  function updateDerivedValues() {
+    // Ambil total score & max
+    let totalScore = parseFloat(document.getElementById('totalScoreInput').value) || 0;
+    let maxScore = 175;
+    let percent = Math.round((totalScore / maxScore) * 100);
+    document.getElementById('totalPercentDisplay').innerText = percent;
+    document.getElementById('confluencePercent').innerText = percent;
+    document.getElementById('confluenceBar').style.width = percent + '%';
     
-    document.getElementById('totalVal').innerText = signalData.totalScore;
-    document.getElementById('totalPercent').innerText = signalData.totalPercent;
-    document.getElementById('alignedSignals').innerText = signalData.alignedCount;
-    document.getElementById('expectedPts').innerText = signalData.expectedPts;
-    document.getElementById('expectedPercent').innerText = signalData.expectedPercent;
-    document.getElementById('expectedRangeMin').innerText = signalData.expectedRangeMin;
-    document.getElementById('expectedRangeMax').innerText = signalData.expectedRangeMax;
-    document.getElementById('gexRegime').innerText = signalData.gexRegime;
-    document.getElementById('marketPCR').innerText = signalData.marketPCR;
-    document.getElementById('volChange').innerText = signalData.volChange;
-    document.getElementById('marketDTE').innerText = signalData.marketDTE;
-    document.getElementById('footerConfluence').innerText = signalData.footerConfluence;
+    // Update footer confluence
+    let footerText = document.getElementById('footerConfluenceInput').value;
+    if (!footerText) document.getElementById('footerConfluenceInput').value = `confluence ${percent}%`;
+    
+    // Jika ada input lain yang perlu sinkron
+    let alignedCount = parseInt(document.getElementById('alignedCountInput').value) || 0;
+    // tidak ada dependensi lain
+  }
+
+  // Event listener untuk setiap input yang mempengaruhi derived
+  const totalScoreElem = document.getElementById('totalScoreInput');
+  const alignedCountElem = document.getElementById('alignedCountInput');
+  const footerConflElem = document.getElementById('footerConfluenceInput');
+  
+  function attachDerivedListeners() {
+    totalScoreElem.addEventListener('input', updateDerivedValues);
+    alignedCountElem.addEventListener('input', updateDerivedValues);
+    footerConflElem.addEventListener('input', updateDerivedValues);
+    // juga expected move tidak mengganggu, biarkan.
   }
   
-  // ========== FITUR SAVE AS IMAGE (PNG) ==========
+  attachDerivedListeners();
+  updateDerivedValues(); // inisialisasi pertama
+
+  // ========== SIMPAN SEBAGAI GAMBAR (PNG) ==========
   async function saveAsImage() {
     const element = document.getElementById('reportContainer');
     if (!element) return;
-    
-    // Tampilkan loading sebentar
-    const originalBtn = document.getElementById('saveAsImageBtn');
-    const originalText = originalBtn.innerText;
-    originalBtn.innerText = '⏳ Memproses...';
-    originalBtn.disabled = true;
-    
+    const btn = document.getElementById('saveAsImageBtn');
+    const originalText = btn.innerText;
+    btn.innerText = '⏳ Memproses...';
+    btn.disabled = true;
     try {
       const canvas = await html2canvas(element, {
-        scale: 2,
+        scale: 2.5,
         backgroundColor: '#0d0d0d',
         logging: false,
         useCORS: false
       });
       const link = document.createElement('a');
       const timestamp = new Date().toISOString().slice(0,19).replace(/:/g, '-');
-      link.download = `Trading_Signal_${signalData.signalType}_${timestamp}.png`;
+      link.download = `Trading_Signal_${timestamp}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (err) {
-      console.error('Gagal generate gambar:', err);
-      alert('Gagal menyimpan gambar. Coba lagi.');
-    } finally {
-      originalBtn.innerText = originalText;
-      originalBtn.disabled = false;
-    }
-  }
-  
-  // ========== FITUR SAVE AS PDF ==========
-  async function saveAsPdf() {
-    const element = document.getElementById('reportContainer');
-    if (!element) return;
-    
-    const btn = document.getElementById('saveAsPdfBtn');
-    const originalText = btn.innerText;
-    btn.innerText = '⏳ Membuat PDF...';
-    btn.disabled = true;
-    
-    try {
-      const canvas = await html2canvas(element, {
-        scale: 2.5,
-        backgroundColor: '#0d0d0d',
-        logging: false
-      });
-      const imgData = canvas.toDataURL('image/png');
-      const { jsPDF } = window.jspdf;
-      // orientasi landscape agar lebih muat
-      const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'mm',
-        format: 'a4'
-      });
-      const imgWidth = 280; // mm (A4 landscape lebar ~297, dikasih margin)
-      const pageHeight = 210;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let position = 0;
-      
-      pdf.addImage(imgData, 'PNG', 8, position, imgWidth, imgHeight);
-      // jika lebih dari 1 halaman (opsional)
-      pdf.save(`Signal_${signalData.signalType}_${Date.now()}.pdf`);
-    } catch (err) {
-      console.error('PDF gagal:', err);
-      alert('Gagal membuat PDF. Coba lagi.');
+      console.error(err);
+      alert('Gagal menyimpan gambar.');
     } finally {
       btn.innerText = originalText;
       btn.disabled = false;
     }
   }
-  
-  // Event listeners
+
+  // ========== SIMPAN SEBAGAI PDF ==========
+  async function saveAsPdf() {
+    const element = document.getElementById('reportContainer');
+    if (!element) return;
+    const btn = document.getElementById('saveAsPdfBtn');
+    const originalText = btn.innerText;
+    btn.innerText = '⏳ Membuat PDF...';
+    btn.disabled = true;
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2.8,
+        backgroundColor: '#0d0d0d',
+        logging: false
+      });
+      const imgData = canvas.toDataURL('image/png');
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+      });
+      const imgWidth = 280;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      pdf.addImage(imgData, 'PNG', 8, 8, imgWidth, imgHeight);
+      pdf.save(`Signal_Report_${Date.now()}.pdf`);
+    } catch (err) {
+      console.error(err);
+      alert('Gagal membuat PDF.');
+    } finally {
+      btn.innerText = originalText;
+      btn.disabled = false;
+    }
+  }
+
   document.getElementById('saveAsImageBtn').addEventListener('click', saveAsImage);
   document.getElementById('saveAsPdfBtn').addEventListener('click', saveAsPdf);
-  
-  // Render awal
-  renderData();
-  
-  // ========== FUNGSI EDIT DATA (optional: biar user bisa ubah value langsung di console) ==========
-  window.updateSignalData = function(newData) {
-    Object.assign(signalData, newData);
-    renderData();
-    console.log('Data sinyal diperbarui:', signalData);
-  };
-  
-  console.log('✅ Siap digunakan! Gunakan window.updateSignalData({field: value}) untuk mengedit data.');
-  console.log('Contoh: window.updateSignalData({ signalType: "GOLD SHORT", expectedPts: 30 })');
+
+  // Optional: console hint
+  console.log('✅ SEMUA FIELD BISA DIEDIT! Simpan sebagai PNG atau PDF.');
+  console.log('Checklist, angka, teks bebas diubah, lalu export.');
 </script>
 </body>
 </html>
