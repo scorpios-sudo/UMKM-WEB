@@ -724,4 +724,513 @@
         }
 
         .contact-details h3 {
-            f
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        .contact-details p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            color: #ffffff;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-control:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Analysis Section */
+        .analysis {
+            padding: 100px 0;
+            background: rgba(10, 10, 10, 0.5);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .analysis-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .analysis-card-content {
+            padding: 24px;
+        }
+
+        .analysis-card h3 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .analysis-card p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(5, 5, 5, 0.9);
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+            }
+            .about-content {
+                flex-direction: column;
+            }
+            .contact-container {
+                flex-direction: column;
+            }
+            .hero h1 {
+                font-size: 42px;
+            }
+            .stat-value {
+                font-size: 32px;
+            }
+            .stat-item {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            .trading-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .stat-item:not(:last-child):after {
+                display: none;
+            }
+            .section-title h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Floating Orbs -->
+<div class="orb-bg orb-1"></div>
+<div class="orb-bg orb-2"></div>
+<div class="orb-bg orb-3"></div>
+
+<header>
+    <div class="container">
+        <div class="navbar">
+            <a href="#" class="logo"><i class="fas fa-chart-line"></i> TRADER X</a>
+            <ul class="nav-links">
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Tentang</a></li>
+                <li><a href="#">Layanan</a></li>
+                <li><a href="#">Platform</a></li>
+                <li><a href="#">Kontak</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>TRADER X <span>ACADEMY</span></h1>
+            <p>Platform trading elite dengan teknologi AI, analisis real-time, dan mentorship dari para profesional. Mulai perjalanan trading Anda bersama kami.</p>
+            <div class="hero-btns">
+                <a href="#" class="btn">Mulai Trading</a>
+                <a href="#" class="btn btn-secondary">Pelajari Lebih</a>
+            </div>
+            
+            <div class="trading-stats">
+                <div class="stat-item">
+                    <div class="stat-value">$2.4B+</div>
+                    <div class="stat-label">Volume Trading</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">15,000+</div>
+                    <div class="stat-label">Member Aktif</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">89%</div>
+                    <div class="stat-label">Tingkat Sukses</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Dukungan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about">
+    <div class="container">
+        <div class="section-title">
+            <h2>TENTANG KAMI</h2>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Platform Trading Terdepan di Indonesia</h3>
+                <p>Trader X Academy hadir sebagai solusi lengkap bagi para trader dari berbagai tingkat keahlian. Kami menggabungkan teknologi canggih dengan pendidikan trading yang komprehensif.</p>
+                <p>Dengan lebih dari 15.000 member aktif dan volume trading mencapai $2.4 Miliar, kami telah membantu ribuan trader mencapai konsistensi profitabilitas mereka.</p>
+                <div class="about-features">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Analisis Real-time</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Sinyal AI Akurat</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Mentorship Expert</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Komunitas Aktif</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="https://placehold.co/600x400/1a1a2e/ffffff?text=TRADER+X+PLATFORM" alt="Trading Platform">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services">
+    <div class="container">
+        <div class="section-title">
+            <h2>LAYANAN KAMI</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-robot"></i></div>
+                <h3>AI Trading Signal</h3>
+                <p>Sinyal trading berbasis kecerdasan buatan dengan akurasi hingga 89%.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-chalkboard-user"></i></div>
+                <h3>Mentorship Program</h3>
+                <p>Bimbingan langsung dari trader profesional berpengalaman.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Analisis Teknikal</h3>
+                <p>Analisis mendalam dengan berbagai indikator dan pattern recognition.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-users"></i></div>
+                <h3>Komunitas Elite</h3>
+                <p>Bergabung dengan komunitas trader eksklusif berbagai level.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Kelas Trading</h3>
+                <p>Kursus lengkap dari basic hingga advanced trading strategies.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-headset"></i></div>
+                <h3>Support 24/7</h3>
+                <p>Dukungan pelanggan siap membantu kapan saja.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trading Tools -->
+<section class="tools">
+    <div class="container">
+        <div class="section-title">
+            <h2>ALAT TRADING</h2>
+        </div>
+        <div class="tools-container">
+            <div class="tool-item">
+                <div class="tool-icon"><i class="fas fa-chart-simple"></i></div>
+                <h3>Chart Pro</h3>
+                <p>Grafik interaktif dengan 50+ indikator teknikal</p>
+            </div>
+            <div class="tool-item">
+                <div class="tool-icon"><i class="fas fa-calculator"></i></div>
+                <h3>Position Sizing</h3>
+                <p>Kalkulator ukuran posisi dan manajemen risiko</p>
+            </div>
+            <div class="tool-item">
+                <div class="tool-icon"><i class="fas fa-bell"></i></div>
+                <h3>Price Alert</h3>
+                <p>Notifikasi harga real-time via mobile & desktop</p>
+            </div>
+            <div class="tool-item">
+                <div class="tool-icon"><i class="fas fa-clock"></i></div>
+                <h3>Economic Calendar</h3>
+                <p>Jadwal berita ekonomi dan event penting</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Platform Preview -->
+<section class="platform-preview">
+    <div class="container">
+        <div class="section-title">
+            <h2>PLATFORM TRADING</h2>
+        </div>
+        <div class="platform-container">
+            <div class="platform-header">
+                <div class="platform-window-controls">
+                    <div class="control close"></div>
+                    <div class="control minimize"></div>
+                    <div class="control maximize"></div>
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.5);">TRADER X TERMINAL</div>
+                <div style="width: 68px;"></div>
+            </div>
+            <div class="platform-content">
+                <div class="chart-container">
+                    <div class="chart-line"></div>
+                    <div class="price-indicator">
+                        <i class="fas fa-arrow-up" style="color: #00ff96;"></i> BTC/USD $68,420 +3.42%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Analysis Section -->
+<section class="analysis">
+    <div class="container">
+        <div class="section-title">
+            <h2>ANALISIS MARKET</h2>
+        </div>
+        <div class="analysis-grid">
+            <div class="analysis-card">
+                <img src="https://placehold.co/600x400/1a1a2e/ffffff?text=BTC+Analysis" alt="BTC Analysis">
+                <div class="analysis-card-content">
+                    <h3>Bitcoin (BTC/USD)</h3>
+                    <p>Analisis teknikal dan fundamental terbaru untuk Bitcoin. Support di $65,000 dan resistensi di $70,000.</p>
+                </div>
+            </div>
+            <div class="analysis-card">
+                <img src="https://placehold.co/600x400/1a1a2e/ffffff?text=ETH+Analysis" alt="ETH Analysis">
+                <div class="analysis-card-content">
+                    <h3>Ethereum (ETH/USD)</h3>
+                    <p>Performa ETH setelah upgrade terbaru. Potensi breakout dengan target $3,800.</p>
+                </div>
+            </div>
+            <div class="analysis-card">
+                <img src="https://placehold.co/600x400/1a1a2e/ffffff?text=Forex+Analysis" alt="Forex Analysis">
+                <div class="analysis-card-content">
+                    <h3>Forex EUR/USD</h3>
+                    <p>Analisis pair major dengan fokus pada kebijakan bank sentral dan data ekonomi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials">
+    <div class="container">
+        <div class="section-title">
+            <h2>TESTIMONIAL</h2>
+        </div>
+        <div class="testimonial-slider">
+            <div class="testimonial-item">
+                <div class="client-img">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="testimonial-text">
+                    Bergabung dengan Trader X Academy adalah keputusan terbaik dalam karir trading saya. Sinyal AI mereka sangat akurat dan mentorship-nya luar biasa!
+                </div>
+                <div class="client-name">Andi Wijaya</div>
+                <div class="client-title">Trader Profesional</div>
+            </div>
+            <div class="testimonial-item">
+                <div class="client-img">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="testimonial-text">
+                    Platform yang sangat membantu bagi pemula seperti saya. Materi pembelajaran mudah dipahami dan komunitasnya sangat suportif.
+                </div>
+                <div class="client-name">Sarah Dewi</div>
+                <div class="client-title">Member Premium</div>
+            </div>
+            <div class="testimonial-item">
+                <div class="client-img">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="testimonial-text">
+                    Tools analisisnya lengkap dan real-time. Saya sudah 3 bulan konsisten profit berkat sistem dari Trader X Academy.
+                </div>
+                <div class="client-name">Budi Santoso</div>
+                <div class="client-title">Full Time Trader</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact">
+    <div class="container">
+        <div class="section-title">
+            <h2>HUBUNGI KAMI</h2>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="contact-details">
+                        <h3>Alamat</h3>
+                        <p>Menara Cyber, Lantai 25, SCBD, Jakarta Selatan</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                    <div class="contact-details">
+                        <h3>Telepon</h3>
+                        <p>+62 21 1234 5678</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="contact-details">
+                        <h3>Email</h3>
+                        <p>info@traderxacademy.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fab fa-discord"></i></div>
+                    <div class="contact-details">
+                        <h3>Discord</h3>
+                        <p>discord.gg/traderx</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Nama Lengkap">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Subjek">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" placeholder="Pesan"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Kirim Pesan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 Trader X Academy. All rights reserved. | Platform Trading Elite Indonesia</p>
+    </div>
+</footer>
+
+<script>
+    // Simple mobile menu
+    document.querySelector('.mobile-menu')?.addEventListener('click', function() {
+        const nav = document.querySelector('.nav-links');
+        if (nav.style.display === 'flex') {
+            nav.style.display = 'none';
+        } else {
+            nav.style.display = 'flex';
+            nav.style.flexDirection = 'column';
+            nav.style.position = 'absolute';
+            nav.style.top = '70px';
+            nav.style.left = '0';
+            nav.style.width = '100%';
+            nav.style.background = 'rgba(5,5,5,0.95)';
+            nav.style.backdropFilter = 'blur(20px)';
+            nav.style.padding = '20px';
+            nav.style.gap = '15px';
+            nav.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
+        }
+    });
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) {
+            header.style.background = 'rgba(5, 5, 5, 0.95)';
+            header.style.backdropFilter = 'blur(20px)';
+        } else {
+            header.style.background = 'rgba(5, 5, 5, 0.8)';
+        }
+    });
+</script>
+</body>
+</html>
